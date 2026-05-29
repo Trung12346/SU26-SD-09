@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phòng Deluxe Hướng Biển | Nesta Hotel</title>
+  <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-left">
+    <span>📞 +84 123 456 789 &nbsp; | &nbsp; ✉ info@nestahotel.com.vn</span>
+  </div>
+  <div class="topbar-right">
+    <a href="#">VN</a> | <a href="#">EN</a>
+  </div>
+</div>
+
+<header>
+  <a href="index.html" class="logo">
+    <img src="../static/logo.jpg" alt="Nesta Hotel Logo">
+  </a>
+  <nav class="nav-menu">
+    <a href="index.html">Trang Chủ</a>
+    <a href="rooms.html" style="color: var(--sky-primary);">Phòng Nghỉ</a>
+    <a href="#">Ẩm Thực</a>
+    <a href="#">Khuyến Mãi</a>
+  </nav>
+  <div class="header-actions">
+    <a href="login.html" class="btn btn-outline">Đăng Nhập</a>
+    <a href="register.html" class="btn btn-filled">Đăng Ký</a>
+  </div>
+</header>
+
+<main class="detail-wrapper">
+  <div class="detail-main">
+    <div class="gallery-main">
+      <img id="mainImage" src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Main Room">
+    </div>
+    <div class="gallery-thumbs">
+      <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="active" onclick="changeImage(this)">
+      <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" onclick="changeImage(this)">
+      <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" onclick="changeImage(this)">
+      <img src="https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" onclick="changeImage(this)">
+    </div>
+
+    <div class="detail-header">
+      <h1>Phòng Deluxe Hướng Biển</h1>
+      <div class="price">1,200,000 VNĐ <span>/ đêm</span></div>
+    </div>
+
+    <h3 style="margin-bottom: 15px; font-family: 'Montserrat', sans-serif;">Mô Tả Phòng</h3>
+    <div class="detail-description">
+      Phòng Deluxe tại Nesta Hotel được thiết kế tỉ mỉ với cửa sổ kính lớn trong suốt từ trần đến sàn, mang trọn vẹn ánh sáng tự nhiên và tầm nhìn vô tận ra đại dương.
+      Nội thất sử dụng chất liệu gỗ tự nhiên ấm cúng kết hợp với tông màu xanh nhạt êm ái, mang lại cảm giác thư thái tối đa cho du khách. Đặc biệt, phòng tắm được trang bị bồn tắm nằm cao cấp và các sản phẩm chăm sóc cơ thể thiên nhiên.
+    </div>
+
+    <h3 style="margin-bottom: 15px; font-family: 'Montserrat', sans-serif;">Tiện Nghi Nổi Bật</h3>
+    <div class="amenities-grid">
+      <div class="amenity-item">📶 WiFi Tốc độ cao</div>
+      <div class="amenity-item">📺 Smart TV 55 inch</div>
+      <div class="amenity-item">❄️ Điều hòa trung tâm</div>
+      <div class="amenity-item">🛁 Bồn tắm riêng</div>
+      <div class="amenity-item">🔒 Két sắt an toàn</div>
+      <div class="amenity-item">☕ Minibar & Trà/Cà phê</div>
+    </div>
+  </div>
+
+  <div class="detail-sidebar">
+    <div class="booking-widget">
+      <h3>Thông Tin Đặt Phòng</h3>
+      <form action="#" method="POST">
+        <div class="form-group">
+          <label>Ngày nhận phòng</label>
+          <input type="date" required>
+        </div>
+        <div class="form-group">
+          <label>Ngày trả phòng</label>
+          <input type="date" required>
+        </div>
+        <div class="form-group">
+          <label>Người lớn</label>
+          <select style="width:100%; padding: 12px; border: 1px solid var(--border-color); font-family: inherit;">
+            <option value="1">1</option>
+            <option value="2" selected>2</option>
+            <option value="3">3</option>
+          </select>
+        </div>
+
+        <div class="widget-total">
+          <span>Tổng tạm tính:</span>
+          <span style="color: var(--sky-primary);">1,200,000 VNĐ</span>
+        </div>
+
+        <button type="submit" class="btn btn-filled" style="width: 100%; padding: 15px; font-size: 16px;">Đặt Phòng Ngay</button>
+        <p style="text-align: center; font-size: 12px; color: var(--text-gray); margin-top: 15px;">* Bạn sẽ thanh toán khi nhận phòng</p>
+      </form>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; 2026 Nesta Hotel. All rights reserved.</p>
+</footer>
+
+<script>
+  function changeImage(element) {
+    // Đổi source của ảnh chính
+    document.getElementById('mainImage').src = element.src;
+
+    // Xóa class active ở các ảnh cũ và thêm vào ảnh vừa click
+    let thumbs = document.querySelectorAll('.gallery-thumbs img');
+    thumbs.forEach(thumb => thumb.classList.remove('active'));
+    element.classList.add('active');
+  }
+</script>
+</body>
+</html>

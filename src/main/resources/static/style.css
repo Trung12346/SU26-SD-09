@@ -1,0 +1,586 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap');
+
+:root {
+    /* MÀU CHỦ ĐẠO MỚI: XANH TRỜI (SKY BLUE) */
+    --sky-primary: #3498DB;    /* Màu xanh trời chính */
+    --sky-dark: #2980B9;       /* Xanh trời đậm hơn cho hover, topbar */
+    --sky-light: #EBF5FB;      /* Xanh trời rất nhạt cho background phụ */
+    
+    --text-dark: #333333;
+    --text-gray: #666666;
+    --border-color: #e0e0e0;
+    --white: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--text-dark);
+    background-color: #fafafa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Playfair Display', serif;
+}
+
+/* ================= TOPBAR & HEADER ================= */
+.topbar {
+    /* Đổi sang xanh trời đậm */
+    background-color: var(--sky-dark);
+    color: var(--white);
+    font-size: 13px;
+    padding: 8px 5%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.topbar-right a {
+    color: var(--white);
+    text-decoration: none;
+    margin-left: 15px;
+}
+
+header {
+    background-color: var(--white);
+    padding: 10px 5%; /* Giảm padding một chút để header gọn hơn khi có logo img */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+}
+
+/* CSS CHO LOGO DẠNG ẢNH */
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo img {
+    max-height: 60px; /* Giới hạn chiều cao logo để không phá vỡ header */
+    width: auto;      /* Giữ nguyên tỷ lệ ảnh */
+    display: block;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    transition: color 0.3s;
+}
+
+.nav-menu a:hover {
+    /* Hover sang màu xanh trời */
+    color: var(--sky-primary);
+}
+
+.header-actions .btn {
+    padding: 10px 24px;
+    border-radius: 2px; /* Bo nhẹ một chút cho hiện đại */
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-left: 10px;
+    transition: all 0.3s;
+}
+
+.btn-outline {
+    /* Outline màu xanh trời */
+    border: 1px solid var(--sky-primary);
+    color: var(--sky-primary);
+}
+
+.btn-outline:hover {
+    background-color: var(--sky-primary);
+    color: var(--white);
+}
+
+.btn-filled {
+    /* Nền màu xanh trời */
+    background-color: var(--sky-primary);
+    color: var(--white);
+    border: 1px solid var(--sky-primary);
+}
+
+.btn-filled:hover {
+    background-color: var(--sky-dark);
+}
+
+/* ================= TRANG CHỦ ================= */
+.hero {
+    height: 75vh;
+    /* Giữ ảnh nền cũ hoặc bạn có thể thay ảnh tông xanh trời cho hợp */
+    background: url('https://images.unsplash.com/photo-1542314831-c6a4d14d8c85?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.35); /* Tăng độ đậm lớp phủ một chút */
+}
+
+.hero-text {
+    position: relative;
+    text-align: center;
+    color: var(--white);
+    z-index: 1;
+}
+
+.hero-text h1 {
+    font-size: 3.5rem;
+    font-weight: 500;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.hero-text p {
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+/* Khung Booking */
+.booking-section {
+    position: relative;
+    margin-top: -60px;
+    z-index: 10;
+    padding: 0 5%;
+}
+
+.booking-form {
+    background: var(--white);
+    padding: 25px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    display: flex;
+    gap: 15px;
+    border-radius: 4px;
+}
+
+.booking-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.booking-item label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-gray);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.booking-item input, .booking-item select {
+    padding: 10px 0;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    outline: none;
+    color: var(--text-dark);
+}
+
+.booking-item input:focus, .booking-item select:focus {
+    /* Focus sang màu xanh trời */
+    border-bottom-color: var(--sky-primary);
+}
+
+.btn-book {
+    /* Nút search màu xanh trời */
+    background-color: var(--sky-primary);
+    color: var(--white);
+    border: none;
+    padding: 0 40px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s;
+    border-radius: 2px;
+}
+
+.btn-book:hover {
+    background-color: var(--sky-dark);
+}
+
+/* ================= FORM AUTH (LOGIN / REGISTER) ================= */
+.auth-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 5%;
+    /* Ảnh nền form auth */
+    background: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover fixed;
+    position: relative;
+}
+
+/* Thêm lớp phủ cho background auth để form nổi bật hơn */
+.auth-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.auth-card {
+    position: relative; /* Nổi lên trên lớp phủ */
+    background: var(--white);
+    padding: 50px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.1);
+    border-radius: 4px;
+}
+
+.auth-card.register {
+    max-width: 800px;
+}
+
+.auth-card h2 {
+    text-align: center;
+    font-size: 32px;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+/* highlight tiêu đề form bằng màu xanh trời */
+.auth-card h2 span {
+    color: var(--sky-primary);
+}
+
+.auth-card p.subtitle {
+    text-align: center;
+    color: var(--text-gray);
+    font-size: 14px;
+    margin-bottom: 40px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.form-group.full-width {
+    grid-column: span 2;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-gray);
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s;
+    background-color: #fcfcfc;
+    border-radius: 2px;
+}
+
+.form-group input:focus {
+    border-color: var(--sky-primary);
+    background-color: var(--white);
+    /* Shadow màu xanh trời nhạt */
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 15px;
+    /* Nút submit màu xanh trời */
+    background-color: var(--sky-primary);
+    color: var(--white);
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.3s;
+    border-radius: 2px;
+}
+
+.btn-submit:hover {
+    background-color: var(--sky-dark);
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 14px;
+    color: var(--text-gray);
+}
+
+.auth-footer a {
+    /* Link màu xanh trời */
+    color: var(--sky-primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-footer a:hover {
+    color: var(--sky-dark);
+    text-decoration: underline;
+}
+
+/* ================= FOOTER ================= */
+footer {
+    background-color: #222;
+    color: #ccc;
+    text-align: center;
+    padding: 25px;
+    font-size: 13px;
+    margin-top: auto;
+}
+
+/* ================= BANNER TRANG PHỤ ================= */
+.page-banner {
+    height: 35vh;
+    background: url('https://images.unsplash.com/photo-1542314831-c6a4d14d8c85?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+.page-banner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+}
+.page-banner h1 {
+    color: var(--white);
+    position: relative;
+    z-index: 1;
+    font-size: 3rem;
+    letter-spacing: 2px;
+}
+
+/* ================= TRANG DANH SÁCH PHÒNG (ROOMS.HTML) ================= */
+.filter-bar {
+    background: var(--white);
+    padding: 20px 30px;
+    margin: -30px 5% 40px;
+    position: relative;
+    z-index: 10;
+    border-radius: 4px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+.filter-bar select, .filter-bar input {
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    font-family: 'Montserrat', sans-serif;
+    outline: none;
+    flex: 1;
+}
+.filter-bar input:focus, .filter-bar select:focus {
+    border-color: var(--sky-primary);
+}
+
+.rooms-container {
+    padding: 0 5% 60px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.room-card {
+    background: var(--white);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+.room-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-color: var(--sky-primary);
+}
+.room-img {
+    height: 220px;
+    overflow: hidden;
+    position: relative;
+}
+.room-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+.room-card:hover .room-img img {
+    transform: scale(1.08);
+}
+.room-info {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.room-info h3 {
+    color: var(--sky-dark);
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+.room-price {
+    color: var(--sky-primary);
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+.room-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 13px;
+    color: var(--text-gray);
+    margin-bottom: 20px;
+}
+.room-info .btn-view {
+    margin-top: auto;
+    text-align: center;
+    display: block;
+}
+
+/* ================= TRANG CHI TIẾT PHÒNG (ROOM-DETAIL.HTML) ================= */
+.detail-wrapper {
+    padding: 50px 5%;
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+.detail-main {
+    flex: 2;
+}
+.detail-sidebar {
+    flex: 1;
+    position: sticky;
+    top: 100px;
+}
+
+/* Thư viện ảnh */
+.gallery-main {
+    width: 100%;
+    height: 450px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+.gallery-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.gallery-thumbs {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+.gallery-thumbs img {
+    width: calc(25% - 11.25px);
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: 0.3s;
+}
+.gallery-thumbs img:hover, .gallery-thumbs img.active {
+    opacity: 1;
+    border: 2px solid var(--sky-primary);
+}
+
+/* Chi tiết văn bản */
+.detail-header {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+.detail-header h1 {
+    color: var(--sky-dark);
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+.detail-header .price {
+    font-size: 24px;
+    color: var(--sky-primary);
+    font-weight: 600;
+}
+.detail-description {
+    color: var(--text-gray);
+    line-height: 1.8;
+    margin-bottom: 30px;
+    font-size: 15px;
+}
+.amenities-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 15px;
+}
+.amenity-item {
+    font-size: 14px;
+    color: var(--text-dark);
+}
+
+/* Form đặt phòng bên phải */
+.booking-widget {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    border-top: 4px solid var(--sky-primary);
+}
+.booking-widget h3 {
+    margin-bottom: 20px;
+    font-size: 20px;
+    text-align: center;
+}
+.widget-total {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    font-size: 18px;
+    margin: 20px 0;
+    padding-top: 15px;
+    border-top: 1px dashed var(--border-color);
+}
