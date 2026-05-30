@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nesta Hotel | Trang chủ</title>
+    <link rel="stylesheet" href="/style.css">
+
+</head>
+<body>
+    <div class="topbar">
+        <div class="topbar-left">
+            <span>📞 +84 123 456 789 &nbsp; | &nbsp; ✉ info@nestahotel.com.vn</span>
+        </div>
+        <div class="topbar-right">
+            <a href="#">VN</a> | <a href="#">EN</a>
+        </div>
+    </div>
+
+    <header>
+        <a href="index.html" class="logo">
+            <img src="/logo.jpg" alt="Nesta Hotel Logo">
+        </a>
+        
+        <nav class="nav-menu">
+            <a href="index.html">Trang Chủ</a>
+            <a href="#">Phòng Nghỉ</a>
+            <a href="#">Ẩm Thực</a>
+            <a href="#">Hội Nghị</a>
+            <a href="#">Khuyến Mãi</a>
+        </nav>
+
+        <div class="header-actions" sec:authorize="isAnonymous()">
+            <a href="login.html" class="btn btn-outline">Đăng Nhập</a>
+            <a href="register.html" class="btn btn-filled">Đăng Ký</a>
+        </div>
+        <div sec:authorize="isAuthenticated()">
+            <p>xin chao , <span sec:authentication="name">
+
+            </span>
+                <a th:href="@{/logout}" class="btn btn-filled">Đăng xuất</a></p>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Đẳng Cấp & Tinh Tế</h1>
+            <p>Khởi nguồn cho những trải nghiệm nghỉ dưỡng hoàn hảo</p>
+        </div>
+    </section>
+
+    <section class="booking-section">
+        <form class="booking-form">
+            <div class="booking-item">
+                <label>Ngày nhận phòng</label>
+                <input type="date">
+            </div>
+            <div class="booking-item">
+                <label>Ngày trả phòng</label>
+                <input type="date">
+            </div>
+            <div class="booking-item">
+                <label>Người lớn</label>
+                <select>
+                    <option value="1">1</option>
+                    <option value="2" selected>2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+            <div class="booking-item">
+                <label>Trẻ em</label>
+                <select>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                </select>
+            </div>
+            <button type="button" class="btn-book">Kiểm tra phòng</button>
+        </form>
+    </section>
+
+    <div style="height: 400px; padding: 100px 5%; text-align: center; background-color: var(--white);">
+        <h2 style="color: var(--sky-primary); margin-bottom: 25px; font-size: 36px;">Chào Mừng Đến Với Nesta Hotel</h2>
+        <p style="color: var(--text-gray); max-width: 750px; margin: 0 auto; line-height: 1.8; font-size: 15px;">
+            Nesta Hotel tọa lạc tại trung tâm thành phố, mang đến cho quý khách không gian nghỉ dưỡng sang trọng, 
+            tiện nghi hiện đại cùng chất lượng dịch vụ đẳng cấp 5 sao. Với tông màu xanh trời chủ đạo, 
+            chúng tôi mong muốn mang lại cảm giác thư thái và bình yên tuyệt đối cho kỳ nghỉ của bạn.
+        </p>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Nesta Hotel. All rights reserved.</p>
+    </footer>
+</body>
+</html>
