@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản Lý Tài Khoản | Nesta Hotel</title>
-    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="/style.css">
     <!-- Thêm thư viện Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -229,7 +229,7 @@
     <!-- Header User Menu -->
     <div class="header-actions" style="display: flex; align-items: center; gap: 15px;">
             <span style="font-weight: 500; font-size: 14px; color: var(--text-dark);">
-                Xin chào, <span id="header-name" style="color: var(--sky-primary);">Nguyễn Văn A</span>
+                Xin chào, <span id="header-name" style="color: var(--sky-primary);" th:text="${nguoiDung.Email}"></span>
             </span>
     </div>
 </header>
@@ -239,7 +239,7 @@
     <aside class="dashboard-sidebar">
         <div class="user-profile-brief">
             <div class="user-avatar">A</div>
-            <h3>Nguyễn Văn A</h3>
+            <h3 th:text="${nguoiDung.hoTen}"></h3>
             <p>Thành viên từ 2026</p>
         </div>
         <ul class="sidebar-nav">
@@ -249,7 +249,7 @@
             <li><a href="#"><i class="fa-solid fa-star"></i> Đánh giá của tôi</a></li>
             <li><a href="#"><i class="fa-solid fa-key"></i> Đổi mật khẩu</a></li>
             <li style="margin-top: 20px; border-top: 1px solid var(--border-color);">
-                <a href="index.html" class="text-danger" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
+                <a href="/logout" class="text-danger" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
             </li>
         </ul>
     </aside>
@@ -267,14 +267,14 @@
                 <div class="stat-icon"><i class="fa-solid fa-suitcase-rolling"></i></div>
                 <div class="stat-info">
                     <h4>Phòng đã đặt</h4>
-                    <div class="num">03</div>
+                    <div class="num" th:text="${tongPhong}"></div>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon"><i class="fa-regular fa-comment-dots"></i></div>
                 <div class="stat-info">
                     <h4>Đánh giá</h4>
-                    <div class="num">01</div>
+                    <div class="num" th:text="${tongsodanhgia}"></div>
                 </div>
             </div>
             <div class="stat-card">
@@ -301,20 +301,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td><strong>#DP10024</strong></td>
-                    <td>Deluxe Hướng Biển</td>
-                    <td>20/06/2026</td>
-                    <td>23/06/2026</td>
-                    <td><span class="status-badge status-success">Thành công</span></td>
-                    <td><a href="#" style="color: var(--sky-primary);">Chi tiết</a></td>
-                </tr>
-                <tr>
-                    <td><strong>#DP10058</strong></td>
-                    <td>Superior Tiêu Chuẩn</td>
-                    <td>15/07/2026</td>
-                    <td>17/07/2026</td>
-                    <td><span class="status-badge status-pending">Chờ xác nhận</span></td>
+                <tr th:each="l : ${listdatPhong}" >
+                    <td><strong th:text="${l.id}"></strong></td>
+                    <td th:text="${l.c.p.tenPhong}"></td>
+                    <td th:text="${l.ngayNhanPhong}"></td>
+                    <td th:text="${l.ngayTraphong}"></td>
+                    <td><span class="status-badge status-success" th:text="${l.trangThai}"></span></td>
                     <td><a href="#" style="color: var(--sky-primary);">Chi tiết</a></td>
                 </tr>
                 </tbody>
@@ -325,10 +317,10 @@
         <div class="content-section">
             <h3>Thông Tin Liên Hệ <button class="btn btn-outline" style="padding: 5px 15px; font-size: 12px;">Chỉnh sửa</button></h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 14px; color: var(--text-dark);">
-                <p><span style="color: var(--text-gray); display: block; margin-bottom: 5px; font-size: 12px;">Họ và tên</span> <strong>Nguyễn Văn A</strong></p>
-                <p><span style="color: var(--text-gray); display: block; margin-bottom: 5px; font-size: 12px;">Email</span> <strong>example@gmail.com</strong></p>
-                <p><span style="color: var(--text-gray); display: block; margin-bottom: 5px; font-size: 12px;">Số điện thoại</span> <strong>0912345678</strong></p>
-                <p><span style="color: var(--text-gray); display: block; margin-bottom: 5px; font-size: 12px;">Số CCCD</span> <strong>001200334455</strong></p>
+                <p><span style="color: var(--text-gray); display: block; margin-bottom: 5px; font-size: 12px;">Họ và tên</span> <strong th:text="${nguoiDung.hoTen}"></strong></p>
+                <p><span style="color: var(--text-gray); display: block; margin-bottom: 5px; font-size: 12px;">Email</span> <strong th:text="${nguoiDung.Email}"></strong></p>
+                <p><span style="color: var(--text-gray); display: block; margin-bottom: 5px; font-size: 12px;">Số điện thoại</span> <strong th:text="${nguoiDung.soDienThoai}"></strong></p>
+                <p><span style="color: var(--text-gray); display: block; margin-bottom: 5px; font-size: 12px;">Số CCCD</span> <strong th:text="${nguoiDung.maCccd}"></strong></p>
             </div>
         </div>
 

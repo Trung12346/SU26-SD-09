@@ -7,7 +7,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nesta Hotel | Trang chủ</title>
     <link rel="stylesheet" href="/style.css">
-
+   <style>
+       .user-menu {
+           display: flex;
+           align-items: center;
+           gap: 15px;
+       }
+       .user-greeting {
+           font-size: 14px;
+           color: var(--text-dark);
+           font-weight: 500;
+       }
+       .user-greeting b {
+           color: var(--sky-primary);
+       }
+       /* Nút đăng xuất style như một liên kết hoặc nút outline gọn gàng */
+       .btn-logout {
+           background: transparent;
+           border: 1px solid var(--border-color);
+           color: var(--text-gray);
+           padding: 8px 15px;
+           border-radius: 2px;
+           cursor: pointer;
+           font-family: inherit;
+           font-size: 13px;
+           font-weight: 600;
+           text-transform: uppercase;
+           transition: all 0.3s;
+       }
+       .btn-logout:hover {
+           border-color: #E74C3C;
+           color: #E74C3C;
+           background: #FDEDEC;
+       }
+   </style>
 </head>
 <body>
     <div class="topbar">
@@ -20,7 +53,7 @@
     </div>
 
     <header>
-        <a href="index.html" class="logo">
+        <a href="/home" class="logo">
             <img src="/logo.jpg" alt="Nesta Hotel Logo">
         </a>
         
@@ -38,8 +71,13 @@
         </div>
 
         <div sec:authorize="isAuthenticated()">
-            <p>xin chao , <span sec:authentication="name"></span<a th:href="@{/logout}" class="btn btn-filled">Đăng xuất</a></p>
+            <div class="user-menu">
+                <span class="user-greeting">Xin chào,</span><span sec:authentication="name"></span>
+                <a href="/profiles" class="btn btn-outline" style="padding: 8px 15px; font-size: 13px;">Hồ Sơ</a>
+                <button onclick="logout()" class="btn-logout"><a>Đăng xuất</a></p></button>
+            </div>
         </div>
+
     </header>
 
     <section class="hero">
@@ -93,4 +131,26 @@
         <p>&copy; 2026 Nesta Hotel. All rights reserved.</p>
     </footer>
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Giả lập việc lấy thông tin người dùng từ LocalStorage (sau khi đăng nhập thành công)
+        // Trong thực tế, lúc login xong bạn sẽ setItem: localStorage.setItem("userFullName", "Tên từ API");
+        const userName = localStorage.getItem("userFullName") || "Nguyễn Văn A";
+
+        // Cập nhật tên lên Header và phần Welcome
+        document.getElementById("header-user-name").innerText = userName;
+        document.getElementById("welcome-user-name").innerText = userName;
+    });
+
+    function logout() {
+        if(confirm("Bạn có chắc chắn muốn đăng xuất không?")) {
+            // Xóa dữ liệu phiên đăng nhập
+            localStorage.removeItem("userFullName");
+            localStorage.removeItem("token");
+
+            // Chuyển hướng về trang chủ mặc định (chưa đăng nhập)
+            window.location.href = "/logout";
+        }
+    }
+</script>
 </html>

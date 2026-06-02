@@ -29,7 +29,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authenticationProvider(authenticationProvider())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/Login", "/api/auth/**","/verify-email",
+                        .requestMatchers("/Login", "/api/auth/**","/verify-email","/home/**",
                                 "/static/**", "/css/**", "/js/**", "/images/**",
                                 "/*.css", "/*.js", "/*.jpg", "/*.png","/Register").permitAll()
                         .anyRequest().authenticated()
@@ -41,7 +41,7 @@ public class SecurityConfig {
                         .failureUrl("/Login?error=true")
                         .permitAll()
                 ).sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
+                        session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).invalidSessionUrl("/Login"));
 
         return http.build();
     }

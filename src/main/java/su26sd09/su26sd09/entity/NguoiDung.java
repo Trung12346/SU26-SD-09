@@ -3,7 +3,10 @@ package su26sd09.su26sd09.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.data.domain.Page;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -43,4 +46,7 @@ public class NguoiDung {
     @ManyToOne
     @JoinColumn(name = "ma_vai_tro",referencedColumnName = "ma_vai_tro")
     private Vai_tro vai_tro;
+
+
+
 }

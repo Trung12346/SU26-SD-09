@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nesta Hotel | Trang chủ của bạn</title>
-    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="/style.css">
     <style>
         /* CSS dành riêng cho menu người dùng đã đăng nhập */
         .user-menu {
@@ -52,8 +52,8 @@
 </div>
 
 <header>
-    <a href="customer-dashboard.html" class="logo">
-        <img src="../static/logo.jpg" alt="Nesta Hotel Logo">
+    <a href="/home" class="logo">
+        <img src="/logo.jpg" alt="Nesta Hotel Logo">
     </a>
 
     <nav class="nav-menu">
@@ -63,12 +63,20 @@
         <a href="#">Hội Nghị</a>
         <a href="#">Khuyến Mãi</a>
     </nav>
-
-    <div class="user-menu">
-        <span class="user-greeting">Xin chào, <b id="header-user-name">Khách hàng</b></span>
-        <a href="#" class="btn btn-outline" style="padding: 8px 15px; font-size: 13px;">Hồ Sơ</a>
-        <button onclick="logout()" class="btn-logout">Đăng Xuất</button>
+    <div class="header-actions" sec:authorize="isAnonymous()">
+        <a href="/login" class="btn btn-outline">Đăng Nhập</a>
+        <a href="/Register" class="btn btn-filled">Đăng Ký</a>
     </div>
+
+       <div sec:authorize="isAuthenticated()">
+           <div class="user-menu">
+           <span class="user-greeting">Xin chào,</span><span sec:authentication="name"></span>
+           <a href="#" class="btn btn-outline" style="padding: 8px 15px; font-size: 13px;">Hồ Sơ</a>
+           <button onclick="logout()" class="btn-logout"><a>Đăng xuất</a></p></button>
+       </div>
+    </div>
+
+
 </header>
 
 <section class="hero">
@@ -140,7 +148,7 @@
             localStorage.removeItem("token");
 
             // Chuyển hướng về trang chủ mặc định (chưa đăng nhập)
-            window.location.href = "index.html";
+            window.location.href = "/logout";
         }
     }
 </script>
