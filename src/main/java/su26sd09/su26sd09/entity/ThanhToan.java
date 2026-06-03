@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,7 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Table(name = "thanh_toan")
-public class thanhToan {
+public class ThanhToan {
     @Id
     @Column(name = "ma_thanh_toan")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +23,7 @@ public class thanhToan {
 
     @ManyToOne
     @JoinColumn(name = "ma_hoa_don")
-    public hoaDon h;
+    public HoaDon h;
 
     @Column(name = "phuong_thuc")
     public String phuongThuc;

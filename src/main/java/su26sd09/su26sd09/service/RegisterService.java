@@ -2,7 +2,7 @@ package su26sd09.su26sd09.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
-import su26sd09.su26sd09.dto.RegisterDto;
+import su26sd09.su26sd09.dto.RegisterDTO;
 import su26sd09.su26sd09.entity.NguoiDung;
 import su26sd09.su26sd09.entity.Vai_tro;
 import su26sd09.su26sd09.entity.VerificationToken;
@@ -35,7 +35,7 @@ public class RegisterService {
     private MailSenderService mailSenderService;
 
     @Transactional
-    public String register(RegisterDto registerDto) throws Exception {
+    public String register(RegisterDTO registerDto) throws Exception {
         try {
 
         NguoiDung userExisting = nguoiDungRepository.findByEmail(registerDto.getEmail());

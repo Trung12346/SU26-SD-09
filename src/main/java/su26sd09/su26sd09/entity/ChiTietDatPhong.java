@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "chi_tiet_dat_phong")
-public class chiTietDatPhong {
+public class ChiTietDatPhong {
     @Id
     @Column(name = "ma_chi_tiet")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +20,7 @@ public class chiTietDatPhong {
 
     @ManyToOne
     @JoinColumn(name = "ma_dat_phong")
-    public datPhong d;
+    public DatPhong d;
 
     @ManyToOne
     @JoinColumn(name = "ma_phong")

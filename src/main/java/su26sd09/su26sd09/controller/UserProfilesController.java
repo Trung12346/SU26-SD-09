@@ -9,27 +9,27 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import su26sd09.su26sd09.entity.NguoiDung;
-import su26sd09.su26sd09.entity.danhGia;
-import su26sd09.su26sd09.entity.datPhong;
+import su26sd09.su26sd09.entity.DanhGia;
+import su26sd09.su26sd09.entity.DatPhong;
 import su26sd09.su26sd09.service.UserService;
-import su26sd09.su26sd09.service.chiTietDatPhongService;
-import su26sd09.su26sd09.service.danhGiaService;
-import su26sd09.su26sd09.service.datPhongService;
+import su26sd09.su26sd09.service.ChiTietDatPhongService;
+import su26sd09.su26sd09.service.DanhGiaService;
+import su26sd09.su26sd09.service.DatPhongService;
 
 import java.security.Principal;
 
 @Controller
 @RequestMapping("/profiles")
-public class user_profiles_Controller {
+public class UserProfilesController {
 
     @Autowired
     UserService repo;
     @Autowired
-    datPhongService datPhongRepo;
+    DatPhongService datPhongRepo;
     @Autowired
-    danhGiaService danhGiaRepo;
+    DanhGiaService danhGiaRepo;
     @Autowired
-    chiTietDatPhongService chitietPhongrepo;
+    ChiTietDatPhongService chitietPhongrepo;
 
     @GetMapping("")
     public String home(Model model,Principal p){
@@ -42,11 +42,11 @@ public class user_profiles_Controller {
          }
      }
         Pageable pageable = PageRequest.of(0,5);
-        Page<datPhong> page = datPhongRepo.FindbyNguoiDung(nguoidung.getMaNguoiDung(), pageable);
+        Page<DatPhong> page = datPhongRepo.FindbyNguoiDung(nguoidung.getMaNguoiDung(), pageable);
 
         int phongdaDat = datPhongRepo.FindbyNguoiDung(nguoidung.getMaNguoiDung()).size() ;
 
-        danhGia d = new danhGia();
+        DanhGia d = new DanhGia();
 
         int tongsodanhgia = danhGiaRepo.findByNguoiDung(nguoidung.getMaNguoiDung()).size() ;
 

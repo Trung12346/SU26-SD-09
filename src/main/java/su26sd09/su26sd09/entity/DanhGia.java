@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Table(name = "danh_gia")
-public class danhGia {
+public class DanhGia {
     @Id
     @Column(name = "ma_danh_gia")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class danhGia {
 
     @ManyToOne
     @JoinColumn(name = "ma_dat_phong")
-    public datPhong d;
+    public DatPhong d;
 
     @Column(name = "diem_danh_gia")
     public int diemDanhGia;

@@ -45,7 +45,7 @@ public class NguoiDung {
 
     @ManyToOne
     @JoinColumn(name = "ma_vai_tro",referencedColumnName = "ma_vai_tro")
-    private Vai_tro vai_tro;
+    private VaiTro vaiTro;
 
 
 

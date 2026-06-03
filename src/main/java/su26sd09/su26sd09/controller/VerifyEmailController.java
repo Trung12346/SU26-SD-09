@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import su26sd09.su26sd09.service.VerifyEmailService;
 
 @Controller
-public class Verify_emailController {
+public class VerifyEmailController {
 
     @Autowired
     VerifyEmailService verifyEmailService;

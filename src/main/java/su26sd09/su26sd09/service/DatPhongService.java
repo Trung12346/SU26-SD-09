@@ -4,44 +4,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import su26sd09.su26sd09.entity.NguoiDung;
-import su26sd09.su26sd09.entity.datPhong;
-import su26sd09.su26sd09.repository.datPhongRepo;
+import su26sd09.su26sd09.entity.DatPhong;
+import su26sd09.su26sd09.repository.DatPhongRepo;
 
 import java.util.List;
 
 
 @Service
-public class datPhongService {
+public class DatPhongService {
 
     @Autowired
-    datPhongRepo repo;
+    DatPhongRepo repo;
 
 
-    public List<datPhong> findAll(){
+    public List<DatPhong> findAll(){
         return repo.findAll();
     }
 
-    public Page<datPhong> findAll(Pageable page){
+    public Page<DatPhong> findAll(Pageable page){
         return repo.findAll(page);
     }
 
 
-    public void removePhong(datPhong d){
+    public void removePhong(DatPhong d){
         repo.delete(d);
     }
 
-    public void updatePhong(datPhong d){
+    public void updatePhong(DatPhong d){
         repo.save(d);
     }
-    public void themPhong(datPhong d){
+    public void themPhong(DatPhong d){
         repo.save(d);
     }
 
-    public Page<datPhong> FindbyNguoiDung(int id,Pageable pageable){
+    public Page<DatPhong> FindbyNguoiDung(int id, Pageable pageable){
         return repo.findByNguoiDung(id,pageable);
     }
-    public List<datPhong> FindbyNguoiDung(int id){
+    public List<DatPhong> FindbyNguoiDung(int id){
         return repo.FindByNguoiDung(id);
     }
 }

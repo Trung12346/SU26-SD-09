@@ -23,7 +23,7 @@ public class Phong {
 
     @ManyToOne
     @JoinColumn(name = "ma_loai_phong", nullable = false)
-    private loaiPhong loaiPhong;
+    private LoaiPhong loaiPhong;
 
     @Column(name = "ten_phong")
     public String tenPhong;

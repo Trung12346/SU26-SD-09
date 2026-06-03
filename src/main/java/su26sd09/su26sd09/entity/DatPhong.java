@@ -16,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "dat_phong")
-public class datPhong {
+public class DatPhong {
 
 
     @Id

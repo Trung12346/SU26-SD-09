@@ -2,7 +2,7 @@ package su26sd09.su26sd09;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-public class bcryptpassword {
+public class BCryptPassword {
 
     public static String bcrypt(String password){
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

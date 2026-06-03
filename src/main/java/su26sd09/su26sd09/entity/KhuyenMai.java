@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Table(name = "khuyen_mai")
-public class khuyenMai {
+public class KhuyenMai {
     @Id
     @Column(name = "ma_khuyen_mai")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

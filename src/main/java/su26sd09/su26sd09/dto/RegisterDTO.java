@@ -3,7 +3,7 @@ package su26sd09.su26sd09.dto;
 import lombok.Data;
 
 @Data
-public class RegisterDto {
+public class RegisterDTO {
 
     private String ho_ten;
 

@@ -1,6 +1,6 @@
 package su26sd09.su26sd09.dto;
 
-public class NguoiDungDto {
+public class NguoiDungDTO {
 
     private String ten;
 

@@ -14,7 +14,7 @@ import java.security.Principal;
 
 @RequestMapping("/home")
 @Controller
-public class home {
+public class Home {
 
      @Autowired
     CustomerUserDetailsService repo;
