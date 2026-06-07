@@ -40,13 +40,7 @@ public class NguoiDung {
     @Column(name = "ngay_tao", insertable = false, updatable = false)
     private LocalDateTime ngayTao; // DB tự sinh GETDATE()
 
-    @Column(name = "Ma_cccd", length = 20, unique = true)
-    private String maCccd;
-
     @ManyToOne
     @JoinColumn(name = "ma_vai_tro",referencedColumnName = "ma_vai_tro")
     private VaiTro vaiTro;
-
-
-
 }

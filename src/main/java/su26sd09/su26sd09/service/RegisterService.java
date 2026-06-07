@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import su26sd09.su26sd09.dto.RegisterDTO;
 import su26sd09.su26sd09.entity.NguoiDung;
-import su26sd09.su26sd09.entity.Vai_tro;
+import su26sd09.su26sd09.entity.VaiTro;
 import su26sd09.su26sd09.entity.VerificationToken;
 import su26sd09.su26sd09.repository.NguoiDungRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,16 +56,15 @@ public class RegisterService {
         if(registerDto.getMat_khau_hash()==null&&registerDto.getMat_khau_hash().length()<7){
             return "password must not null and must have over 7 characters";
         }
-        Vai_tro vai_tro = vaiTroRepo.findById(3).orElseThrow(()->new RuntimeException("not found"));
+        VaiTro vaiTro = vaiTroRepo.findById(3).orElseThrow(()->new RuntimeException("not found"));
         NguoiDung nguoiDung = new NguoiDung();
         nguoiDung.setHoTen(registerDto.getHo_ten());
         nguoiDung.setEmail(registerDto.getEmail());
         nguoiDung.setMatKhau_hash(passwordEncoder.encode(registerDto.getMat_khau_hash()));
         nguoiDung.setSoDienThoai(registerDto.getSo_dien_thoai());
         nguoiDung.setTrangThai(false);
-        nguoiDung.setMaCccd(registerDto.getMa_cccd());
         nguoiDung.setDiaChi(registerDto.getDia_chi());
-        nguoiDung.setVai_tro(vai_tro);
+        nguoiDung.setVaiTro(vaiTro);
         nguoiDungRepository.save(nguoiDung);
         String token =UUID.randomUUID().toString();
         verificationTokenRepo.save(new VerificationToken(token,nguoiDung));

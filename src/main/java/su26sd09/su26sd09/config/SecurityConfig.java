@@ -32,11 +32,12 @@ public class SecurityConfig {
                         .requestMatchers("/Login", "/api/auth/**","/verify-email","/home/**",
                                 "/static/**", "/css/**", "/js/**", "/images/**",
                                 "/*.css", "/*.js", "/*.jpg", "/*.png","/Register").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/Login").
-                        loginProcessingUrl("/login")
+                        .loginPage("/Login")
+                        .loginProcessingUrl("/login")
                         .defaultSuccessUrl("/home", true)
                         .failureUrl("/Login?error=true")
                         .permitAll()

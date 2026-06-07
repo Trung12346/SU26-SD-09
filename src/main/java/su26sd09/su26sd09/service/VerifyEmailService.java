@@ -3,7 +3,7 @@ package su26sd09.su26sd09.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import su26sd09.su26sd09.entity.NguoiDung;
-import su26sd09.su26sd09.entity.Vai_tro;
+import su26sd09.su26sd09.entity.VaiTro;
 import su26sd09.su26sd09.entity.VerificationToken;
 import su26sd09.su26sd09.repository.NguoiDungRepository;
 import su26sd09.su26sd09.repository.VaiTroRepo;
@@ -38,11 +38,11 @@ public class VerifyEmailService {
         if(Boolean.TRUE.equals(verificationToken.getUsed())){
             return "Token is Already Used";
         }
-        Vai_tro vai_tro = vaiTroRepo.findById(3).
+        VaiTro vaiTro = vaiTroRepo.findById(3).
                 orElseThrow(() ->new RuntimeException("not found"));
         NguoiDung nguoiDung = verificationToken.getNguoiDung();
         nguoiDung.setTrangThai(true);
-        nguoiDung.setVai_tro(vai_tro);
+        nguoiDung.setVaiTro(vaiTro);
         nguoiDungRepository.save(nguoiDung);
         verificationToken.setUsed(true);
         tokenRepo.save(verificationToken);

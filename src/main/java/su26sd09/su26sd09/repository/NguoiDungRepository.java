@@ -8,6 +8,5 @@ import org.springframework.stereotype.Repository;
 public interface NguoiDungRepository extends JpaRepository<NguoiDung, Integer> {
     boolean existsByEmail(String email);
     boolean existsBySoDienThoai(String soDienThoai);
-    boolean existsByMaCccd(String maCccd);
     public NguoiDung findByEmail(String email);
 }

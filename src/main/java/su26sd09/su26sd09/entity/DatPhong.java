@@ -63,8 +63,4 @@ public class DatPhong {
     @Column(name = "Ma_cccd")
     public String macccd;
 
-
-
-
-
 }

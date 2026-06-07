@@ -21,8 +21,6 @@ public class VaiTro {
     private Integer id;
 
     @Column(name = "ten_vai_tro")
-    private String ten_vai_tro;
-
-    @OneToMany(mappedBy = "vai_tro",cascade = CascadeType.ALL)
-    private List<NguoiDung> nguoiDung;
+    private String tenVaiTro;
+    
 }
