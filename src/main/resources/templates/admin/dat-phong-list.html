@@ -36,6 +36,7 @@
 <main class="admin-wrapper">
     <div class="admin-header">
         <h1>Quản Lý Đơn Đặt Phòng</h1>
+        <a th:href="@{/admin/dat-phong}" class="admin-btn outline">Làm mới</a>
     </div>
 
     <div th:if="${success}" class="admin-message success">
@@ -46,23 +47,104 @@
     </div>
 
     <section class="admin-panel">
-        <h2>Danh Sách Đơn Đặt Phòng</h2>
+        <h2>Tìm Kiếm Đơn Đặt Phòng</h2>
 
-        <form th:action="@{/admin/dat-phong}" method="get" class="search-row">
-            <input type="text" name="keyword" placeholder="Tìm theo mã đơn, khách hàng, email, phòng, trạng thái..." th:value="${keyword}">
-            <button type="submit" class="admin-btn outline">Tìm Kiếm</button>
+        <form th:action="@{/admin/dat-phong}" method="get">
+            <div class="admin-grid">
+                <div class="admin-field">
+                    <label>Mã đặt phòng</label>
+                    <input type="number" name="maDatPhong" min="1" th:value="${maDatPhong}">
+                </div>
+                <div class="admin-field">
+                    <label>Mã khách</label>
+                    <input type="number" name="maKhach" min="1" th:value="${maKhach}">
+                </div>
+                <div class="admin-field">
+                    <label>Mã nhân viên</label>
+                    <input type="number" name="maNhanVien" min="1" th:value="${maNhanVien}">
+                </div>
+                <div class="admin-field">
+                    <label>CCCD</label>
+                    <input type="text" name="ma_cccd" placeholder="12 so CCCD" th:value="${ma_cccd}">
+                </div>
+                <div class="admin-field">
+                    <label>Ngày nhận từ</label>
+                    <input type="date" name="ngayNhanTu" th:value="${ngayNhanTu}">
+                </div>
+                <div class="admin-field">
+                    <label>Ngày nhận đến</label>
+                    <input type="date" name="ngayNhanDen" th:value="${ngayNhanDen}">
+                </div>
+                <div class="admin-field">
+                    <label>Ngày trả từ</label>
+                    <input type="date" name="ngayTraTu" th:value="${ngayTraTu}">
+                </div>
+                <div class="admin-field">
+                    <label>Ngày trả đến</label>
+                    <input type="date" name="ngayTraDen" th:value="${ngayTraDen}">
+                </div>
+                <div class="admin-field">
+                    <label>Số người lớn</label>
+                    <input type="number" name="soNguoiLon" min="0" th:value="${soNguoiLon}">
+                </div>
+                <div class="admin-field">
+                    <label>Số trẻ em</label>
+                    <input type="number" name="soTreEm" min="0" th:value="${soTreEm}">
+                </div>
+                <div class="admin-field">
+                    <label>Trạng thái</label>
+                    <select name="trangThai">
+                        <option value="">-- Tất cả --</option>
+                        <option value="Cho xac nhan" th:selected="${trangThai == 'Cho xac nhan'}">Chờ xác nhận</option>
+                        <option value="Da xac nhan" th:selected="${trangThai == 'Da xac nhan'}">Đã xác nhận</option>
+                        <option value="Da nhan phong" th:selected="${trangThai == 'Da nhan phong'}">Đã nhận phòng</option>
+                        <option value="Da tra phong" th:selected="${trangThai == 'Da tra phong'}">Đã trả phòng</option>
+                        <option value="Da huy" th:selected="${trangThai == 'Da huy'}">Đã hủy</option>
+                    </select>
+                </div>
+                <div class="admin-field">
+                    <label>Yêu cầu thêm</label>
+                    <input type="text" name="yeuCauThem" th:value="${yeuCauThem}">
+                </div>
+                <div class="admin-field">
+                    <label>Ngày tạo từ</label>
+                    <input type="date" name="ngayTaoTu" th:value="${ngayTaoTu}">
+                </div>
+                <div class="admin-field">
+                    <label>Ngày tạo đến</label>
+                    <input type="date" name="ngayTaoDen" th:value="${ngayTaoDen}">
+                </div>
+                <div class="admin-field">
+                    <label>Ngày cập nhật từ</label>
+                    <input type="date" name="ngayCapNhatTu" th:value="${ngayCapNhatTu}">
+                </div>
+                <div class="admin-field">
+                    <label>Ngày cập nhật đến</label>
+                    <input type="date" name="ngayCapNhatDen" th:value="${ngayCapNhatDen}">
+                </div>
+            </div>
+
+            <div class="admin-actions">
+                <button type="submit" class="admin-btn outline">Tìm Kiếm</button>
+                <a th:href="@{/admin/dat-phong}" class="admin-btn outline">Xóa Lọc</a>
+            </div>
         </form>
+    </section>
+
+    <section class="admin-panel">
+        <h2>Danh Sách Đơn Đặt Phòng</h2>
 
         <div class="admin-table-wrap">
             <table class="admin-table">
                 <thead>
                 <tr>
-                    <th>Ma</th>
+                    <th>Mã</th>
                     <th>Khách hàng</th>
                     <th>Phòng</th>
+                    <th>Nhân viên</th>
                     <th>Ngày nhận</th>
                     <th>Ngày trả</th>
-                    <th>Khach</th>
+                    <th>Khách</th>
                     <th>CCCD</th>
                     <th>Trạng thái</th>
                 </tr>
@@ -75,6 +157,7 @@
                         <div th:text="${dp.n != null ? dp.n.email : ''}"></div>
                     </td>
                     <td th:text="${phongTheoDon[dp.id] != null ? phongTheoDon[dp.id] : ''}"></td>
+                    <td th:text="${dp.nv != null ? dp.nv.hoTen : ''}"></td>
                     <td th:text="${dp.ngaydatPhong != null ? #temporals.format(dp.ngaydatPhong, 'dd/MM/yyyy') : ''}"></td>
                     <td th:text="${dp.ngaytraPhong != null ? #temporals.format(dp.ngaytraPhong, 'dd/MM/yyyy') : ''}"></td>
                     <td th:text="${dp.songuoiLon + ' NL, ' + dp.sotreEm + ' TE'}"></td>
