@@ -97,7 +97,7 @@
                 </div>
                 <div class="admin-field">
                     <label>CCCD</label>
-                    <input type="text" th:field="*{maCccd}" placeholder="12 so CCCD" pattern="[0-9]{12}">
+                    <input type="text" th:field="*{ma_cccd}" placeholder="12 so CCCD" pattern="[0-9]{12}">
                 </div>
                 <div class="admin-field">
                     <label>Trang thai</label>
@@ -158,7 +158,7 @@
                     <td th:text="${dp.ngaydatPhong != null ? #temporals.format(dp.ngaydatPhong, 'dd/MM/yyyy') : ''}"></td>
                     <td th:text="${dp.ngaytraPhong != null ? #temporals.format(dp.ngaytraPhong, 'dd/MM/yyyy') : ''}"></td>
                     <td th:text="${dp.songuoiLon + ' NL, ' + dp.sotreEm + ' TE'}"></td>
-                    <td th:text="${dp.maCccd != null ? dp.maCccd : ''}"></td>
+                    <td th:text="${dp.ma_cccd != null ? dp.ma_cccd : ''}"></td>
                     <td>
                         <span th:classappend="${dp.trangThai == 'Da xac nhan' or dp.trangThai == 'Da nhan phong' or dp.trangThai == 'Da tra phong'} ? 'active' : (${dp.trangThai == 'Da huy'} ? 'inactive' : 'warning')"
                               class="status-badge"

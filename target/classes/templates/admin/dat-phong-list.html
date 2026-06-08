@@ -36,7 +36,6 @@
 <main class="admin-wrapper">
     <div class="admin-header">
         <h1>Quản Lý Đơn Đặt Phòng</h1>
-        <a th:href="@{/admin/dat-phong}" class="admin-btn outline">Làm Mới Form</a>
     </div>
 
     <div th:if="${success}" class="admin-message success">
@@ -45,90 +44,6 @@
     <div th:if="${error}" class="admin-message error">
         <span th:text="${error}"></span>
     </div>
-
-    <section class="admin-panel">
-        <h2 th:text="${title}">Thêm đơn đặt phòng</h2>
-
-        <form th:action="@{/admin/dat-phong/save}" th:object="${datPhong}" method="post">
-            <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-            <input type="hidden" th:field="*{id}">
-
-            <div class="admin-grid">
-                <div class="admin-field">
-                    <label>Khách hàng</label>
-                    <select name="maKhach">
-                        <option value="">-- Chon khách hàng --</option>
-                        <option th:each="nd : ${nguoiDungs}"
-                                th:value="${nd.maNguoiDung}"
-                                th:text="${nd.hoTen + ' - ' + nd.email}"
-                                th:selected="${datPhong.n != null and datPhong.n.maNguoiDung == nd.maNguoiDung}">
-                        </option>
-                    </select>
-                </div>
-                <div class="admin-field">
-                    <label>Nhân viên phụ trách</label>
-                    <select name="maNhanVien">
-                        <option value="">-- Chon nhân viên --</option>
-                        <option th:each="nd : ${nguoiDungs}"
-                                th:value="${nd.maNguoiDung}"
-                                th:text="${nd.hoTen + ' - ' + nd.email}"
-                                th:selected="${datPhong.nv != null and datPhong.nv.maNguoiDung == nd.maNguoiDung}">
-                        </option>
-                    </select>
-                </div>
-                <div class="admin-field">
-                    <label>Phòng</label>
-                    <select name="maPhong">
-                        <option value="">-- Chọn phòng --</option>
-                        <option th:each="p : ${phongs}"
-                                th:value="${p.maPhong}"
-                                th:text="${p.soPhong + ' - ' + (p.loaiPhong != null ? p.loaiPhong.tenLoai : '')}"
-                                th:selected="${selectedPhongId != null and selectedPhongId == p.maPhong}">
-                        </option>
-                    </select>
-                </div>
-                <div class="admin-field">
-                    <label>Ngày nhận phòng</label>
-                    <input type="date" name="ngayNhan" th:value="${ngayNhan}">
-                </div>
-                <div class="admin-field">
-                    <label>Ngày trả phòng</label>
-                    <input type="date" name="ngayTra" th:value="${ngayTra}">
-                </div>
-                <div class="admin-field">
-                    <label>Người lớn</label>
-                    <input type="number" th:field="*{songuoiLon}" min="1">
-                </div>
-                <div class="admin-field">
-                    <label>Trẻ em</label>
-                    <input type="number" th:field="*{sotreEm}" min="0">
-                </div>
-                <div class="admin-field">
-                    <label>CCCD</label>
-                    <input type="text" th:field="*{maCccd}" placeholder="12 số CCCD" pattern="[0-9]{12}">
-                </div>
-                <div class="admin-field">
-                    <label>Trạng thái</label>
-                    <select th:field="*{trangThai}">
-                        <option value="Cho xac nhan">Chờ xác nhận</option>
-                        <option value="Da xac nhan">Đã xác nhận</option>
-                        <option value="Da nhan phong">Đã nhận phòng</option>
-                        <option value="Da tra phong">Đã trả phòng</option>
-                        <option value="Da huy">Đã hủy</option>
-                    </select>
-                </div>
-                <div class="admin-field full">
-                    <label>Yêu cầu thêm</label>
-                    <textarea th:field="*{yeuCauThem}" placeholder="Ghi chú yêu cầu của khách..."></textarea>
-                </div>
-            </div>
-
-            <div class="admin-actions">
-                <button type="submit" class="admin-btn">Lưu Đơn Đặt Phòng</button>
-                <a th:href="@{/admin/dat-phong}" class="admin-btn outline">Hủy</a>
-            </div>
-        </form>
-    </section>
 
     <section class="admin-panel">
         <h2>Danh Sách Đơn Đặt Phòng</h2>
@@ -150,7 +65,6 @@
                     <th>Khach</th>
                     <th>CCCD</th>
                     <th>Trạng thái</th>
-                    <th>Thao tac</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -164,24 +78,12 @@
                     <td th:text="${dp.ngaydatPhong != null ? #temporals.format(dp.ngaydatPhong, 'dd/MM/yyyy') : ''}"></td>
                     <td th:text="${dp.ngaytraPhong != null ? #temporals.format(dp.ngaytraPhong, 'dd/MM/yyyy') : ''}"></td>
                     <td th:text="${dp.songuoiLon + ' NL, ' + dp.sotreEm + ' TE'}"></td>
-                    <td th:text="${dp.maCccd != null ? dp.maCccd : ''}"></td>
+                    <td th:text="${dp.ma_cccd != null ? dp.ma_cccd : ''}"></td>
                     <td>
                         <span th:classappend="${dp.trangThai == 'Da xac nhan' or dp.trangThai == 'Da nhan phong' or dp.trangThai == 'Da tra phong'} ? 'active' : (${dp.trangThai == 'Da huy'} ? 'inactive' : 'warning')"
                               class="status-badge"
                               th:text="${dp.trangThai}">
                         </span>
-                    </td>
-                    <td>
-                        <div class="row-actions">
-                            <a class="admin-btn small outline"
-                               th:href="@{/admin/dat-phong/edit/{id}(id=${dp.id}, keyword=${keyword})}">Sửa</a>
-                            <form th:action="@{/admin/dat-phong/delete/{id}(id=${dp.id})}"
-                                  method="post"
-                                  onsubmit="return confirm('Bạn có chắc muốn xóa đơn đặt phòng này?')">
-                                <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                                <button type="submit" class="admin-btn small danger">Xóa</button>
-                            </form>
-                        </div>
                     </td>
                 </tr>
                 <tr th:if="${datPhongs.isEmpty()}">

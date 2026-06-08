@@ -266,7 +266,7 @@
     <!-- Header User Menu -->
     <div class="header-actions" style="display: flex; align-items: center; gap: 15px;">
             <span style="font-weight: 500; font-size: 14px; color: var(--text-dark);">
-                Xin chào, <span id="header-name" style="color: var(--sky-primary);" th:text="${nguoiDung.Email}"></span>
+                Xin chào, <span id="header-name" style="color: var(--sky-primary);" th:text="${nguoiDung.email}"></span>
             </span>
     </div>
 </header>
@@ -340,9 +340,9 @@
                 <tbody>
                 <tr th:each="l : ${listdatPhong}" >
                     <td><strong th:text="${l.id}"></strong></td>
-                    <td th:text="${l.c.p.tenPhong}"></td>
-                    <td th:text="${l.ngayNhanPhong}"></td>
-                    <td th:text="${l.ngayTraphong}"></td>
+                    <td th:text="${phongTheoDon[l.id] != null ? phongTheoDon[l.id] : ''}"></td>
+                    <td th:text="${l.ngaydatPhong != null ? #temporals.format(l.ngaydatPhong, 'dd/MM/yyyy') : ''}"></td>
+                    <td th:text="${l.ngaytraPhong != null ? #temporals.format(l.ngaytraPhong, 'dd/MM/yyyy') : ''}"></td>
                     <td><span class="status-badge status-success" th:text="${l.trangThai}"></span></td>
                     <td><a href="#" style="color: var(--sky-primary);">Chi tiet</a></td>
                 </tr>
@@ -355,7 +355,7 @@
             <h3>Thông Tin Liên Hệ <button class="btn btn-outline" style="padding: 5px 15px; font-size: 12px;">Chỉnh sửa</button></h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 14px; color: var(--text-dark);">
                 <p><span style="color: var(--text-gray); display: block; margin-bottom: 5px; font-size: 12px;">Họ và tên</span> <strong th:text="${nguoiDung.hoTen}"></strong></p>
-                <p><span style="color: var(--text-gray); display: block; margin-bottom: 5px; font-size: 12px;">Email</span> <strong th:text="${nguoiDung.Email}"></strong></p>
+                <p><span style="color: var(--text-gray); display: block; margin-bottom: 5px; font-size: 12px;">Email</span> <strong th:text="${nguoiDung.email}"></strong></p>
                 <p><span style="color: var(--text-gray); display: block; margin-bottom: 5px; font-size: 12px;">Số điện thoại</span> <strong th:text="${nguoiDung.soDienThoai}"></strong></p>
             </div>
         </div>

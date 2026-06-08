@@ -15,7 +15,7 @@ public interface LoaiPhongRepository extends JpaRepository<LoaiPhong, Integer> {
         select lp from LoaiPhong lp
         where (:minGia is null or lp.giaCoBan >= :minGia)
         and (:maxGia is null or lp.giaCoBan <= :maxGia)
-        and (:soKhach is null or lp.SucChuaToiDa >= :soKhach)
+        and (:soKhach is null or lp.sucChuaToiDa >= :soKhach)
         order by lp.tenLoai asc
     """)
     List<LoaiPhong> searchLoaiPhong(

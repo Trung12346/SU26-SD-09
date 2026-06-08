@@ -27,7 +27,7 @@ public class KhuyenMai {
     @JoinColumn(name = "ma_nguoi_tao")
     public NguoiDung n;
 
-    @Column(name = "promo_code")
+    @Column(name = "code_khuyen_mai")
     public String promoCode;
 
     @Column(name = "mo_ta")

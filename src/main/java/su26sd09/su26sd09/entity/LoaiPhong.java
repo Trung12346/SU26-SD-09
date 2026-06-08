@@ -24,7 +24,7 @@ public class LoaiPhong {
     public String tenLoai;
 
     @Column(name = "suc_chua_toi_da")
-    public int SucChuaToiDa;
+    public int sucChuaToiDa;
 
     @Column(name = "gia_co_ban")
     public BigDecimal giaCoBan;

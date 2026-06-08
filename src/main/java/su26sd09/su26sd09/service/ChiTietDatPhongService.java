@@ -29,5 +29,9 @@ public class ChiTietDatPhongService {
         repo.save(c);
     }
 
+    public List<ChiTietDatPhong> findByDatPhongId(int id) {
+        return repo.findByDatPhongId(id);
+    }
+
 
 }

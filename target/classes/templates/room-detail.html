@@ -323,7 +323,7 @@
         </div>
         <div class="form-group">
           <label>CCCD</label>
-          <input type="text" name="maCccd" placeholder="12 so CCCD" required pattern="[0-9]{12}">
+          <input type="text" name="ma_cccd" placeholder="12 so CCCD" required pattern="[0-9]{12}">
         </div>
 
         <div class="widget-total">
@@ -375,7 +375,7 @@
         <div class="card-body" style="padding: 22px 24px 24px;">
           <h3 class="card-title" th:text="${lp.tenLoai}" style="font-family: 'Georgia', serif; font-size: 20px; color: var(--text-dark); margin-bottom: 8px;">Phòng Deluxe</h3>
           <div class="card-meta" style="display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap;">
-            <span style="font-size: 13px; color: var(--text-gray); display: flex; align-items: center; gap: 5px;"><i class="fa-solid fa-users" style="color: var(--sky-primary); font-size: 12px;"></i> Tối đa <span th:text="${lp.SucChuaToiDa}">2</span> người</span>
+            <span style="font-size: 13px; color: var(--text-gray); display: flex; align-items: center; gap: 5px;"><i class="fa-solid fa-users" style="color: var(--sky-primary); font-size: 12px;"></i> Tối đa <span th:text="${lp.sucChuaToiDa}">2</span> người</span>
             <span style="font-size: 13px; color: var(--text-gray); display: flex; align-items: center; gap: 5px;"><i class="fa-solid fa-check-circle" style="color: var(--sky-primary); font-size: 12px;"></i> Còn phòng</span>
           </div>
           <p class="card-desc" th:text="${lp.mota}" style="font-size: 14px; color: var(--text-gray); line-height: 1.6; margin-bottom: 18px; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">

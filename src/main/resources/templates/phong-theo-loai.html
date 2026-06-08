@@ -552,7 +552,7 @@
         <div class="badge-capacity">
             <i class="fa-solid fa-users"></i>
             Sức chứa tối đa
-            <span th:text="${loaiPhong != null} ? ${loaiPhong.SucChuaToiDa} + ' người' : '2 người'">2 người</span>
+            <span th:text="${loaiPhong != null} ? ${loaiPhong.sucChuaToiDa} + ' người' : '2 người'">2 người</span>
             &nbsp;&nbsp;
             Từ <span th:text="${loaiPhong != null} ? ${#numbers.formatDecimal(loaiPhong.giaCoBan, 0, 'COMMA', 0, 'POINT')} + ' VND/đêm' : '1.200.000 VND/đêm'">1.200.000 VND/đêm</span>
         </div>
@@ -590,7 +590,7 @@
                     <h3>Phòng <span th:text="${p.soPhong}">101</span></h3>
                     <div class="phong-meta-row">
                         <span><i class="fa-solid fa-layer-group"></i> Tầng <span th:text="${p.soTang}">1</span></span>
-                        <span><i class="fa-solid fa-users"></i> Tối đa <span th:text="${loaiPhong.SucChuaToiDa}">2</span> người</span>
+                        <span><i class="fa-solid fa-users"></i> Tối đa <span th:text="${loaiPhong.sucChuaToiDa}">2</span> người</span>
                         <span><i class="fa-solid fa-tag"></i> <span th:text="${p.trangThai}">Trong</span></span>
                     </div>
                     <!--/* Tien nghi */-->
@@ -687,7 +687,7 @@
                 </div>
                 <div class="sidebar-form-group">
                     <label>CCCD</label>
-                    <input type="text" name="maCccd" placeholder="12 so CCCD" required pattern="[0-9]{12}">
+                    <input type="text" name="ma_cccd" placeholder="12 so CCCD" required pattern="[0-9]{12}">
                 </div>
                 <div class="sidebar-form-group">
                     <label>Yêu cầu thêm (tuy chon)</label>
