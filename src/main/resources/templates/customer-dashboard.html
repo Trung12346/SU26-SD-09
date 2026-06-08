@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="vi" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nesta Hotel | Trang chủ của bạn</title>
+    <title>Hotel | Trang chủ của bạn</title>
     <link rel="stylesheet" href="/style.css">
     <style>
-        /* CSS dành riêng cho menu người dùng đã đăng nhập */
+        /* CSS danh rieng cho menu người dùng da đăng nhập */
         .user-menu {
             display: flex;
             align-items: center;
@@ -20,7 +20,7 @@
         .user-greeting b {
             color: var(--sky-primary);
         }
-        /* Nút đăng xuất style như một liên kết hoặc nút outline gọn gàng */
+        /* Nut đăng xuất style nhu mot lien ket hoac nut outline gon gang */
         .btn-logout {
             background: transparent;
             border: 1px solid var(--border-color);
@@ -44,7 +44,7 @@
 <body>
 <div class="topbar">
     <div class="topbar-left">
-        <span>📞 +84 123 456 789 &nbsp; | &nbsp; ✉ info@nestahotel.com.vn</span>
+        <span>Tel: +84 123 456 789 &nbsp; | &nbsp; Email: info@hotel.local</span>
     </div>
     <div class="topbar-right">
         <a href="#">VN</a> | <a href="#">EN</a>
@@ -53,14 +53,12 @@
 
 <header>
     <a href="/home" class="logo">
-        <img src="/logo.jpg" alt="Nesta Hotel Logo">
+        <img src="/logo.jpg" alt="Hotel Logo">
     </a>
 
     <nav class="nav-menu">
         <a href="customer-dashboard.html" style="color: var(--sky-primary);">Trang Chủ</a>
         <a href="rooms.html">Phòng Nghỉ</a>
-        <a href="#">Ẩm Thực</a>
-        <a href="#">Hội Nghị</a>
         <a href="#">Khuyến Mãi</a>
     </nav>
     <div class="header-actions" sec:authorize="isAnonymous()">
@@ -122,35 +120,36 @@
         Chào Mừng Trở Lại, <span id="welcome-user-name">Quý Khách</span>!
     </h2>
     <p style="color: var(--text-gray); max-width: 750px; margin: 0 auto; line-height: 1.8; font-size: 15px;">
-        Rất vui được đón tiếp bạn quay trở lại Nesta Hotel. Là thành viên của chúng tôi, bạn sẽ luôn nhận được những ưu đãi đặc biệt và mức giá tốt nhất khi đặt phòng trực tiếp. Hãy để chúng tôi mang lại cảm giác thư thái và bình yên tuyệt đối cho kỳ nghỉ tiếp theo của bạn.
+        Rất vui được đón tiếp bạn quay trở lại Hotel. La thanh vien cua chung toi, ban se luon nhan duoc nhung uu dai dac biet va muc gia tot nhat khi dat phòng truc tiep. Hay de chung toi mang lai cam giac thu thai va binh yen tuyet doi cho ky nghi tiep theo cua ban.
     </p>
 </div>
 
 <footer>
-    <p>&copy; 2026 Nesta Hotel. All rights reserved.</p>
+    <p>&copy; 2026 Hotel. All rights reserved.</p>
 </footer>
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        // Giả lập việc lấy thông tin người dùng từ LocalStorage (sau khi đăng nhập thành công)
-        // Trong thực tế, lúc login xong bạn sẽ setItem: localStorage.setItem("userFullName", "Tên từ API");
-        const userName = localStorage.getItem("userFullName") || "Nguyễn Văn A";
+        // Gia lap viec lay thong tin người dùng tu LocalStorage (sau khi đăng nhập thanh cong)
+        // Trong thuc te, luc login xong ban se setItem: localStorage.setItem("userFullName", "Ten tu API");
+        const userName = localStorage.getItem("userFullName") || "Nguyen Van A";
 
-        // Cập nhật tên lên Header và phần Welcome
+        // Cập nhat ten len Header va phan Welcome
         document.getElementById("header-user-name").innerText = userName;
         document.getElementById("welcome-user-name").innerText = userName;
     });
 
     function logout() {
         if(confirm("Bạn có chắc chắn muốn đăng xuất không?")) {
-            // Xóa dữ liệu phiên đăng nhập
+            // Xóa du lieu phien đăng nhập
             localStorage.removeItem("userFullName");
             localStorage.removeItem("token");
 
-            // Chuyển hướng về trang chủ mặc định (chưa đăng nhập)
+            // Chuyen huong ve trang chu mac dinh (chua đăng nhập)
             window.location.href = "/logout";
         }
     }
 </script>
 </body>
 </html>
+

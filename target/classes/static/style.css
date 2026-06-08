@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap');
 
 :root {
-    /* MÀU CHỦ ĐẠO MỚI: XANH TRỜI (SKY BLUE) */
-    --sky-primary: #3498DB;    /* Màu xanh trời chính */
-    --sky-dark: #2980B9;       /* Xanh trời đậm hơn cho hover, topbar */
-    --sky-light: #EBF5FB;      /* Xanh trời rất nhạt cho background phụ */
+    /* MAU CHU DAO MOI: XANH TROI (SKY BLUE) */
+    --sky-primary: #3498DB;    /* Mau xanh troi chinh */
+    --sky-dark: #2980B9;       /* Xanh troi dam hon cho hover, topbar */
+    --sky-light: #EBF5FB;      /* Xanh troi rat nhat cho background phu */
     
     --text-dark: #333333;
     --text-gray: #666666;
@@ -33,7 +33,7 @@ h1, h2, h3, h4 {
 
 /* ================= TOPBAR & HEADER ================= */
 .topbar {
-    /* Đổi sang xanh trời đậm */
+    /* Doi sang xanh troi dam */
     background-color: var(--sky-dark);
     color: var(--white);
     font-size: 13px;
@@ -50,17 +50,19 @@ h1, h2, h3, h4 {
 
 header {
     background-color: var(--white);
-    padding: 10px 5%; /* Giảm padding một chút để header gọn hơn khi có logo img */
+    padding: 10px 5%; /* Giam padding mot chut de header gon hon khi co logo img */
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
     position: sticky;
     top: 0;
     z-index: 1000;
     box-shadow: 0 2px 15px rgba(0,0,0,0.05);
 }
 
-/* CSS CHO LOGO DẠNG ẢNH */
+/* CSS CHO LOGO DANG ANH */
 .logo {
     display: flex;
     align-items: center;
@@ -68,14 +70,17 @@ header {
 }
 
 .logo img {
-    max-height: 60px; /* Giới hạn chiều cao logo để không phá vỡ header */
-    width: auto;      /* Giữ nguyên tỷ lệ ảnh */
+    max-height: 60px; /* Gioi han chieu cao logo de khong pha vo header */
+    width: auto;      /* Giu nguyen ty le anh */
     display: block;
 }
 
 .nav-menu {
     display: flex;
     gap: 30px;
+    align-items: center;
+    flex-wrap: wrap;
+    min-width: 0;
 }
 
 .nav-menu a {
@@ -88,13 +93,13 @@ header {
 }
 
 .nav-menu a:hover {
-    /* Hover sang màu xanh trời */
+    /* Hover sang mau xanh troi */
     color: var(--sky-primary);
 }
 
 .header-actions .btn {
     padding: 10px 24px;
-    border-radius: 2px; /* Bo nhẹ một chút cho hiện đại */
+    border-radius: 2px; /* Bo nhe mot chut cho hien dai */
     text-decoration: none;
     font-size: 14px;
     font-weight: 500;
@@ -103,8 +108,17 @@ header {
     transition: all 0.3s;
 }
 
+.header-actions,
+.user-menu {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
 .btn-outline {
-    /* Outline màu xanh trời */
+    /* Outline mau xanh troi */
     border: 1px solid var(--sky-primary);
     color: var(--sky-primary);
 }
@@ -115,7 +129,7 @@ header {
 }
 
 .btn-filled {
-    /* Nền màu xanh trời */
+    /* Nen mau xanh troi */
     background-color: var(--sky-primary);
     color: var(--white);
     border: 1px solid var(--sky-primary);
@@ -125,10 +139,10 @@ header {
     background-color: var(--sky-dark);
 }
 
-/* ================= TRANG CHỦ ================= */
+/* ================= TRANG CHU ================= */
 .hero {
     height: 75vh;
-    /* Giữ ảnh nền cũ hoặc bạn có thể thay ảnh tông xanh trời cho hợp */
+    /* Giu anh nen cu hoac ban co the thay anh tong xanh troi cho hop */
     background: url('https://images.unsplash.com/photo-1542314831-c6a4d14d8c85?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
     position: relative;
     display: flex;
@@ -140,7 +154,7 @@ header {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.35); /* Tăng độ đậm lớp phủ một chút */
+    background: rgba(0, 0, 0, 0.35); /* Tang do dam lop phu mot chut */
 }
 
 .hero-text {
@@ -179,12 +193,14 @@ header {
     display: flex;
     gap: 15px;
     border-radius: 4px;
+    flex-wrap: wrap;
 }
 
 .booking-item {
-    flex: 1;
+    flex: 1 1 170px;
     display: flex;
     flex-direction: column;
+    min-width: 0;
 }
 
 .booking-item label {
@@ -206,12 +222,12 @@ header {
 }
 
 .booking-item input:focus, .booking-item select:focus {
-    /* Focus sang màu xanh trời */
+    /* Focus sang mau xanh troi */
     border-bottom-color: var(--sky-primary);
 }
 
 .btn-book {
-    /* Nút search màu xanh trời */
+    /* Nut search mau xanh troi */
     background-color: var(--sky-primary);
     color: var(--white);
     border: none;
@@ -235,12 +251,12 @@ header {
     align-items: center;
     justify-content: center;
     padding: 60px 5%;
-    /* Ảnh nền form auth */
+    /* Anh nen form auth */
     background: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover fixed;
     position: relative;
 }
 
-/* Thêm lớp phủ cho background auth để form nổi bật hơn */
+/* Them lop phu cho background auth de form noi bat hon */
 .auth-wrapper::before {
     content: '';
     position: absolute;
@@ -249,7 +265,7 @@ header {
 }
 
 .auth-card {
-    position: relative; /* Nổi lên trên lớp phủ */
+    position: relative; /* Noi len tren lop phu */
     background: var(--white);
     padding: 50px;
     width: 100%;
@@ -269,7 +285,7 @@ header {
     margin-bottom: 10px;
 }
 
-/* highlight tiêu đề form bằng màu xanh trời */
+/* highlight tieu de form bang mau xanh troi */
 .auth-card h2 span {
     color: var(--sky-primary);
 }
@@ -314,14 +330,14 @@ header {
 .form-group input:focus {
     border-color: var(--sky-primary);
     background-color: var(--white);
-    /* Shadow màu xanh trời nhạt */
+    /* Shadow mau xanh troi nhat */
     box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
 }
 
 .btn-submit {
     width: 100%;
     padding: 15px;
-    /* Nút submit màu xanh trời */
+    /* Nut submit mau xanh troi */
     background-color: var(--sky-primary);
     color: var(--white);
     border: none;
@@ -347,7 +363,7 @@ header {
 }
 
 .auth-footer a {
-    /* Link màu xanh trời */
+    /* Link mau xanh troi */
     color: var(--sky-primary);
     text-decoration: none;
     font-weight: 600;
@@ -368,7 +384,7 @@ footer {
     margin-top: auto;
 }
 
-/* ================= BANNER TRANG PHỤ ================= */
+/* ================= BANNER TRANG PHU ================= */
 .page-banner {
     height: 35vh;
     background: url('https://images.unsplash.com/photo-1542314831-c6a4d14d8c85?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
@@ -391,7 +407,7 @@ footer {
     letter-spacing: 2px;
 }
 
-/* ================= TRANG DANH SÁCH PHÒNG (ROOMS.HTML) ================= */
+/* ================= TRANG DANH SACH PHONG (ROOMS.HTML) ================= */
 .filter-bar {
     background: var(--white);
     padding: 20px 30px;
@@ -481,7 +497,7 @@ footer {
     display: block;
 }
 
-/* ================= TRANG CHI TIẾT PHÒNG (ROOM-DETAIL.HTML) ================= */
+/* ================= TRANG CHI TIET PHONG (ROOM-DETAIL.HTML) ================= */
 .detail-wrapper {
     padding: 50px 5%;
     display: flex;
@@ -490,14 +506,16 @@ footer {
 }
 .detail-main {
     flex: 2;
+    min-width: 0;
 }
 .detail-sidebar {
     flex: 1;
+    min-width: 280px;
     position: sticky;
     top: 100px;
 }
 
-/* Thư viện ảnh */
+/* Thu vien anh */
 .gallery-main {
     width: 100%;
     height: 450px;
@@ -514,6 +532,7 @@ footer {
     display: flex;
     gap: 15px;
     margin-bottom: 30px;
+    overflow-x: auto;
 }
 .gallery-thumbs img {
     width: calc(25% - 11.25px);
@@ -529,7 +548,7 @@ footer {
     border: 2px solid var(--sky-primary);
 }
 
-/* Chi tiết văn bản */
+/* Chi tiet van ban */
 .detail-header {
     margin-bottom: 20px;
     padding-bottom: 20px;
@@ -562,7 +581,7 @@ footer {
     color: var(--text-dark);
 }
 
-/* Form đặt phòng bên phải */
+/* Form dat phong ben phai */
 .booking-widget {
     background: var(--white);
     padding: 30px;
@@ -583,4 +602,710 @@ footer {
     margin: 20px 0;
     padding-top: 15px;
     border-top: 1px dashed var(--border-color);
+}
+
+/* ================= HEADER DROPDOWN CLICK STATE ================= */
+.nav-item.is-open .dropdown-menu {
+    display: block;
+}
+
+.nav-menu .room-nav-toggle[aria-expanded="true"] {
+    color: var(--sky-primary);
+}
+
+/* ================= ROOM DETAIL REVIEWS ================= */
+.reviews-section {
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border-color);
+}
+
+.reviews-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.reviews-header h3 {
+    color: var(--sky-dark);
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.reviews-header p {
+    color: var(--text-gray);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.review-score {
+    min-width: 170px;
+    padding: 16px;
+    border: 1px solid #d6eaf8;
+    border-radius: 4px;
+    background: #f8fbfe;
+    text-align: center;
+}
+
+.review-score strong {
+    color: var(--sky-primary);
+    display: block;
+    font-size: 32px;
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.review-stars {
+    display: inline-flex;
+    gap: 3px;
+    color: #d7dce2;
+    font-size: 13px;
+}
+
+.review-stars i.active {
+    color: #f5b301;
+}
+
+.review-score span:last-child {
+    color: var(--text-gray);
+    display: block;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.review-list {
+    display: grid;
+    gap: 14px;
+}
+
+.review-card {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--white);
+    padding: 18px;
+}
+
+.review-card-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 10px;
+}
+
+.review-card-header strong {
+    color: var(--text-dark);
+    display: block;
+    font-size: 15px;
+}
+
+.review-card-header time {
+    color: var(--text-gray);
+    display: block;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.review-card p {
+    color: var(--text-gray);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.review-reply {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-left: 3px solid var(--sky-primary);
+    background: var(--sky-light);
+}
+
+.review-reply strong {
+    color: var(--sky-dark);
+    display: block;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.review-empty {
+    border: 1px dashed var(--border-color);
+    border-radius: 4px;
+    background: #f8fbff;
+    color: var(--text-gray);
+    padding: 24px;
+    text-align: center;
+}
+
+/* ================= ADMIN SHARED UI ================= */
+.admin-wrapper {
+    background: #fafafa;
+    padding: 36px 5% 60px;
+}
+
+.admin-header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.admin-header h1 {
+    color: var(--sky-dark);
+    font-size: 32px;
+}
+
+.admin-nav {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.admin-nav a.active,
+.admin-nav a:hover {
+    color: var(--sky-primary);
+}
+
+.admin-panel {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    margin-bottom: 28px;
+    padding: 24px;
+}
+
+.admin-panel h2 {
+    border-bottom: 1px solid var(--border-color);
+    color: var(--sky-dark);
+    font-size: 24px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+}
+
+.admin-grid {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.admin-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.admin-field.full {
+    grid-column: 1 / -1;
+}
+
+.admin-field label {
+    color: var(--text-gray);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.admin-field input,
+.admin-field select,
+.admin-field textarea,
+.admin-inline-input {
+    background: #fcfcfc;
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    color: var(--text-dark);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    outline: none;
+    padding: 10px 12px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+}
+
+.admin-field textarea {
+    min-height: 78px;
+    resize: vertical;
+}
+
+.admin-field input:focus,
+.admin-field select:focus,
+.admin-field textarea:focus,
+.admin-inline-input:focus {
+    background: var(--white);
+    border-color: var(--sky-primary);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.12);
+}
+
+.admin-actions,
+.row-actions {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+}
+
+.admin-actions {
+    border-top: 1px solid var(--border-color);
+    margin-top: 20px;
+    padding-top: 20px;
+}
+
+.admin-btn {
+    align-items: center;
+    background: var(--sky-primary);
+    border: 1px solid var(--sky-primary);
+    border-radius: 2px;
+    color: var(--white);
+    cursor: pointer;
+    display: inline-flex;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    gap: 6px;
+    justify-content: center;
+    letter-spacing: 0.5px;
+    padding: 10px 20px;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    white-space: nowrap;
+}
+
+.admin-btn:hover {
+    background: var(--sky-dark);
+    border-color: var(--sky-dark);
+}
+
+.admin-btn.outline {
+    background: var(--white);
+    color: var(--sky-primary);
+}
+
+.admin-btn.outline:hover {
+    background: var(--sky-primary);
+    color: var(--white);
+}
+
+.admin-btn.danger {
+    background: #E74C3C;
+    border-color: #E74C3C;
+}
+
+.admin-btn.danger:hover {
+    background: #c0392b;
+    border-color: #c0392b;
+}
+
+.admin-btn.small {
+    font-size: 11px;
+    padding: 7px 12px;
+}
+
+.admin-message {
+    align-items: center;
+    border-radius: 4px;
+    display: flex;
+    font-size: 14px;
+    gap: 8px;
+    margin-bottom: 18px;
+    padding: 12px 16px;
+}
+
+.admin-message.success {
+    background: #EAF7EE;
+    border: 1px solid #B7E2C1;
+    color: #246B35;
+}
+
+.admin-message.error {
+    background: #FDEDEC;
+    border: 1px solid #F2B8B5;
+    color: #9F2F25;
+}
+
+.search-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.search-row input {
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    flex: 1;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    outline: none;
+    padding: 10px 12px;
+}
+
+.search-row input:focus {
+    border-color: var(--sky-primary);
+}
+
+.admin-table-wrap {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+.admin-table {
+    background: var(--white);
+    border-collapse: collapse;
+    font-size: 14px;
+    width: 100%;
+}
+
+.admin-table th,
+.admin-table td {
+    border-bottom: 1px solid var(--border-color);
+    padding: 12px 14px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.admin-table th {
+    background: var(--sky-light);
+    color: var(--sky-dark);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.admin-table tbody tr:hover {
+    background: #f8fbfe;
+}
+
+.status-badge {
+    border-radius: 999px;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    white-space: nowrap;
+}
+
+.status-badge.active {
+    background: #EAF7EE;
+    color: #246B35;
+}
+
+.status-badge.inactive {
+    background: #F2F2F2;
+    color: #666;
+}
+
+.status-badge.warning {
+    background: #FEF9E7;
+    color: #9A7D0A;
+}
+
+.trang-thai-badge {
+    border-radius: 999px;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    white-space: nowrap;
+}
+
+.trang-thai-badge.trong {
+    background: #EAF7EE;
+    color: #246B35;
+}
+
+.trang-thai-badge.dang-su-dung {
+    background: #EBF5FB;
+    color: #1A6A9A;
+}
+
+.trang-thai-badge.dang-don-dep {
+    background: #FEF9E7;
+    color: #9A7D0A;
+}
+
+.trang-thai-badge.bao-tri {
+    background: #FDEDEC;
+    color: #9F2F25;
+}
+
+.amenity-checkbox-grid {
+    background: #f8fbfe;
+    border: 1px solid #d6eaf8;
+    border-radius: 4px;
+    display: grid;
+    gap: 8px 12px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    padding: 14px;
+}
+
+.amenity-checkbox-item {
+    align-items: center;
+    border-radius: 4px;
+    color: var(--text-dark);
+    cursor: pointer;
+    display: flex;
+    font-size: 13px;
+    gap: 8px;
+    padding: 8px 10px;
+    transition: background 0.15s;
+    user-select: none;
+}
+
+.amenity-checkbox-item:hover {
+    background: #ebf5fb;
+}
+
+.amenity-checkbox-item input[type="checkbox"] {
+    accent-color: var(--sky-primary);
+    cursor: pointer;
+    flex-shrink: 0;
+    height: 15px;
+    margin: 0;
+    padding: 0;
+    width: 15px;
+}
+
+.amenity-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.amenity-tag {
+    background: var(--sky-light);
+    border: 1px solid #D6EAF8;
+    border-radius: 999px;
+    color: var(--sky-dark);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 8px;
+    white-space: nowrap;
+}
+
+.no-amenity {
+    color: #bbb;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.empty-state {
+    color: var(--text-gray);
+    padding: 40px;
+    text-align: center;
+}
+
+.admin-reply-form {
+    display: grid;
+    gap: 8px;
+    min-width: 260px;
+}
+
+@media (max-width: 900px) {
+    .topbar {
+        align-items: center;
+        flex-direction: column;
+        gap: 6px;
+        text-align: center;
+    }
+
+    header {
+        align-items: center;
+        justify-content: center;
+    }
+
+    .logo {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .nav-menu {
+        gap: 14px 20px;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .header-actions,
+    .user-menu {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .booking-section {
+        margin-top: -36px;
+    }
+
+    .booking-form,
+    .filter-bar {
+        flex-direction: column;
+    }
+
+    .booking-item,
+    .filter-bar select,
+    .filter-bar input,
+    .btn-book {
+        width: 100%;
+    }
+
+    .detail-wrapper {
+        flex-direction: column;
+        gap: 28px;
+        padding: 36px 5%;
+    }
+
+    .detail-sidebar {
+        min-width: 0;
+        position: static;
+        width: 100%;
+    }
+
+    .gallery-main {
+        height: 360px;
+    }
+
+    .admin-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .amenity-checkbox-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .reviews-header {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 640px) {
+    .topbar {
+        font-size: 12px;
+        padding: 8px 16px;
+    }
+
+    header {
+        padding: 10px 16px;
+    }
+
+    .logo img {
+        max-height: 48px;
+    }
+
+    .nav-menu {
+        gap: 8px 14px;
+    }
+
+    .nav-menu a {
+        font-size: 12px;
+    }
+
+    .header-actions .btn,
+    .btn-logout {
+        font-size: 12px;
+        margin-left: 0;
+        padding: 9px 12px;
+    }
+
+    .hero {
+        height: 62vh;
+    }
+
+    .hero-text {
+        padding: 0 18px;
+    }
+
+    .hero-text h1,
+    .page-banner h1 {
+        font-size: 2rem;
+    }
+
+    .booking-section {
+        margin-top: -28px;
+        padding: 0 16px;
+    }
+
+    .booking-form {
+        padding: 18px;
+    }
+
+    .btn-book {
+        min-height: 46px;
+        padding: 0 20px;
+    }
+
+    .auth-wrapper {
+        padding: 36px 16px;
+    }
+
+    .auth-card,
+    .auth-card.register {
+        padding: 28px 20px;
+    }
+
+    .auth-card h2 {
+        font-size: 26px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full-width {
+        grid-column: auto;
+    }
+
+    .rooms-container {
+        grid-template-columns: 1fr;
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .room-meta,
+    .widget-total {
+        flex-wrap: wrap;
+    }
+
+    .detail-wrapper {
+        padding: 28px 16px;
+    }
+
+    .gallery-main {
+        height: 260px;
+    }
+
+    .gallery-thumbs img {
+        flex: 0 0 90px;
+        width: 90px;
+    }
+
+    .booking-widget {
+        padding: 22px 18px;
+    }
+
+    .admin-header,
+    .admin-actions,
+    .row-actions,
+    .search-row {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .admin-grid,
+    .amenity-checkbox-grid,
+    .amenities-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .review-card-header {
+        flex-direction: column;
+    }
+
+    .admin-wrapper {
+        padding: 28px 16px 48px;
+    }
+
+    .admin-panel {
+        padding: 18px;
+    }
 }

@@ -25,9 +25,6 @@ public class Phong {
     @JoinColumn(name = "ma_loai_phong", nullable = false)
     private LoaiPhong loaiPhong;
 
-    @Column(name = "ten_phong")
-    public String tenPhong;
-
     @Column(name = "so_phong", nullable = false, length = 10)
     private String soPhong;
 
@@ -51,9 +48,4 @@ public class Phong {
 
     @Column(name = "ngay_cap_nhat")
     private LocalDateTime ngayCapNhat;
-
-    @Column(name = "Ma_cccd", length = 100)
-    private String maCccd;
-
-
 }

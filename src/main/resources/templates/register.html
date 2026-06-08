@@ -1,21 +1,21 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng Ký Thành Viên | Nesta Hotel</title>
+    <title>Đăng Ký Thành Viên | Hotel</title>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 <div class="topbar">
     <div class="topbar-left">
-        <span>📞 +84 123 456 789 &nbsp; | &nbsp; ✉ info@nestahotel.com.vn</span>
+        <span>Tel: +84 123 456 789 &nbsp; | &nbsp; Email: info@hotel.local</span>
     </div>
 </div>
 
 <header>
-    <a href="index.html" class="logo">
-        <img src="/logo.jpg" alt="Nesta Hotel Logo">
+    <a href="/home" th:href="@{/home}" class="logo">
+        <img src="/logo.jpg" alt="Hotel Logo">
     </a>
     <div class="header-actions">
         <a href="/home" class="btn btn-outline">Trang Chủ</a>
@@ -26,7 +26,7 @@
 <main class="auth-wrapper">
     <div class="auth-card register">
         <h2>Đăng Ký <span>Thành Viên</span></h2>
-        <p class="subtitle">Đăng ký ngay để nhận ưu đãi đặc quyền từ Nesta Hotel</p>
+        <p class="subtitle">Đăng ký ngay để nhận ưu đãi đặc quyền từ Hotel</p>
 
         <form id="registerForm" th:action="@{/Register}" method="post">
             <div class="form-grid">
@@ -51,11 +51,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="ma_cccd">Mã CCCD (12 số)</label>
-                    <input type="text" id="ma_cccd" name="ma_cccd" placeholder="Nhập số CCCD" required pattern="[0-9]{12}">
-                </div>
-
-                <div class="form-group">
                     <label for="dia_chi">Địa chỉ liên hệ</label>
                     <input type="text" id="dia_chi" name="dia_chi" placeholder="Số nhà, đường, tỉnh/TP" required>
                 </div>
@@ -65,13 +60,13 @@
         </form>
 
         <div class="auth-footer">
-            <p>Đã là thành viên? <a href="login.html">Đăng nhập ngay</a></p>
+            <p>Đã là thành viên? <a href="/Login" th:href="@{/Login}">Đăng nhập ngay</a></p>
         </div>
     </div>
 </main>
 
 <footer>
-    <p>&copy; 2026 Nesta Hotel. All rights reserved.</p>
+    <p>&copy; 2026 Hotel. All rights reserved.</p>
 </footer>
 
 

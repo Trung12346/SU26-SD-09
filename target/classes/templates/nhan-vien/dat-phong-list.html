@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quan ly don dat phong | Nhan vien</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="topbar">
+    <div class="topbar-left">
+        <span>+84 123 456 789 &nbsp;|&nbsp; info@hotel.local</span>
+    </div>
+</div>
+
+<header>
+    <a href="/home" class="logo">
+        <img src="/logo.jpg" alt="Hotel Logo">
+    </a>
+    <nav class="nav-menu admin-nav">
+        <a href="/nhan-vien/dat-phong" class="active">Don dat phong</a>
+        <a href="/nhan-vien/danh-gia">Danh gia</a>
+        <a href="/nhan-vien/khach-hang">Khach hang</a>
+        <a href="/nhan-vien/phong">Phong</a>
+        <a href="/nhan-vien/khuyen-mai">Khuyen mai</a>
+    </nav>
+    <div class="header-actions">
+        <a href="/logout" class="btn btn-outline">Dang xuat</a>
+    </div>
+</header>
+
+<main class="admin-wrapper">
+    <div class="admin-header">
+        <h1>Quan ly don dat phong</h1>
+        <a th:href="@{/nhan-vien/dat-phong}" class="admin-btn outline">Lam moi form</a>
+    </div>
+
+    <div th:if="${success}" class="admin-message success">
+        <span th:text="${success}"></span>
+    </div>
+    <div th:if="${error}" class="admin-message error">
+        <span th:text="${error}"></span>
+    </div>
+
+    <section class="admin-panel">
+        <h2 th:text="${title}">Them don dat phong</h2>
+
+        <form th:action="@{/nhan-vien/dat-phong/save}" th:object="${datPhong}" method="post">
+            <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <input type="hidden" th:field="*{id}">
+
+            <div class="admin-grid">
+                <div class="admin-field">
+                    <label>Khach hang</label>
+                    <select name="maKhach">
+                        <option value="">-- Chon khach hang --</option>
+                        <option th:each="nd : ${nguoiDungs}"
+                                th:value="${nd.maNguoiDung}"
+                                th:text="${nd.hoTen + ' - ' + nd.email}"
+                                th:selected="${datPhong.n != null and datPhong.n.maNguoiDung == nd.maNguoiDung}">
+                        </option>
+                    </select>
+                </div>
+                <div class="admin-field">
+                    <label>Nhan vien phu trach</label>
+                    <input type="text"
+                           readonly
+                           th:value="${nhanVienDangNhap != null ? nhanVienDangNhap.hoTen + ' - ' + nhanVienDangNhap.email : (datPhong.nv != null ? datPhong.nv.hoTen + ' - ' + datPhong.nv.email : 'Chua co tai khoan dang nhap')}">
+                </div>
+                <div class="admin-field">
+                    <label>Phong</label>
+                    <select name="maPhong">
+                        <option value="">-- Chon phong --</option>
+                        <option th:each="p : ${phongs}"
+                                th:value="${p.maPhong}"
+                                th:text="${p.soPhong + ' - ' + (p.loaiPhong != null ? p.loaiPhong.tenLoai : '')}"
+                                th:selected="${selectedPhongId != null and selectedPhongId == p.maPhong}">
+                        </option>
+                    </select>
+                </div>
+                <div class="admin-field">
+                    <label>Ngay nhan phong</label>
+                    <input type="date" name="ngayNhan" th:value="${ngayNhan}">
+                </div>
+                <div class="admin-field">
+                    <label>Ngay tra phong</label>
+                    <input type="date" name="ngayTra" th:value="${ngayTra}">
+                </div>
+                <div class="admin-field">
+                    <label>Nguoi lon</label>
+                    <input type="number" th:field="*{songuoiLon}" min="1">
+                </div>
+                <div class="admin-field">
+                    <label>Tre em</label>
+                    <input type="number" th:field="*{sotreEm}" min="0">
+                </div>
+                <div class="admin-field">
+                    <label>CCCD</label>
+                    <input type="text" th:field="*{maCccd}" placeholder="12 so CCCD" pattern="[0-9]{12}">
+                </div>
+                <div class="admin-field">
+                    <label>Trang thai</label>
+                    <select th:field="*{trangThai}">
+                        <option value="Cho xac nhan">Cho xac nhan</option>
+                        <option value="Da xac nhan">Da xac nhan</option>
+                        <option value="Da nhan phong">Da nhan phong</option>
+                        <option value="Da tra phong">Da tra phong</option>
+                        <option value="Da huy">Da huy</option>
+                    </select>
+                </div>
+                <div class="admin-field full">
+                    <label>Yeu cau them</label>
+                    <textarea th:field="*{yeuCauThem}" placeholder="Ghi chu yeu cau cua khach..."></textarea>
+                </div>
+            </div>
+
+            <div class="admin-actions">
+                <button type="submit" class="admin-btn">Luu don dat phong</button>
+                <a th:href="@{/nhan-vien/dat-phong}" class="admin-btn outline">Huy</a>
+            </div>
+        </form>
+    </section>
+
+    <section class="admin-panel">
+        <h2>Danh sach don dat phong</h2>
+
+        <form th:action="@{/nhan-vien/dat-phong}" method="get" class="search-row">
+            <input type="text" name="keyword" placeholder="Tim theo ma don, khach hang, email, phong, trang thai..." th:value="${keyword}">
+            <button type="submit" class="admin-btn outline">Tim kiem</button>
+        </form>
+
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th>Ma</th>
+                    <th>Khach hang</th>
+                    <th>Phong</th>
+                    <th>Nhan vien</th>
+                    <th>Ngay nhan</th>
+                    <th>Ngay tra</th>
+                    <th>Khach</th>
+                    <th>CCCD</th>
+                    <th>Trang thai</th>
+                    <th>Thao tac</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="dp : ${datPhongs}">
+                    <td th:text="${dp.id}"></td>
+                    <td>
+                        <strong th:text="${dp.n != null ? dp.n.hoTen : ''}"></strong>
+                        <div th:text="${dp.n != null ? dp.n.email : ''}"></div>
+                    </td>
+                    <td th:text="${phongTheoDon[dp.id] != null ? phongTheoDon[dp.id] : ''}"></td>
+                    <td th:text="${dp.nv != null ? dp.nv.hoTen : ''}"></td>
+                    <td th:text="${dp.ngaydatPhong != null ? #temporals.format(dp.ngaydatPhong, 'dd/MM/yyyy') : ''}"></td>
+                    <td th:text="${dp.ngaytraPhong != null ? #temporals.format(dp.ngaytraPhong, 'dd/MM/yyyy') : ''}"></td>
+                    <td th:text="${dp.songuoiLon + ' NL, ' + dp.sotreEm + ' TE'}"></td>
+                    <td th:text="${dp.maCccd != null ? dp.maCccd : ''}"></td>
+                    <td>
+                        <span th:classappend="${dp.trangThai == 'Da xac nhan' or dp.trangThai == 'Da nhan phong' or dp.trangThai == 'Da tra phong'} ? 'active' : (${dp.trangThai == 'Da huy'} ? 'inactive' : 'warning')"
+                              class="status-badge"
+                              th:text="${dp.trangThai}">
+                        </span>
+                    </td>
+                    <td>
+                        <div class="row-actions">
+                            <a class="admin-btn small outline"
+                               th:href="@{/nhan-vien/dat-phong/edit/{id}(id=${dp.id}, keyword=${keyword})}">Sua</a>
+                            <form th:action="@{/nhan-vien/dat-phong/delete/{id}(id=${dp.id})}"
+                                  method="post"
+                                  onsubmit="return confirm('Ban co chac muon xoa don dat phong nay?')">
+                                <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                <button type="submit" class="admin-btn small danger">Xoa</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                <tr th:if="${datPhongs.isEmpty()}">
+                    <td colspan="10"><div class="empty-state">Khong tim thay don dat phong phu hop.</div></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2026 Hotel. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

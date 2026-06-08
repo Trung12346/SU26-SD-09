@@ -13,7 +13,5 @@ public class RegisterDTO {
 
     private String so_dien_thoai;
 
-    private String ma_cccd;
-
     private String dia_chi;
 }

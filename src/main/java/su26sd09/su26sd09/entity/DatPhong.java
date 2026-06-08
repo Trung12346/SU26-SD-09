@@ -60,7 +60,7 @@ public class DatPhong {
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:MM:ss")
     public LocalDateTime ngayCapNhat;
 
-    @Column(name = "Ma_cccd")
-    public String macccd;
+    @Column(name = "ma_cccd")
+    public String ma_cccd;
 
 }

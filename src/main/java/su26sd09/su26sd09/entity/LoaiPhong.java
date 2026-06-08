@@ -20,8 +20,8 @@ public class LoaiPhong {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int id;
 
-    @Column(name = "ten_loai_phong")
-    public String tenLoaiPhong;
+    @Column(name = "ten_loai")
+    public String tenLoai;
 
     @Column(name = "suc_chua_toi_da")
     public int SucChuaToiDa;
