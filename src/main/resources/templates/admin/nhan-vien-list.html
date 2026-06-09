@@ -57,7 +57,7 @@
                 <div class="admin-field">
                     <label>Người dùng</label>
                     <select name="maNguoiDung">
-                        <option value="">-- Chon người dùng --</option>
+                        <option value="">-- Chọn người dùng --</option>
                         <option th:each="nd : ${nguoiDungs}"
                                 th:value="${nd.maNguoiDung}"
                                 th:text="${nd.hoTen + ' - ' + nd.email}"
@@ -68,18 +68,6 @@
                 <div class="admin-field">
                     <label>Bộ phận</label>
                     <input type="text" th:field="*{boPhan}" placeholder="VD: Lễ tân">
-                </div>
-                <div class="admin-field">
-                    <label>Ca lam</label>
-                    <input type="text" th:field="*{caLam}" placeholder="VD: Sáng">
-                </div>
-                <div class="admin-field">
-                    <label>Bắt đầu làm</label>
-                    <input type="time" th:field="*{batDauLam}">
-                </div>
-                <div class="admin-field">
-                    <label>Ket thuc lam</label>
-                    <input type="time" th:field="*{ketThucLam}">
                 </div>
             </div>
 
@@ -94,7 +82,7 @@
         <h2>Danh Sách Nhân Viên</h2>
 
         <form th:action="@{/admin/nhan-vien}" method="get" class="search-row">
-            <input type="text" name="keyword" placeholder="Tìm theo tên, email, số điện thoại, bộ phận, ca làm..." th:value="${keyword}">
+            <input type="text" name="keyword" placeholder="Tìm theo tên, email, số điện thoại, bộ phận..." th:value="${keyword}">
             <button type="submit" class="admin-btn outline">Tìm Kiếm</button>
         </form>
 
@@ -102,14 +90,12 @@
             <table class="admin-table">
                 <thead>
                 <tr>
-                    <th>Ma</th>
+                    <th>Mã</th>
                     <th>Nhân viên</th>
                     <th>Email</th>
                     <th>Số điện thoại</th>
                     <th>Bộ phận</th>
-                    <th>Ca lam</th>
-                    <th>Thời gian</th>
-                    <th>Thao tac</th>
+                    <th>Thao tác</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -119,12 +105,6 @@
                     <td th:text="${nv.n != null ? nv.n.email : ''}"></td>
                     <td th:text="${nv.n != null ? nv.n.soDienThoai : ''}"></td>
                     <td th:text="${nv.boPhan}"></td>
-                    <td th:text="${nv.caLam}"></td>
-                    <td>
-                        <span th:text="${nv.batDauLam != null ? #temporals.format(nv.batDauLam, 'HH:mm') : ''}"></span>
-                        -
-                        <span th:text="${nv.ketThucLam != null ? #temporals.format(nv.ketThucLam, 'HH:mm') : ''}"></span>
-                    </td>
                     <td>
                         <div class="row-actions">
                             <a class="admin-btn small outline"
@@ -139,7 +119,7 @@
                     </td>
                 </tr>
                 <tr th:if="${nhanViens.isEmpty()}">
-                    <td colspan="8"><div class="empty-state">Không tìm thấy nhân viên phù hợp.</div></td>
+                    <td colspan="6"><div class="empty-state">Không tìm thấy nhân viên phù hợp.</div></td>
                 </tr>
                 </tbody>
             </table>
