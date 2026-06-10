@@ -67,11 +67,11 @@
                 </div>
                 <div class="admin-field">
                     <label>Giá trị giảm</label>
-                    <input type="number" th:field="*{giatriGiam}" min="0" step="1000" required>
+                    <input type="number" th:field="*{giatriGiam}" min="0" step="any" max="99" required>
                 </div>
                 <div class="admin-field">
                     <label>Người tạo</label>
-                    <select name="maNguoiTao">
+                    <select th:field="*{n}">
                         <option value="">-- Chọn người tạo --</option>
                         <option th:each="nd : ${nguoiDungs}"
                                 th:value="${nd.maNguoiDung}"
@@ -111,7 +111,7 @@
     <section class="admin-panel">
         <h2>Danh Sách Khuyến Mãi</h2>
 
-        <form th:action="@{/admin/khuyen-mai}" method="get" class="search-row">
+        <form th:action="@{/admin/khuyen-mai/search}" method="get" class="search-row">
             <input type="text" name="keyword" placeholder="Tìm theo mã, mô tả, loại giảm, người tạo..." th:value="${keyword}">
             <button type="submit" class="admin-btn outline">Tìm Kiếm</button>
         </form>
@@ -143,13 +143,13 @@
                     </td>
                     <td th:text="${km.n != null ? km.n.hoTen : ''}"></td>
                     <td>
-                        <span th:if="${km.hoatDong}" class="status-badge active">Có</span>
-                        <span th:unless="${km.hoatDong}" class="status-badge inactive">Không</span>
+                        <span th:if="${km.hoatDong}" class="status-badge active">HOAT DONG</span>
+                        <span th:unless="${km.hoatDong}" class="status-badge inactive">KHONG HOAT DONG</span>
                     </td>
                     <td>
                         <div class="row-actions">
                             <a class="admin-btn small outline"
-                               th:href="@{/admin/khuyen-mai/edit/{id}(id=${km.id}, keyword=${keyword})}">Sửa</a>
+                               th:href="@{/admin/khuyen-mai/edit/{id}(id=${km.id})}">Sửa</a>
                             <form th:action="@{/admin/khuyen-mai/delete/{id}(id=${km.id})}"
                                   method="post"
                                   onsubmit="return confirm('Bạn có chắc muốn xóa khuyến mãi này?')">

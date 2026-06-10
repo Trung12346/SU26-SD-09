@@ -60,7 +60,7 @@
                         <option value="">-- Chọn người dùng --</option>
                         <option th:each="nd : ${nguoiDungs}"
                                 th:value="${nd.maNguoiDung}"
-                                th:text="${nd.hoTen + ' - ' + nd.email}"
+                                th:text="${nd.hoTen + ' - ' + nd.email + ' - ' + nd.vaiTro.tenVaiTro}"
                                 th:selected="${nhanVien.n != null and nhanVien.n.maNguoiDung == nd.maNguoiDung}">
                         </option>
                     </select>
@@ -108,7 +108,7 @@
                     <td>
                         <div class="row-actions">
                             <a class="admin-btn small outline"
-                               th:href="@{/admin/nhan-vien/edit/{id}(id=${nv.id}, keyword=${keyword})}">Sửa</a>
+                               th:href="@{/admin/nhan-vien/edit/{id}(id=${nv.id})}">Sửa</a>
                             <form th:action="@{/admin/nhan-vien/delete/{id}(id=${nv.id})}"
                                   method="post"
                                   onsubmit="return confirm('Bạn có chắc muốn xóa nhân viên này?')">

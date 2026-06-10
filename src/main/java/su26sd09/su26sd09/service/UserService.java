@@ -125,4 +125,8 @@ public class UserService {
         return value != null && value.toLowerCase(Locale.ROOT).contains(keyword);
     }
 
+
+    public boolean checkSoDienThoai(String sodienthoai){
+           return repo.findAll().stream().anyMatch(x -> x.getSoDienThoai().equals(sodienthoai));
+    }
 }

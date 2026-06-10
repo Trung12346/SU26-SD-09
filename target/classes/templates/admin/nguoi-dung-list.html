@@ -67,7 +67,7 @@
                 <div class="admin-field">
                     <label>Mat khau</label>
                     <input type="password"
-                           name="matKhauMoi"
+                           th:field="*{matKhau_hash}"
                            placeholder="Nhap khi them moi hoac muon doi"
                            th:required="${nguoiDung.maNguoiDung == null}">
                 </div>
@@ -79,7 +79,7 @@
 
                 <div class="admin-field">
                     <label>Vai tro</label>
-                    <select name="vaiTroId" required>
+                    <select th:field="*{vaiTro}" required>
                         <option value="">-- Chon vai tro --</option>
                         <option th:each="vt : ${vaiTros}"
                                 th:value="${vt.id}"
@@ -155,7 +155,7 @@
                                th:href="@{/admin/nguoi-dung/edit/{id}(id=${nd.maNguoiDung}, keyword=${keyword})}">
                                 Sua
                             </a>
-                            <form th:action="@{/admin/nguoi-dung/delete/{id}(id=${nd.maNguoiDung})}"
+                            <form th:action="@{/admin/nguoi-dung/lock/{id}(id=${nd.maNguoiDung})}"
                                   method="post"
                                   onsubmit="return confirm('Ban co chac muon khoa nguoi dung nay?')">
                                 <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">

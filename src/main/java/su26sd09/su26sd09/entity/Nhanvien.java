@@ -1,6 +1,8 @@
 package su26sd09.su26sd09.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,8 +22,10 @@ public class Nhanvien {
 
     @ManyToOne
     @JoinColumn(name = "ma_nguoi_dung")
+    @NotNull(message = "vui lòng chọn tài khoản tương ứng")
     public NguoiDung n;
 
     @Column(name = "bo_phan")
+    @NotBlank(message = "bộ phận không được để trống")
     public String boPhan;
 }
