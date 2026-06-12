@@ -74,9 +74,9 @@
                     <select th:field="*{n}">
                         <option value="">-- Chọn người tạo --</option>
                         <option th:each="nd : ${nguoiDungs}"
-                                th:value="${nd.maNguoiDung}"
-                                th:text="${nd.hoTen + ' - ' + nd.email}"
-                                th:selected="${khuyenMai.n != null and khuyenMai.n.maNguoiDung == nd.maNguoiDung}">
+                                th:value="${nd.n.maNguoiDung}"
+                                th:text="${nd.n.hoTen + ' - ' + nd.n.email}"
+                                th:selected="${khuyenMai.n != null and khuyenMai.n.maNguoiDung == nd.n.maNguoiDung}">
                         </option>
                     </select>
                 </div>

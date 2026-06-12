@@ -8,8 +8,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import su26sd09.su26sd09.entity.KhuyenMai;
 import su26sd09.su26sd09.entity.NguoiDung;
 import su26sd09.su26sd09.repository.NguoiDungRepository;
+import su26sd09.su26sd09.service.NhanVienService;
+import su26sd09.su26sd09.service.UserService;
 import su26sd09.su26sd09.service.khuyenMaiService;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 
 @Controller
@@ -17,12 +20,14 @@ import java.security.Principal;
 public class AdminkhuyenMaiController {
 
     @Autowired
-    NguoiDungRepository NguoiDungrepo;
+    UserService nguoiDungRepo;
+    @Autowired
+    NhanVienService nvRepo;
 
     public Boolean CheckRole(String email){
         String role = "";
 
-        for (NguoiDung n : NguoiDungrepo.findAll()){
+        for (NguoiDung n : nguoiDungRepo.getAll()){
             if(n.getEmail().equals(email)) {
                 if (n.getVaiTro().getTenVaiTro().equals("ROLE_ADMIN")) {
                     role = n.getVaiTro().getTenVaiTro();
@@ -47,7 +52,7 @@ public class AdminkhuyenMaiController {
     public String index(Model model){
         model.addAttribute("khuyenMais",repo.findAll());
         model.addAttribute("khuyenMai",new KhuyenMai());
-        model.addAttribute("nguoiDungs",NguoiDungrepo.findAll());
+        model.addAttribute("nguoiDungs", nvRepo.ListAdd());
         return "admin/khuyen-mai-list";
     }
 
@@ -77,7 +82,10 @@ public class AdminkhuyenMaiController {
                     redirect.addFlashAttribute("error","ngày kết thúc không phải sau ngày bắt đầu ít nhất 1 ngày");
                   return "redirect:/admin/khuyen-mai";
                }
-
+                if(m.giatriGiam.compareTo(BigDecimal.ZERO) <= 0){
+                    redirect.addFlashAttribute("error","giá trị giảm phải lớn hơn 0");
+                    return "redirect:/admin/khuyen-mai";
+                }
                 if(m.id == 0){
                    redirect.addFlashAttribute("success","Luu khuyen mai thanh cong");
 
@@ -97,7 +105,8 @@ public class AdminkhuyenMaiController {
       if(CheckRole(p.getName())){
        model.addAttribute("khuyenMai",repo.findbyId(id));
        model.addAttribute("khuyenMais",repo.findAll());
-       model.addAttribute("nguoiDungs",NguoiDungrepo.findAll());
+
+          model.addAttribute("nguoiDungs", nvRepo.ListAdd());
        return "admin/khuyen-mai-list";
     }
     return "redirect:/admin/khuyen-mai";
@@ -108,7 +117,8 @@ public class AdminkhuyenMaiController {
      if(CheckRole(p.getName())){
          model.addAttribute("khuyenMais", repo.findbyNameVoucher(keyword));
          model.addAttribute("khuyenMai",new KhuyenMai());
-         model.addAttribute("nguoiDungs",NguoiDungrepo.findAll());
+
+         model.addAttribute("nguoiDungs", nvRepo.ListAdd());
          return "admin/khuyen-mai-list";
      }
 
