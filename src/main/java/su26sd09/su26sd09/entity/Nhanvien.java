@@ -34,12 +34,5 @@ public class Nhanvien {
     @NotBlank(message = "bộ phận không được để trống")
     public String boPhan;
 
-    @Column(name = "ca_lam")
-    public String caLam;
 
-//    @Column(name = "bat_dau_lam")
-//    public LocalDateTime batDauLam;
-//
-//    @Column(name = "ket_thuc_lam")
-//    public LocalDateTime ketThucLam;
 }

@@ -89,29 +89,13 @@ public class AdminNhanVienController {
           }
 
       }
-      else if((nv.getBoPhan() != null && !nv.getBoPhan().isBlank()) &&  maNguoiDung == null){
-          if(NguoiDungRepo.checkEmail(nv.n.getEmail()) || NguoiDungRepo.checkSoDienThoai(nv.n.getSoDienThoai())){
-              redirect.addFlashAttribute("error","email hoặc số điện thoại đã tồn tại");
+
+      if ( (maNguoiDung == null||maNguoiDung != null )&& nv.id != 0){
+          if(maNguoiDung == null){
+              redirect.addFlashAttribute("error","vui lòng chọn nhân viên");
               return "redirect:/admin/nhan-vien";
           }
-
-          if (nv.n.isTrangThai() != true || nv.n.getVaiTro().getTenVaiTro().equals("ROLE_ADMIN") ||nv.n.getVaiTro().getTenVaiTro().equals("ROLE_EMPLOYEE")){
-              redirect.addFlashAttribute("error","tài khoản bị khóa hoặc khác vai trò STAFF(nhân viên) không thể làm nhân viên ");
-              return "redirect:/admin/nhan-vien";
-          }
-          nv.n.setMatKhau_hash(encoder.encode(matKhaumoi));
-
-          NguoiDungRepo.save(nv.n);
-
-
-          repo.save(nv);
-          redirect.addFlashAttribute("success","thêm nhân viên thành công");
-      }
-      else if(nv.boPhan == null || nv.boPhan.isBlank()){
-          redirect.addFlashAttribute("error","bộ phận không được để trống");
-      }
-      if (maNguoiDung != null && nv.id != 0){
-        if (!r.hasErrors() ){
+          if (!r.hasErrors() ){
            NguoiDung nguoidung = NguoiDungRepo.Getbyid(maNguoiDung);
 
            String oldEmail = nguoidung.getEmail();
@@ -134,11 +118,7 @@ public class AdminNhanVienController {
 
             System.out.println("new = " + nv.n.getSoDienThoai());
 
-            System.out.println(
-                    NguoiDungRepo.checkSoDienThoai(
-                            nv.n.getSoDienThoai()
-                    )
-            );
+
             if( (NguoiDungRepo.checkEmail(nv.n.getEmail()) && !nv.n.getEmail().equals(oldEmail)
             ) || (!nv.n.getSoDienThoai().equals(oldSdt) && NguoiDungRepo.checkSoDienThoai(nv.n.getSoDienThoai())) ){
                 System.out.println("TRUNG UNIQUE");
@@ -158,10 +138,34 @@ public class AdminNhanVienController {
 
         }else if(r.hasErrors() ){
             redirect.addFlashAttribute("error",r.getFieldError().getDefaultMessage());
-        }else if(maNguoiDung == null){
-            redirect.addFlashAttribute("error","vui lòng chọn nhân viên");
         }
       }
+         if((nv.getBoPhan() != null && !nv.getBoPhan().isBlank()) &&  maNguoiDung == null){
+             if (r.hasErrors()){
+                 redirect.addFlashAttribute("error",r.getFieldError().getDefaultMessage());
+                 return "redirect:/admin/nhan-vien";
+             }
+
+             if(NguoiDungRepo.checkEmail(nv.n.getEmail()) || NguoiDungRepo.checkSoDienThoai(nv.n.getSoDienThoai())){
+                 redirect.addFlashAttribute("error","email hoặc số điện thoại đã tồn tại");
+                 return "redirect:/admin/nhan-vien";
+             }
+
+             if (nv.n.isTrangThai() != true || nv.n.getVaiTro().getTenVaiTro().equals("ROLE_ADMIN") ||nv.n.getVaiTro().getTenVaiTro().equals("ROLE_EMPLOYEE")){
+                 redirect.addFlashAttribute("error","tài khoản bị khóa hoặc khác vai trò STAFF(nhân viên) không thể làm nhân viên ");
+                 return "redirect:/admin/nhan-vien";
+             }
+             nv.n.setMatKhau_hash(encoder.encode(matKhaumoi));
+
+             NguoiDungRepo.save(nv.n);
+
+
+             repo.save(nv);
+             redirect.addFlashAttribute("success","thêm nhân viên thành công");
+         }
+         else if(nv.boPhan == null || nv.boPhan.isBlank()){
+             redirect.addFlashAttribute("error","bộ phận không được để trống");
+         }
 
 
      }
