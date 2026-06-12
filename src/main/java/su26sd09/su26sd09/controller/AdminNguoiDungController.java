@@ -2,6 +2,8 @@ package su26sd09.su26sd09.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,6 +20,7 @@ import su26sd09.su26sd09.repository.VaiTroRepo;
 import su26sd09.su26sd09.service.UserService;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("/admin/nguoi-dung")
@@ -88,19 +91,45 @@ public class AdminNguoiDungController {
     public String save(
             @Valid NguoiDung nguoiDung, BindingResult r,
             RedirectAttributes redirect
-    , Principal p) {
+    , Principal p,@RequestParam("matKhaumoi") String matKhaumoi) {
+        PasswordEncoder e = new BCryptPasswordEncoder();
         if (CheckRole(p.getName())){
 
-            if(userService.checkSoDienThoai(nguoiDung.getSoDienThoai())){
-                redirect.addFlashAttribute("error","số điện thoại này đã tốn tại");
+            if((userService.checkSoDienThoai(nguoiDung.getSoDienThoai()) && nguoiDung.getMaNguoiDung() == null) || (userService.checkEmail(nguoiDung.getEmail()) &&
+                    nguoiDung.getMaNguoiDung() == null) ){
+                redirect.addFlashAttribute("error","số điện thoại hoặc email này đã tốn tại");
                 return "redirect:/admin/nguoi-dung";
+            }
+            if (!matKhaumoi.isEmpty()){
+                nguoiDung.setMatKhau_hash(e.encode(matKhaumoi));
             }
             if(r.hasErrors()){
                 redirect.addFlashAttribute("error",r.getFieldError().getDefaultMessage());
                 return "redirect:/admin/nguoi-dung";
             }
+            if(nguoiDung.getMatKhau_hash().isEmpty()){
+                redirect.addFlashAttribute("error","mật khẩu không được để trống");
+                return "redirect:/admin/nguoi-dung";
+            }
+
+            if ( nguoiDung.getMaNguoiDung() != null){
+                nguoiDung.setNgayCapNhat(LocalDateTime.now());
+                for (NguoiDung s : userService.getAll()){
+                    if ((!s.getSoDienThoai().equals(nguoiDung.getSoDienThoai()) && userService.checkSoDienThoai(nguoiDung.getSoDienThoai())) || (!s.getEmail().equals(nguoiDung.getEmail()) &&
+                            userService.checkEmail(nguoiDung.getEmail()))){
+                        redirect.addFlashAttribute("error","số điện thoại hoặc email này đã tồn tại");
+
+                        return "redirect:/admin/nguoi-dung";
+
+                    }
+                }
+
+                userService.save(nguoiDung);
+                redirect.addFlashAttribute("success", "Cap nhat nguoi dung thanh cong");
+            }else{
                 userService.save(nguoiDung);
                 redirect.addFlashAttribute("success", "Luu nguoi dung thanh cong");
+            }
 
         }
 
@@ -117,20 +146,20 @@ public class AdminNguoiDungController {
     }
 
     @GetMapping("/search")
-    public String search(RedirectAttributes r,@RequestParam("name") String name,Principal p,Model model){
+    public String search(RedirectAttributes r,@RequestParam("keyword") String keyword,Principal p,Model model){
         if (CheckRole(p.getName())){
-        if(userService.search(name).size() > 0){
+        if(userService.TimKiemTheoTen(keyword).size() > 0){
             model.addAttribute("nguoiDung",new NguoiDung());
-            model.addAttribute("nguoiDungs",userService.search(name));
+            model.addAttribute("nguoiDungs",userService.TimKiemTheoTen(keyword));
             model.addAttribute("vaiTros",repo.findAll());
             r.addFlashAttribute("success","tìm thành công");
         }else{
             model.addAttribute("nguoiDung",new NguoiDung());
-            model.addAttribute("nguoiDungs",userService.search(name));
+            model.addAttribute("nguoiDungs",userService.TimKiemTheoTen(keyword));
             model.addAttribute("vaiTros",repo.findAll());
             r.addFlashAttribute("error","không tìm thấy tên trên yêu cầu");
         }
         }
-        return "admin/nhan-vien-list";
+        return "admin/nguoi-dung-list";
     }
 }

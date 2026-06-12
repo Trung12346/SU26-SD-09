@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "nguoi_dung")
-public class NguoiDung {
+public class  NguoiDung {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ma_nguoi_dung")
@@ -30,7 +30,6 @@ public class NguoiDung {
     private String email;
 
     @Column(name = "mat_khau_hash", nullable = false, length = 255)
-    @NotBlank(message = "mật khẩu không được trống")
     private String matKhau_hash;
 
     @Column(name = "so_dien_thoai", length = 20, unique = true)
@@ -46,7 +45,10 @@ public class NguoiDung {
     private boolean trangThai = false;
 
     @Column(name = "ngay_tao", insertable = false, updatable = false)
-    private LocalDateTime ngayTao; // DB tự sinh GETDATE()
+    private LocalDateTime ngayTao;
+
+    @Column(name = "ngay_cap_nhat",insertable = false)
+    private LocalDateTime ngayCapNhat;
 
     @ManyToOne
     @JoinColumn(name = "ma_vai_tro",referencedColumnName = "ma_vai_tro")

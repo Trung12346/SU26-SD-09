@@ -67,10 +67,14 @@
                 <div class="admin-field">
                     <label>Mat khau</label>
                     <input type="password"
+                           name="matKhaumoi"
+                           placeholder="Nhap khi them moi hoac muon doi">
+                </div>
+
+                    <input type="text"
                            th:field="*{matKhau_hash}"
                            placeholder="Nhap khi them moi hoac muon doi"
-                           th:required="${nguoiDung.maNguoiDung == null}">
-                </div>
+                           th:type="hidden" th:if="${nguoiDung.maNguoiDung != null}">
 
                 <div class="admin-field">
                     <label>So dien thoai</label>
@@ -113,10 +117,10 @@
     <section class="admin-panel">
         <h2>Danh Sach Nguoi Dung</h2>
 
-        <form th:action="@{/admin/nguoi-dung}" method="get" class="search-row">
+        <form th:action="@{/admin/nguoi-dung/search}" method="get" class="search-row">
             <input type="text"
                    name="keyword"
-                   placeholder="Tim theo ten, email, so dien thoai, vai tro..."
+                   placeholder="Tim theo ten"
                    th:value="${keyword}">
             <button type="submit" class="admin-btn outline">Tim Kiem</button>
         </form>
