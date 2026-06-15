@@ -92,45 +92,48 @@ public class AdminNguoiDungController {
             @Valid NguoiDung nguoiDung, BindingResult r,
             RedirectAttributes redirect
     , Principal p,@RequestParam("matKhaumoi") String matKhaumoi) {
-        PasswordEncoder e = new BCryptPasswordEncoder();
+       PasswordEncoder e = new BCryptPasswordEncoder();
         if (CheckRole(p.getName())){
 
-            if((userService.checkSoDienThoai(nguoiDung.getSoDienThoai()) && nguoiDung.getMaNguoiDung() == null) || (userService.checkEmail(nguoiDung.getEmail()) &&
-                    nguoiDung.getMaNguoiDung() == null) ){
-                redirect.addFlashAttribute("error","số điện thoại hoặc email này đã tốn tại");
-                return "redirect:/admin/nguoi-dung";
+            if (nguoiDung.getMaNguoiDung() == null){
+                for (NguoiDung s : userService.getAll()){
+                        if ((!s.getSoDienThoai().equals(nguoiDung.getSoDienThoai()) && userService.checkSoDienThoai(nguoiDung.getSoDienThoai())) || (!s.getEmail().equals(nguoiDung.getEmail() ) && userService.checkEmail(nguoiDung.getEmail()))){
+                            redirect.addFlashAttribute("error","số điện thoại hoặc email này đã tồn tại");
+                            return "redirect:/admin/nguoi-dung";
+                        
+                    }
+
+                }
             }
             if (!matKhaumoi.isEmpty()){
                 nguoiDung.setMatKhau_hash(e.encode(matKhaumoi));
+            }
+            if(nguoiDung.getMatKhau_hash() == null || nguoiDung.getMatKhau_hash().isBlank()){
+                redirect.addFlashAttribute("error","mật khẩu không được để trống");
+                return "redirect:/admin/nguoi-dung";
             }
             if(r.hasErrors()){
                 redirect.addFlashAttribute("error",r.getFieldError().getDefaultMessage());
                 return "redirect:/admin/nguoi-dung";
             }
-            if(nguoiDung.getMatKhau_hash().isEmpty()){
-                redirect.addFlashAttribute("error","mật khẩu không được để trống");
-                return "redirect:/admin/nguoi-dung";
-            }
+
 
             if ( nguoiDung.getMaNguoiDung() != null){
                 nguoiDung.setNgayCapNhat(LocalDateTime.now());
                 for (NguoiDung s : userService.getAll()){
-                    if ((!s.getSoDienThoai().equals(nguoiDung.getSoDienThoai()) && userService.checkSoDienThoai(nguoiDung.getSoDienThoai())) || (!s.getEmail().equals(nguoiDung.getEmail()) &&
-                            userService.checkEmail(nguoiDung.getEmail()))){
-                        redirect.addFlashAttribute("error","số điện thoại hoặc email này đã tồn tại");
-
-                        return "redirect:/admin/nguoi-dung";
-
-                    }
+                          if (s.getMaNguoiDung().equals(nguoiDung.getMaNguoiDung())){
+                              if ((!s.getSoDienThoai().equals(nguoiDung.getSoDienThoai()) && userService.checkSoDienThoai(nguoiDung.getSoDienThoai())) || (!s.getEmail().equals(nguoiDung.getEmail() )|| userService.checkEmail(nguoiDung.getEmail()))){
+                                 redirect.addFlashAttribute("error","số điện thoại hoặc email này đã tồn tại");
+                                 return "redirect:/admin/nguoi-dung";
+                              }
+                          }
                 }
-
                 userService.save(nguoiDung);
                 redirect.addFlashAttribute("success", "Cap nhat nguoi dung thanh cong");
             }else{
                 userService.save(nguoiDung);
-                redirect.addFlashAttribute("success", "Luu nguoi dung thanh cong");
+                redirect.addFlashAttribute("success", "luu nguoi dung thanh cong");
             }
-
         }
 
         return "redirect:/admin/nguoi-dung";
