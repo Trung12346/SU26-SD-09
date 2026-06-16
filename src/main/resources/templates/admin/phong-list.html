@@ -299,6 +299,10 @@
         }
 
         .trang-thai-badge.trong       { background: #EAF7EE; color: #246B35; }
+<<<<<<< HEAD
+=======
+        .trang-thai-badge.da-dat      { background: #FEF9E7; color: #9A7D0A; }
+>>>>>>> master
         .trang-thai-badge.dang-su-dung { background: #EBF5FB; color: #1A6A9A; }
         .trang-thai-badge.dang-don-dep { background: #FEF9E7; color: #9A7D0A; }
         .trang-thai-badge.bao-tri      { background: #FDEDEC; color: #9F2F25; }
@@ -443,6 +447,10 @@
                     <label>Trạng Thái</label>
                     <select th:field="*{trangThai}" required>
                         <option value="Trong">Trong</option>
+<<<<<<< HEAD
+=======
+                        <option value="Da dat">Đã đặt</option>
+>>>>>>> master
                         <option value="Dang su dung">Đang sử dụng</option>
                         <option value="Dang don dep">Đang dọn dẹp</option>
                         <option value="Bao tri">Bảo trì</option>
@@ -520,9 +528,15 @@
                     <td th:text="${#numbers.formatDecimal(p.giaMoiDem, 0, 'COMMA', 0, 'POINT')} + ' VND'"></td>
                     <td>
                         <span th:with="tt=${p.trangThai}"
+<<<<<<< HEAD
                               th:classappend="${tt == 'Trong'} ? 'trong' : (${tt == 'Dang su dung'} ? 'dang-su-dung' : (${tt == 'Dang don dep'} ? 'dang-don-dep' : 'bao-tri'))"
                               class="trang-thai-badge"
                               th:text="${tt == 'Trong'} ? 'Trong' : (${tt == 'Dang su dung'} ? 'Dang su dung' : (${tt == 'Dang don dep'} ? 'Dang don dep' : 'Bao tri'))">
+=======
+                              th:classappend="${tt == 'Trong'} ? 'trong' : (${tt == 'Da dat'} ? 'da-dat' : (${tt == 'Dang su dung'} ? 'dang-su-dung' : (${tt == 'Dang don dep'} ? 'dang-don-dep' : 'bao-tri')))"
+                              class="trang-thai-badge"
+                              th:text="${tt == 'Trong'} ? 'Trong' : (${tt == 'Da dat'} ? 'Da dat' : (${tt == 'Dang su dung'} ? 'Dang su dung' : (${tt == 'Dang don dep'} ? 'Dang don dep' : 'Bao tri')))">
+>>>>>>> master
                         </span>
                     </td>
                     <td>

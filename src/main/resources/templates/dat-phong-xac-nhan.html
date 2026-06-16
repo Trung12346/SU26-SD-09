@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác Nhận Đặt Phòng | Hotel</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: #fafafa; }
+        .checkout-shell {
+            max-width: 1180px;
+            padding: 44px 5% 70px;
+            width: 100%;
+        }
+        .checkout-stepper {
+            align-items: center;
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            display: grid;
+            gap: 18px;
+            grid-template-columns: max-content 1fr max-content 1fr max-content;
+            margin-bottom: 28px;
+            padding: 16px 18px;
+        }
+        .step-item {
+            align-items: center;
+            color: var(--text-gray);
+            display: inline-flex;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .step-item.done,
+        .step-item.active { color: var(--sky-primary); }
+        .step-circle {
+            align-items: center;
+            border: 2px solid currentColor;
+            border-radius: 50%;
+            display: inline-flex;
+            height: 24px;
+            justify-content: center;
+            width: 24px;
+        }
+        .step-item.done .step-circle {
+            background: var(--sky-primary);
+            color: var(--white);
+        }
+        .step-line {
+            background: var(--border-color);
+            height: 2px;
+        }
+        .checkout-layout {
+            align-items: start;
+            display: grid;
+            gap: 28px;
+            grid-template-columns: minmax(0, 1fr) 340px;
+        }
+        .booking-panel,
+        .summary-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+        .booking-panel { padding: 24px; }
+        .booking-panel h1,
+        .booking-panel h2,
+        .summary-card h2 {
+            color: var(--sky-dark);
+            margin-bottom: 18px;
+        }
+        .room-card {
+            align-items: center;
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            display: grid;
+            gap: 16px;
+            grid-template-columns: minmax(0, 1fr) auto;
+            margin-bottom: 14px;
+            padding: 18px 16px;
+        }
+        .room-title {
+            color: var(--text-dark);
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.45;
+            margin-bottom: 12px;
+        }
+        .room-benefits {
+            color: var(--text-gray);
+            display: grid;
+            gap: 7px;
+            font-size: 14px;
+        }
+        .room-benefits i {
+            color: var(--sky-primary);
+            margin-right: 7px;
+            width: 14px;
+        }
+        .room-price {
+            min-width: 205px;
+            text-align: right;
+        }
+        .room-price strong {
+            color: var(--sky-primary);
+            display: block;
+            font-size: 22px;
+            margin-bottom: 6px;
+        }
+        .room-price span {
+            color: var(--text-gray);
+            font-size: 13px;
+        }
+        .guest-box {
+            background: var(--sky-light);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-dark);
+            display: grid;
+            gap: 8px;
+            margin-top: 14px;
+            padding: 16px;
+        }
+        .guest-box span {
+            color: var(--text-gray);
+            font-size: 13px;
+        }
+        .summary-card { padding: 24px; }
+        .summary-dates {
+            color: var(--text-dark);
+            display: grid;
+            font-size: 14px;
+            font-weight: 700;
+            gap: 8px;
+            grid-template-columns: 1fr auto 1fr;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+        .summary-time {
+            color: var(--text-gray);
+            display: grid;
+            font-size: 12px;
+            grid-template-columns: 1fr 1fr;
+            margin-bottom: 14px;
+        }
+        .summary-meta {
+            color: var(--sky-primary);
+            font-size: 14px;
+            margin-bottom: 22px;
+        }
+        .summary-line,
+        .summary-total {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+        }
+        .summary-line {
+            color: var(--text-dark);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+        .summary-room-box {
+            background: var(--sky-light);
+            border-bottom: 1px solid var(--border-color);
+            border-top: 1px solid var(--border-color);
+            color: var(--text-dark);
+            font-size: 14px;
+            line-height: 1.45;
+            margin-bottom: 18px;
+            padding: 14px 12px;
+        }
+        .summary-room-box span {
+            color: var(--text-gray);
+            display: block;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+        .summary-total {
+            color: var(--text-dark);
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .summary-total strong { color: var(--sky-primary); }
+        .tax-note {
+            color: var(--text-gray);
+            font-size: 12px;
+            margin-top: 8px;
+            text-align: center;
+        }
+        .checkout-actions {
+            display: grid;
+            gap: 8px;
+            grid-template-columns: 100px 1fr;
+            margin-top: 24px;
+        }
+        .back-btn,
+        .continue-btn {
+            align-items: center;
+            border-radius: 2px;
+            cursor: pointer;
+            display: inline-flex;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            gap: 8px;
+            height: 42px;
+            justify-content: center;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+        .back-btn {
+            background: var(--white);
+            border: 1px solid var(--sky-primary);
+            color: var(--sky-primary);
+        }
+        .back-btn:hover { background: var(--sky-light); }
+        .continue-btn {
+            background: var(--sky-primary);
+            border: 1px solid var(--sky-primary);
+            color: var(--white);
+        }
+        .continue-btn:hover { background: var(--sky-dark); }
+        .checkout-message {
+            border-radius: 4px;
+            font-weight: 600;
+            margin-bottom: 18px;
+            padding: 12px 14px;
+        }
+        .checkout-message.error {
+            background: #fff1f1;
+            color: #b42318;
+        }
+        @media (max-width: 940px) {
+            .checkout-stepper,
+            .checkout-layout { grid-template-columns: 1fr; }
+            .step-line { display: none; }
+        }
+        @media (max-width: 640px) {
+            .checkout-shell { padding: 30px 16px 52px; }
+            .booking-panel,
+            .summary-card { padding: 18px; }
+            .room-card,
+            .checkout-actions { grid-template-columns: 1fr; }
+            .room-price {
+                min-width: 0;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="topbar">
+    <div class="topbar-left">
+        <span>+84 123 456 789 &nbsp;|&nbsp; info@hotel.local</span>
+    </div>
+</div>
+
+<header>
+    <a href="/home" class="logo">
+        <img src="/logo.jpg" alt="Hotel Logo">
+    </a>
+    <nav class="nav-menu">
+        <a href="/home">Trang Chủ</a>
+        <a href="/phong" style="color: var(--sky-primary);">Phòng Nghỉ</a>
+        <a href="/loai-phong">Loại Phòng</a>
+        <a href="/gio-hang">Danh Sách Đặt Phòng</a>
+    </nav>
+</header>
+
+<main class="checkout-shell">
+    <div class="checkout-stepper" aria-label="Tiến trình đặt phòng">
+        <div class="step-item done"><span class="step-circle"><i class="fa-solid fa-check"></i></span> Thông tin khách</div>
+        <div class="step-line"></div>
+        <div class="step-item active"><span class="step-circle">2</span> Xác nhận &amp; dịch vụ bổ sung</div>
+        <div class="step-line"></div>
+        <div class="step-item"><span class="step-circle">3</span> Thanh toán</div>
+    </div>
+
+    <div th:if="${bookingError}" class="checkout-message error" th:text="${bookingError}"></div>
+
+    <form th:action="@{/phong/dat-phong/xac-nhan}" method="post">
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+        <div class="checkout-layout">
+            <section class="booking-panel">
+                <h1>Phòng</h1>
+                <div id="roomsList"></div>
+
+                <div class="guest-box" th:if="${guestInfo != null}">
+                    <strong th:text="${guestInfo.hoTen}">Tên khách</strong>
+                    <span th:text="${guestInfo.email}">email@example.com</span>
+                    <span th:text="${guestInfo.soDienThoai}">0123456789</span>
+                    <span th:text="${guestInfo.quocGia}">Việt Nam</span>
+                </div>
+            </section>
+
+            <aside class="summary-card">
+                <h2>Tóm Tắt Đặt Phòng</h2>
+                <div class="summary-dates">
+                    <div id="summaryCheckIn">Chọn ngày nhận</div>
+                    <div>→</div>
+                    <div id="summaryCheckOut">Chọn ngày trả</div>
+                </div>
+                <div class="summary-time">
+                    <span>từ 14:00</span>
+                    <span style="text-align:right;">cho đến 12:00</span>
+                </div>
+                <div class="summary-meta">
+                    <span id="summaryNights">0 đêm</span> |
+                    <span id="summaryRooms">0 phòng</span> |
+                    <span id="summaryGuests">2 người lớn</span>
+                </div>
+                <div class="summary-line">
+                    <span>Phòng</span>
+                    <strong id="summarySubtotal">đ 0</strong>
+                </div>
+                <div id="summaryRoomBox" class="summary-room-box">Chưa có phòng</div>
+                <div class="summary-total">
+                    <span>Tổng cộng</span>
+                    <strong id="summaryTotal">đ 0</strong>
+                </div>
+                <div class="tax-note">Giá bao gồm tất cả các loại thuế và phí</div>
+            </aside>
+        </div>
+
+        <div class="checkout-actions">
+            <a th:href="${loggedIn} ? @{/phong} : @{/phong/dat-phong/thong-tin-khach}" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Trở về</a>
+            <button type="submit" class="continue-btn">
+                Đặt phòng <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </form>
+</main>
+
+<footer>
+    <p>&copy; 2026 Hotel. All rights reserved.</p>
+</footer>
+
+<script th:inline="javascript">
+    const ROOMS = /*[[${cartRooms}]]*/ [];
+    const CHECK_IN = /*[[${ngayNhan}]]*/ null;
+    const CHECK_OUT = /*[[${ngayTra}]]*/ null;
+    const ADULTS = Number(/*[[${nguoiLon}]]*/ 2);
+    const CHILDREN = Number(/*[[${treEm}]]*/ 0);
+    const roomsListEl = document.getElementById('roomsList');
+
+    function formatMoney(value) {
+        return 'đ ' + Number(value || 0).toLocaleString('vi-VN');
+    }
+
+    function formatDate(value) {
+        if (!value) return 'Chọn ngày';
+        const date = new Date(value + 'T00:00:00');
+        return new Intl.DateTimeFormat('vi-VN', {
+            weekday: 'short',
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        }).format(date);
+    }
+
+    function nightCount() {
+        if (!CHECK_IN || !CHECK_OUT) return 0;
+        const start = new Date(CHECK_IN + 'T00:00:00');
+        const end = new Date(CHECK_OUT + 'T00:00:00');
+        return Math.max(Math.ceil((end - start) / 86400000), 0);
+    }
+
+    const nights = nightCount();
+    const subtotal = ROOMS.reduce((sum, room) => sum + Number(room.price || 0), 0);
+    const total = subtotal * Math.max(nights, 1);
+
+    roomsListEl.innerHTML = ROOMS.map(room => `
+        <div class="room-card">
+            <div>
+                <div class="room-title">1 × ${room.typeName || 'Phòng'} ${room.roomNumber || ''}</div>
+                <div class="room-benefits">
+                    <span><i class="fa-solid fa-check"></i>Hủy miễn phí trước ngày nhận phòng</span>
+                    <span><i class="fa-solid fa-tag"></i>BASIC DEAL</span>
+                    <span><i class="fa-solid fa-utensils"></i>Bữa sáng đã bao gồm</span>
+                </div>
+            </div>
+            <div class="room-price">
+                <strong>${formatMoney(room.price)}</strong>
+                <span>1 phòng, ${Math.max(nights, 1)} đêm, ${ADULTS + CHILDREN} khách</span>
+            </div>
+        </div>
+    `).join('');
+
+    document.getElementById('summaryCheckIn').textContent = formatDate(CHECK_IN);
+    document.getElementById('summaryCheckOut').textContent = formatDate(CHECK_OUT);
+    document.getElementById('summaryNights').textContent = nights + ' đêm';
+    document.getElementById('summaryRooms').textContent = ROOMS.length + ' phòng';
+    document.getElementById('summaryGuests').textContent = ADULTS + ' người lớn' + (CHILDREN ? ', ' + CHILDREN + ' trẻ em' : '');
+    document.getElementById('summarySubtotal').textContent = formatMoney(subtotal);
+    document.getElementById('summaryTotal').textContent = formatMoney(ROOMS.length ? total : 0);
+    document.getElementById('summaryRoomBox').innerHTML = ROOMS.length
+        ? ROOMS.map(room => `1 × ${room.typeName || 'Phòng'} ${room.roomNumber || ''}<span>${ADULTS + CHILDREN} khách</span>`).join('')
+        : 'Chưa có phòng';
+</script>
+</body>
+</html>

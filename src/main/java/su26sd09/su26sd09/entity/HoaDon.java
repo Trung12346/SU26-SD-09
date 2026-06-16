@@ -56,6 +56,11 @@ public class HoaDon {
     @Column(name = "ghi_chu")
     public String ghiChu;
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> master
     @Column(name = "ngay_xuat")
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:MM:ss")
     public LocalDateTime ngayXuat;

@@ -649,7 +649,12 @@
             <h3>Đặt Phòng Nhanh</h3>
             <p class="sub">Chọn ngày và điền thông tin để đặt phòng ngay</p>
 
+<<<<<<< HEAD
             <form action="/dat-phong/quick" method="post" id="quickBookingForm">
+=======
+            <form action="/phong/dat-phong/quick" method="post" id="quickBookingForm">
+                <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+>>>>>>> master
                 <input type="hidden" name="maLoaiPhong" th:value="${loaiPhong != null} ? ${loaiPhong.id} : 1">
                 <input type="hidden" name="maPhong" id="quick-ma-phong">
 
@@ -686,10 +691,13 @@
                     </div>
                 </div>
                 <div class="sidebar-form-group">
+<<<<<<< HEAD
                     <label>CCCD</label>
                     <input type="text" name="ma_cccd" placeholder="12 so CCCD" required pattern="[0-9]{12}">
                 </div>
                 <div class="sidebar-form-group">
+=======
+>>>>>>> master
                     <label>Yêu cầu thêm (tuy chon)</label>
                     <textarea name="yeuCauThem" placeholder="Phòng tầng cao, view đẹp..."></textarea>
                 </div>
@@ -711,7 +719,11 @@
                 </div>
 
                 <button type="submit" class="btn-confirm">
+<<<<<<< HEAD
                     <i class="fa-solid fa-check" style="margin-right:6px;"></i>Xác Nhận Đặt Phòng
+=======
+                    <i class="fa-solid fa-check" style="margin-right:6px;"></i>Đặt Phòng
+>>>>>>> master
                 </button>
                 <p class="sidebar-note">
                     <i class="fa-solid fa-shield-halved" style="color:var(--sky-primary);"></i>

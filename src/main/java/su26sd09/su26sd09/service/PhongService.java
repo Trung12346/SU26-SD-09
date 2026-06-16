@@ -220,6 +220,18 @@ public class PhongService {
         }
     }
 
+<<<<<<< HEAD
+=======
+    public void updateTrangThai(int id, String trangThai) {
+        Phong phong = findById(id);
+        if (phong != null) {
+            phong.setTrangThai(trangThai);
+            phong.setNgayCapNhat(LocalDateTime.now());
+            phongRepository.save(phong);
+        }
+    }
+
+>>>>>>> master
     private boolean contains(String value, String keyword) {
         return value != null && value.toLowerCase(Locale.ROOT).contains(keyword);
     }

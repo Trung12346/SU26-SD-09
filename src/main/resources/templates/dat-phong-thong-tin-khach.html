@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông Tin Khách | Hotel</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: #fafafa; }
+        .checkout-shell {
+            max-width: 1180px;
+            padding: 44px 5% 70px;
+            width: 100%;
+        }
+        .checkout-stepper {
+            align-items: center;
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            display: grid;
+            gap: 18px;
+            grid-template-columns: max-content 1fr max-content 1fr max-content;
+            margin-bottom: 28px;
+            padding: 16px 18px;
+        }
+        .step-item {
+            align-items: center;
+            color: var(--text-gray);
+            display: inline-flex;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .step-item.active { color: var(--sky-primary); }
+        .step-circle {
+            align-items: center;
+            border: 2px solid currentColor;
+            border-radius: 50%;
+            display: inline-flex;
+            height: 24px;
+            justify-content: center;
+            width: 24px;
+        }
+        .step-line { background: var(--border-color); height: 2px; }
+        .checkout-layout {
+            align-items: start;
+            display: grid;
+            gap: 28px;
+            grid-template-columns: minmax(0, 1fr) 340px;
+        }
+        .guest-panel,
+        .summary-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+        .guest-panel { padding: 24px; }
+        .guest-panel h1,
+        .summary-card h2 {
+            color: var(--sky-dark);
+            margin-bottom: 18px;
+        }
+        .guest-grid {
+            display: grid;
+            gap: 16px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .guest-field.full { grid-column: 1 / -1; }
+        .guest-field label {
+            color: var(--text-gray);
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+        .required { color: #d22630; }
+        .guest-field input,
+        .guest-field select,
+        .guest-field textarea {
+            border: 1px solid var(--border-color);
+            border-radius: 2px;
+            color: var(--text-dark);
+            font-family: inherit;
+            font-size: 14px;
+            width: 100%;
+        }
+        .guest-field input,
+        .guest-field select {
+            height: 42px;
+            padding: 0 12px;
+        }
+        .guest-field textarea {
+            min-height: 72px;
+            padding: 12px;
+            resize: vertical;
+        }
+        .guest-field input:focus,
+        .guest-field select:focus,
+        .guest-field textarea:focus {
+            border-color: var(--sky-primary);
+            outline: none;
+        }
+        .split-input {
+            display: grid;
+            grid-template-columns: 88px minmax(0, 1fr);
+        }
+        .split-input select { border-right: 0; }
+        .phone-prefix {
+            align-items: center;
+            border: 1px solid var(--border-color);
+            border-radius: 2px 0 0 2px;
+            display: flex;
+            gap: 8px;
+            height: 42px;
+            justify-content: center;
+        }
+        .phone-prefix + input { border-radius: 0 2px 2px 0; }
+        .flag {
+            background: #da251d;
+            color: #ffeb3b;
+            display: inline-flex;
+            font-size: 10px;
+            height: 13px;
+            justify-content: center;
+            line-height: 13px;
+            width: 20px;
+        }
+        .summary-card { padding: 24px; }
+        .summary-dates {
+            color: var(--text-dark);
+            display: grid;
+            font-size: 14px;
+            font-weight: 700;
+            gap: 8px;
+            grid-template-columns: 1fr auto 1fr;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+        .summary-time {
+            color: var(--text-gray);
+            display: grid;
+            font-size: 12px;
+            grid-template-columns: 1fr 1fr;
+            margin-bottom: 14px;
+        }
+        .summary-meta {
+            color: var(--sky-primary);
+            font-size: 14px;
+            margin-bottom: 22px;
+        }
+        .summary-line,
+        .summary-total {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+        }
+        .summary-line {
+            color: var(--text-dark);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+        .summary-room-box {
+            background: var(--sky-light);
+            border-bottom: 1px solid var(--border-color);
+            border-top: 1px solid var(--border-color);
+            color: var(--text-dark);
+            font-size: 14px;
+            line-height: 1.45;
+            margin-bottom: 18px;
+            padding: 14px 12px;
+        }
+        .summary-room-box span {
+            color: var(--text-gray);
+            display: block;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+        .summary-total {
+            color: var(--text-dark);
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .summary-total strong { color: var(--sky-primary); }
+        .tax-note {
+            color: var(--text-gray);
+            font-size: 12px;
+            margin-top: 8px;
+            text-align: center;
+        }
+        .checkout-actions {
+            display: grid;
+            gap: 8px;
+            grid-template-columns: 100px 1fr;
+            margin-top: 24px;
+        }
+        .back-btn,
+        .continue-btn {
+            align-items: center;
+            border-radius: 2px;
+            cursor: pointer;
+            display: inline-flex;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            gap: 8px;
+            height: 42px;
+            justify-content: center;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+        .back-btn {
+            background: var(--white);
+            border: 1px solid var(--sky-primary);
+            color: var(--sky-primary);
+        }
+        .back-btn:hover { background: var(--sky-light); }
+        .continue-btn {
+            background: var(--sky-primary);
+            border: 1px solid var(--sky-primary);
+            color: var(--white);
+        }
+        .continue-btn:hover { background: var(--sky-dark); }
+        .checkout-message {
+            border-radius: 4px;
+            font-weight: 600;
+            margin-bottom: 18px;
+            padding: 12px 14px;
+        }
+        .checkout-message.error {
+            background: #fff1f1;
+            color: #b42318;
+        }
+        @media (max-width: 940px) {
+            .checkout-stepper,
+            .checkout-layout { grid-template-columns: 1fr; }
+            .step-line { display: none; }
+        }
+        @media (max-width: 640px) {
+            .checkout-shell { padding: 30px 16px 52px; }
+            .guest-panel,
+            .summary-card { padding: 18px; }
+            .guest-grid,
+            .checkout-actions { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="topbar">
+    <div class="topbar-left">
+        <span>+84 123 456 789 &nbsp;|&nbsp; info@hotel.local</span>
+    </div>
+</div>
+
+<header>
+    <a href="/home" class="logo">
+        <img src="/logo.jpg" alt="Hotel Logo">
+    </a>
+    <nav class="nav-menu">
+        <a href="/home">Trang Chủ</a>
+        <a href="/phong" style="color: var(--sky-primary);">Phòng Nghỉ</a>
+        <a href="/loai-phong">Loại Phòng</a>
+        <a href="/gio-hang">Danh Sách Đặt Phòng</a>
+    </nav>
+</header>
+
+<main class="checkout-shell">
+    <div class="checkout-stepper" aria-label="Tiến trình đặt phòng">
+        <div class="step-item active"><span class="step-circle">1</span> Thông tin khách</div>
+        <div class="step-line"></div>
+        <div class="step-item"><span class="step-circle">2</span> Xác nhận &amp; dịch vụ bổ sung</div>
+        <div class="step-line"></div>
+        <div class="step-item"><span class="step-circle">3</span> Thanh toán</div>
+    </div>
+
+    <div th:if="${bookingError}" class="checkout-message error" th:text="${bookingError}"></div>
+
+    <form th:action="@{/phong/dat-phong/thong-tin-khach}" method="post">
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+        <div class="checkout-layout">
+            <section class="guest-panel">
+                <h1>Thông tin khách</h1>
+                <div class="guest-grid">
+                    <div class="guest-field">
+                        <label>Tên <span class="required">*</span></label>
+                        <div class="split-input">
+                            <select name="danhXung">
+                                <option value="Ông">Ông</option>
+                                <option value="Bà">Bà</option>
+                                <option value="Anh">Anh</option>
+                                <option value="Chị">Chị</option>
+                            </select>
+                            <input type="text" name="ten" placeholder="Tên" required>
+                        </div>
+                    </div>
+                    <div class="guest-field">
+                        <label>Họ <span class="required">*</span></label>
+                        <input type="text" name="ho" placeholder="Họ" required>
+                    </div>
+                    <div class="guest-field">
+                        <label>Email <span class="required">*</span></label>
+                        <input type="email" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="guest-field">
+                        <label>Nhập lại email <span class="required">*</span></label>
+                        <input type="email" name="emailNhapLai" placeholder="Nhập lại email" required>
+                    </div>
+                    <div class="guest-field">
+                        <label>Số điện thoại liên lạc <span class="required">*</span></label>
+                        <div class="split-input">
+                            <div class="phone-prefix"><span class="flag">★</span> +84</div>
+                            <input type="tel" name="soDienThoai" placeholder="Số điện thoại" required>
+                        </div>
+                    </div>
+                    <div class="guest-field">
+                        <label>Quốc gia <span class="required">*</span></label>
+                        <select name="quocGia" required>
+                            <option value="">--Lựa chọn--</option>
+                            <option value="Việt Nam" selected>Việt Nam</option>
+                            <option value="United States">United States</option>
+                            <option value="Japan">Japan</option>
+                            <option value="South Korea">South Korea</option>
+                            <option value="Singapore">Singapore</option>
+                        </select>
+                    </div>
+                    <div class="guest-field full">
+                        <label>Yêu cầu thêm</label>
+                        <textarea name="yeuCauThem" placeholder="Yêu cầu thêm" th:text="${yeuCauThem}"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="summary-card">
+                <h2>Tóm Tắt Đặt Phòng</h2>
+                <div class="summary-dates">
+                    <div id="summaryCheckIn">Chọn ngày nhận</div>
+                    <div>→</div>
+                    <div id="summaryCheckOut">Chọn ngày trả</div>
+                </div>
+                <div class="summary-time">
+                    <span>từ 14:00</span>
+                    <span style="text-align:right;">cho đến 12:00</span>
+                </div>
+                <div class="summary-meta">
+                    <span id="summaryNights">0 đêm</span> |
+                    <span id="summaryRooms">0 phòng</span> |
+                    <span id="summaryGuests">2 người lớn</span>
+                </div>
+                <div class="summary-line">
+                    <span>Phòng</span>
+                    <strong id="summarySubtotal">đ 0</strong>
+                </div>
+                <div id="summaryRoomBox" class="summary-room-box">Chưa có phòng</div>
+                <div class="summary-total">
+                    <span>Tổng cộng</span>
+                    <strong id="summaryTotal">đ 0</strong>
+                </div>
+                <div class="tax-note">Giá bao gồm tất cả các loại thuế và phí</div>
+            </aside>
+        </div>
+
+        <div class="checkout-actions">
+            <a href="/phong" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Trở về</a>
+            <button type="submit" class="continue-btn">
+                Tiếp tục <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+    </form>
+</main>
+
+<footer>
+    <p>&copy; 2026 Hotel. All rights reserved.</p>
+</footer>
+
+<script th:inline="javascript">
+    const ROOMS = /*[[${cartRooms}]]*/ [];
+    const CHECK_IN = /*[[${ngayNhan}]]*/ null;
+    const CHECK_OUT = /*[[${ngayTra}]]*/ null;
+    const ADULTS = Number(/*[[${nguoiLon}]]*/ 2);
+    const CHILDREN = Number(/*[[${treEm}]]*/ 0);
+
+    function formatMoney(value) {
+        return 'đ ' + Number(value || 0).toLocaleString('vi-VN');
+    }
+
+    function formatDate(value) {
+        if (!value) return 'Chọn ngày';
+        const date = new Date(value + 'T00:00:00');
+        return new Intl.DateTimeFormat('vi-VN', {
+            weekday: 'short',
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        }).format(date);
+    }
+
+    function nightCount() {
+        if (!CHECK_IN || !CHECK_OUT) return 0;
+        const start = new Date(CHECK_IN + 'T00:00:00');
+        const end = new Date(CHECK_OUT + 'T00:00:00');
+        return Math.max(Math.ceil((end - start) / 86400000), 0);
+    }
+
+    const nights = nightCount();
+    const subtotal = ROOMS.reduce((sum, room) => sum + Number(room.price || 0), 0);
+    const total = subtotal * Math.max(nights, 1);
+
+    document.getElementById('summaryCheckIn').textContent = formatDate(CHECK_IN);
+    document.getElementById('summaryCheckOut').textContent = formatDate(CHECK_OUT);
+    document.getElementById('summaryNights').textContent = nights + ' đêm';
+    document.getElementById('summaryRooms').textContent = ROOMS.length + ' phòng';
+    document.getElementById('summaryGuests').textContent = ADULTS + ' người lớn' + (CHILDREN ? ', ' + CHILDREN + ' trẻ em' : '');
+    document.getElementById('summarySubtotal').textContent = formatMoney(subtotal);
+    document.getElementById('summaryTotal').textContent = formatMoney(ROOMS.length ? total : 0);
+    document.getElementById('summaryRoomBox').innerHTML = ROOMS.length
+        ? ROOMS.map(room => `1 × ${room.typeName || 'Phòng'} ${room.roomNumber || ''}<span>${ADULTS + CHILDREN} khách</span>`).join('')
+        : 'Chưa có phòng';
+</script>
+</body>
+</html>

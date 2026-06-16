@@ -302,7 +302,12 @@
   <div class="detail-sidebar">
     <div class="booking-widget">
       <h3>Thông Tin Đặt Phòng</h3>
+<<<<<<< HEAD
       <form action="/dat-phong" method="POST">
+=======
+      <form action="/phong/dat-phong" method="POST">
+        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+>>>>>>> master
         <input type="hidden" name="maPhong" th:value="${phong != null ? phong.maPhong : 0}">
         
         <div class="form-group">
@@ -321,11 +326,14 @@
             <option value="3">3</option>
           </select>
         </div>
+<<<<<<< HEAD
         <div class="form-group">
           <label>CCCD</label>
           <input type="text" name="ma_cccd" placeholder="12 so CCCD" required pattern="[0-9]{12}">
         </div>
 
+=======
+>>>>>>> master
         <div class="widget-total">
           <span>Giá phòng:</span>
           <span style="color: var(--sky-primary);" th:text="${phong != null ? #numbers.formatDecimal(phong.giaMoiDem, 0, 'COMMA', 0, 'POINT') + ' VND' : '0 VND'}">1,200,000 VND</span>
@@ -335,7 +343,11 @@
                 class="btn btn-filled" 
                 style="width: 100%; padding: 15px; font-size: 16px;"
                 th:disabled="${phong == null or phong.trangThai != 'Trong'}">
+<<<<<<< HEAD
           <span th:text="${phong != null and phong.trangThai == 'Trong'} ? 'Đặt Phòng Ngay' : 'Phòng Không Khả Dụng'">Đặt Phòng Ngay</span>
+=======
+          <span th:text="${phong != null and phong.trangThai == 'Trong'} ? 'Đặt Phòng' : 'Phòng Không Khả Dụng'">Đặt Phòng</span>
+>>>>>>> master
         </button>
         <button type="button"
                 class="btn btn-outline"

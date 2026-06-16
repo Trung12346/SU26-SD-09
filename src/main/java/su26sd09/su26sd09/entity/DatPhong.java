@@ -22,7 +22,11 @@ public class DatPhong {
     @Id
     @Column(name = "ma_dat_phong")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+<<<<<<< HEAD
     public int id;
+=======
+    public Integer id;
+>>>>>>> master
 
     @ManyToOne
     @JoinColumn(name = "ma_khach")
@@ -30,7 +34,11 @@ public class DatPhong {
 
     @JoinColumn(name = "ma_nhan_vien")
     @ManyToOne
+<<<<<<< HEAD
     public NguoiDung nv;
+=======
+    public Nhanvien nv;
+>>>>>>> master
 
     @Column(name = "ngay_nhan_phong")
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:MM:ss")
@@ -63,4 +71,10 @@ public class DatPhong {
     @Column(name = "ma_cccd")
     public String ma_cccd;
 
+<<<<<<< HEAD
+=======
+    @OneToMany(mappedBy = "d",fetch = FetchType.EAGER)
+    private List<ChiTietDatPhong> chiTietDatPhongs;
+
+>>>>>>> master
 }

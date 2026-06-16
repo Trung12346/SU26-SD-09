@@ -95,6 +95,23 @@
             padding: 10px 12px;
             width: 100%;
         }
+<<<<<<< HEAD
+=======
+        .cart-message {
+            border-radius: 4px;
+            font-weight: 600;
+            margin-bottom: 18px;
+            padding: 12px 14px;
+        }
+        .cart-message.success {
+            background: #e8f7ef;
+            color: #16734a;
+        }
+        .cart-message.error {
+            background: #fff1f1;
+            color: #b42318;
+        }
+>>>>>>> master
         @media (max-width: 900px) {
             .cart-layout { grid-template-columns: 1fr; }
         }
@@ -145,6 +162,12 @@
 </header>
 
 <main class="cart-wrapper">
+<<<<<<< HEAD
+=======
+    <div th:if="${bookingSuccess}" class="cart-message success" th:text="${bookingSuccess}"></div>
+    <div th:if="${bookingError}" class="cart-message error" th:text="${bookingError}"></div>
+
+>>>>>>> master
     <div class="cart-layout">
         <section class="cart-panel">
             <h1>Danh Sách Đặt Phòng</h1>
@@ -185,7 +208,11 @@
                 </div>
                 <div>
                     <label>CCCD</label>
+<<<<<<< HEAD
                     <input type="text" name="ma_cccd" placeholder="12 số CCCD" required pattern="[0-9]{12}">
+=======
+                    <input type="text" name="ma_cccd" placeholder="12 số CCCD" pattern="[0-9]{12}">
+>>>>>>> master
                 </div>
 
                 <div>

@@ -78,6 +78,10 @@
                     <label>Trang thai</label>
                     <select th:field="*{trangThai}" required>
                         <option value="Trong">Trong</option>
+<<<<<<< HEAD
+=======
+                        <option value="Da dat">Da dat</option>
+>>>>>>> master
                         <option value="Dang su dung">Dang su dung</option>
                         <option value="Dang don dep">Dang don dep</option>
                         <option value="Bao tri">Bao tri</option>
@@ -147,7 +151,11 @@
                     <td th:text="${#numbers.formatDecimal(p.giaMoiDem, 0, 'COMMA', 0, 'POINT')} + ' VND'"></td>
                     <td>
                         <span th:with="tt=${p.trangThai}"
+<<<<<<< HEAD
                               th:classappend="${tt == 'Trong'} ? 'trong' : (${tt == 'Dang su dung'} ? 'dang-su-dung' : (${tt == 'Dang don dep'} ? 'dang-don-dep' : 'bao-tri'))"
+=======
+                              th:classappend="${tt == 'Trong'} ? 'trong' : (${tt == 'Da dat'} ? 'da-dat' : (${tt == 'Dang su dung'} ? 'dang-su-dung' : (${tt == 'Dang don dep'} ? 'dang-don-dep' : 'bao-tri')))"
+>>>>>>> master
                               class="trang-thai-badge"
                               th:text="${tt}">
                         </span>

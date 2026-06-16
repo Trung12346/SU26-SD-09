@@ -49,15 +49,24 @@
     <section class="admin-panel">
         <h2>Tìm Kiếm Đơn Đặt Phòng</h2>
 
+<<<<<<< HEAD
         <form th:action="@{/admin/dat-phong}" method="get">
+=======
+        <form th:action="@{/admin/dat-phong/search}" method="get">
+>>>>>>> master
             <div class="admin-grid">
                 <div class="admin-field">
                     <label>Mã đặt phòng</label>
                     <input type="number" name="maDatPhong" min="1" th:value="${maDatPhong}">
                 </div>
                 <div class="admin-field">
+<<<<<<< HEAD
                     <label>Mã khách</label>
                     <input type="number" name="maKhach" min="1" th:value="${maKhach}">
+=======
+                    <label>Tên khách</label>
+                    <input  name="tenKhach" min="1" th:value="${tenKhach}">
+>>>>>>> master
                 </div>
                 <div class="admin-field">
                     <label>Mã nhân viên</label>
@@ -147,6 +156,10 @@
                     <th>Khách</th>
                     <th>CCCD</th>
                     <th>Trạng thái</th>
+<<<<<<< HEAD
+=======
+                    <th>Hóa đơn</th>
+>>>>>>> master
                 </tr>
                 </thead>
                 <tbody>
@@ -156,13 +169,23 @@
                         <strong th:text="${dp.n != null ? dp.n.hoTen : ''}"></strong>
                         <div th:text="${dp.n != null ? dp.n.email : ''}"></div>
                     </td>
+<<<<<<< HEAD
                     <td th:text="${phongTheoDon[dp.id] != null ? phongTheoDon[dp.id] : ''}"></td>
                     <td th:text="${dp.nv != null ? dp.nv.hoTen : ''}"></td>
+=======
+                    <td>
+                        <span th:each="phong : ${phongTheoDon[dp.id]}"
+                              th:text="${phong.soPhong + ' '}">
+                        </span>
+                    </td>
+                    <td th:text="${dp.nv != null ? dp.nv.n.hoTen : ''}"></td>
+>>>>>>> master
                     <td th:text="${dp.ngaydatPhong != null ? #temporals.format(dp.ngaydatPhong, 'dd/MM/yyyy') : ''}"></td>
                     <td th:text="${dp.ngaytraPhong != null ? #temporals.format(dp.ngaytraPhong, 'dd/MM/yyyy') : ''}"></td>
                     <td th:text="${dp.songuoiLon + ' NL, ' + dp.sotreEm + ' TE'}"></td>
                     <td th:text="${dp.ma_cccd != null ? dp.ma_cccd : ''}"></td>
                     <td>
+<<<<<<< HEAD
                         <span th:classappend="${dp.trangThai == 'Da xac nhan' or dp.trangThai == 'Da nhan phong' or dp.trangThai == 'Da tra phong'} ? 'active' : (${dp.trangThai == 'Da huy'} ? 'inactive' : 'warning')"
                               class="status-badge"
                               th:text="${dp.trangThai}">
@@ -171,6 +194,47 @@
                 </tr>
                 <tr th:if="${datPhongs.isEmpty()}">
                     <td colspan="9"><div class="empty-state">Không tìm thấy đơn đặt phòng phù hợp.</div></td>
+=======
+                        <form th:action="@{/admin/dat-phong/update-trang-thai}" method="post">
+                            <input type="hidden" name="id" th:value="${dp.id}">
+                            <button th:if="${dp.trangThai == 'Cho xac nhan'}"
+                                    type="submit" name="trangThai" value="Da xac nhan"
+                                    class="status-badge warning">
+                                Chờ xác nhận
+                            </button>
+                            <button th:if="${dp.trangThai == 'Da xac nhan'}"
+                                    type="submit" name="trangThai" value="Da nhan phong"
+                                    class="status-badge active" style="cursor: pointer;">
+                                Đã xác nhận
+                            </button>
+                            <button th:if="${dp.trangThai == 'Da nhan phong'}"
+                                    type="submit" name="trangThai" value="Da tra phong"
+                                    class="status-badge active" style="cursor: pointer;">
+                                Đã nhận phòng
+                            </button>
+                            <span th:if="${dp.trangThai == 'Da tra phong'}" class="status-badge active">
+                Đã trả phòng
+            </span>
+                            <span th:if="${dp.trangThai == 'Da huy'}" class="status-badge inactive">
+                Đã hủy
+            </span>
+                        </form>
+                    </td>
+                    <td>
+                        <a th:if="${daDatHoaDon != null and !daDatHoaDon.contains(dp.id)}"
+                           th:href="@{/admin/hoa-don/create-from-dat-phong(maDatPhong=${dp.id})}"
+                           class="admin-btn small outline">
+                            Xuất HĐ
+                        </a>
+                        <span th:if="${daDatHoaDon != null and daDatHoaDon.contains(dp.id)}"
+                              class="status-badge active">
+            Đã xuất HĐ
+        </span>
+                    </td>
+                </tr>
+                <tr th:if="${datPhongs.isEmpty()}">
+                    <td colspan="10"><div class="empty-state">Không tìm thấy đơn đặt phòng phù hợp.</div></td>
+>>>>>>> master
                 </tr>
                 </tbody>
             </table>

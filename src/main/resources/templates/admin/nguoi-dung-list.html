@@ -67,11 +67,23 @@
                 <div class="admin-field">
                     <label>Mat khau</label>
                     <input type="password"
+<<<<<<< HEAD
                            name="matKhauMoi"
                            placeholder="Nhap khi them moi hoac muon doi"
                            th:required="${nguoiDung.maNguoiDung == null}">
                 </div>
 
+=======
+                           name="matKhaumoi"
+                           placeholder="Nhap khi them moi hoac muon doi">
+                </div>
+
+                    <input type="text"
+                           th:field="*{matKhau_hash}"
+                           placeholder="Nhap khi them moi hoac muon doi"
+                           th:type="hidden" th:if="${nguoiDung.maNguoiDung != null}">
+
+>>>>>>> master
                 <div class="admin-field">
                     <label>So dien thoai</label>
                     <input type="tel" th:field="*{soDienThoai}" placeholder="09xxxxxxxx" pattern="[0-9]{10}">
@@ -79,7 +91,11 @@
 
                 <div class="admin-field">
                     <label>Vai tro</label>
+<<<<<<< HEAD
                     <select name="vaiTroId" required>
+=======
+                    <select th:field="*{vaiTro}" required>
+>>>>>>> master
                         <option value="">-- Chon vai tro --</option>
                         <option th:each="vt : ${vaiTros}"
                                 th:value="${vt.id}"
@@ -113,10 +129,17 @@
     <section class="admin-panel">
         <h2>Danh Sach Nguoi Dung</h2>
 
+<<<<<<< HEAD
         <form th:action="@{/admin/nguoi-dung}" method="get" class="search-row">
             <input type="text"
                    name="keyword"
                    placeholder="Tim theo ten, email, so dien thoai, vai tro..."
+=======
+        <form th:action="@{/admin/nguoi-dung/search}" method="get" class="search-row">
+            <input type="text"
+                   name="keyword"
+                   placeholder="Tim theo ten"
+>>>>>>> master
                    th:value="${keyword}">
             <button type="submit" class="admin-btn outline">Tim Kiem</button>
         </form>
@@ -155,7 +178,11 @@
                                th:href="@{/admin/nguoi-dung/edit/{id}(id=${nd.maNguoiDung}, keyword=${keyword})}">
                                 Sua
                             </a>
+<<<<<<< HEAD
                             <form th:action="@{/admin/nguoi-dung/delete/{id}(id=${nd.maNguoiDung})}"
+=======
+                            <form th:action="@{/admin/nguoi-dung/lock/{id}(id=${nd.maNguoiDung})}"
+>>>>>>> master
                                   method="post"
                                   onsubmit="return confirm('Ban co chac muon khoa nguoi dung nay?')">
                                 <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">

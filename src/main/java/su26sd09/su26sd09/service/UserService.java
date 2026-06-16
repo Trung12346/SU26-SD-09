@@ -125,4 +125,20 @@ public class UserService {
         return value != null && value.toLowerCase(Locale.ROOT).contains(keyword);
     }
 
+<<<<<<< HEAD
+=======
+
+    public boolean checkSoDienThoai(String sodienthoai){
+           return repo.findAll().stream().anyMatch(x -> x.getSoDienThoai().equals(sodienthoai));
+    }
+
+    public boolean checkEmail(String email){
+           return repo.findAll().stream().anyMatch(x -> x.getEmail().equals(email));
+    }
+
+      public List<NguoiDung> TimKiemTheoTen(String name){
+        return repo.search(name);
+      }
+
+>>>>>>> master
 }

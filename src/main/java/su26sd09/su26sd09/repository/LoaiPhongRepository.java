@@ -23,4 +23,11 @@ public interface LoaiPhongRepository extends JpaRepository<LoaiPhong, Integer> {
             @Param("maxGia") BigDecimal maxGia,
             @Param("soKhach") Integer soKhach
     );
+<<<<<<< HEAD
+=======
+
+
+    @Query("select l from LoaiPhong l where l.tenLoai like :name")
+    public List<LoaiPhong> findbyName(@Param("name") String name);
+>>>>>>> master
 }
