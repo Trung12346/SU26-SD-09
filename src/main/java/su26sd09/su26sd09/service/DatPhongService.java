@@ -58,7 +58,7 @@ public class DatPhongService {
         return result;
     }
     public List<DatPhong> search(
-            Integer maDatPhong, Integer maKhach, Integer maNhanVien, String ma_cccd,
+            Integer maDatPhong, String tenKhach, Integer maNhanVien, String ma_cccd,
             String ngayNhanTu, String ngayNhanDen, String ngayTraTu, String ngayTraDen,
             Integer soNguoiLon, Integer soTreEm, String trangThai, String yeuCauThem,
             String ngayTaoTu, String ngayTaoDen, String ngayCapNhatTu, String ngayCapNhatDen) {
@@ -66,15 +66,23 @@ public class DatPhongService {
         List<DatPhong> all = repo.findAll();
 
         return all.stream().filter(dp -> {
-            if (maDatPhong != null && dp.getId() != maDatPhong) return false;
-            if (maKhach != null && dp.getN().getMaNguoiDung() != maKhach) return false;
-            if (maNhanVien != null && (dp.getNv() == null || dp.getNv().getId() != maNhanVien)) return false;
-            if (ma_cccd != null && !ma_cccd.isEmpty() && !ma_cccd.equals(dp.getMa_cccd())) return false;
-            if (soNguoiLon != null && dp.getSonguoiLon() != soNguoiLon) return false;
-            if (soTreEm != null && dp.getSotreEm() != soTreEm) return false;
-            if (trangThai != null && !trangThai.isEmpty() && !trangThai.equals(dp.getTrangThai())) return false;
-            if (yeuCauThem != null && !yeuCauThem.isEmpty() && !dp.getYeuCauThem().contains(yeuCauThem)) return false;
+            if (maDatPhong != null && !maDatPhong.equals(dp.getId())) return false;
 
+            if (tenKhach != null && !tenKhach.trim().isEmpty()) {
+                if (dp.getN() == null) return false;
+                if (!dp.getN().getHoTen().toLowerCase().contains(tenKhach.trim().toLowerCase())) return false;
+            }
+
+            if (maNhanVien != null && (dp.getNv() == null || !maNhanVien.equals(dp.getNv().getId()))) return false;
+            if (ma_cccd != null && !ma_cccd.isEmpty() && !ma_cccd.equals(dp.getMa_cccd())) return false;
+            if (soNguoiLon != null && !soNguoiLon.equals(dp.getSonguoiLon())) return false;
+            if (soTreEm != null && !soTreEm.equals(dp.getSotreEm())) return false;
+            if (trangThai != null && !trangThai.isEmpty() && !trangThai.equals(dp.getTrangThai())) return false;
+
+            if (yeuCauThem != null && !yeuCauThem.isEmpty()) {
+                if (dp.getYeuCauThem() == null) return false;
+                if (!dp.getYeuCauThem().toLowerCase().contains(yeuCauThem.trim().toLowerCase())) return false;
+            }
             if (ngayNhanTu != null && !ngayNhanTu.isEmpty()) {
                 LocalDateTime tu = LocalDate.parse(ngayNhanTu).atStartOfDay();
                 if (dp.getNgaydatPhong().isBefore(tu)) return false;
