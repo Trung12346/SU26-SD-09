@@ -122,8 +122,8 @@ public class AdminNguoiDungController {
                 nguoiDung.setNgayCapNhat(LocalDateTime.now());
                 for (NguoiDung s : userService.getAll()){
                           if (s.getMaNguoiDung().equals(nguoiDung.getMaNguoiDung())){
-                              if ((!s.getSoDienThoai().equals(nguoiDung.getSoDienThoai()) && userService.checkSoDienThoai(nguoiDung.getSoDienThoai())) || (!s.getEmail().equals(nguoiDung.getEmail() )|| userService.checkEmail(nguoiDung.getEmail()))){
-                                 redirect.addFlashAttribute("error","số điện thoại hoặc email này đã tồn tại");
+                              if ( (!s.getEmail().equals(nguoiDung.getEmail() )|| userService.checkEmail(nguoiDung.getEmail()))){
+                                 redirect.addFlashAttribute("error"," email này đã tồn tại");
                                  return "redirect:/admin/nguoi-dung";
                               }
                           }
