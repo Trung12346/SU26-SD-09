@@ -90,7 +90,7 @@ public class AdminNhanVienController {
 
       }
       else if((nv.getBoPhan() != null && !nv.getBoPhan().isBlank()) &&  maNguoiDung == null){
-          if(NguoiDungRepo.checkEmail(nv.n.getEmail()) || NguoiDungRepo.checkSoDienThoai(nv.n.getSoDienThoai())){
+          if(NguoiDungRepo.checkEmail(nv.n.getEmail(), nv.n.getMaNguoiDung()) || NguoiDungRepo.checkSoDienThoai(nv.n.getSoDienThoai(), nv.n.getMaNguoiDung())){
               redirect.addFlashAttribute("error","email hoặc số điện thoại đã tồn tại");
               return "redirect:/admin/nhan-vien";
           }
@@ -136,11 +136,12 @@ public class AdminNhanVienController {
 
             System.out.println(
                     NguoiDungRepo.checkSoDienThoai(
-                            nv.n.getSoDienThoai()
+                            nv.n.getSoDienThoai(),
+                            nv.n.getMaNguoiDung()
                     )
             );
-            if( (NguoiDungRepo.checkEmail(nv.n.getEmail()) && !nv.n.getEmail().equals(oldEmail)
-            ) || (!nv.n.getSoDienThoai().equals(oldSdt) && NguoiDungRepo.checkSoDienThoai(nv.n.getSoDienThoai())) ){
+            if( (NguoiDungRepo.checkEmail(nv.n.getEmail(), nv.n.getMaNguoiDung()) && !nv.n.getEmail().equals(oldEmail)
+            ) || (!nv.n.getSoDienThoai().equals(oldSdt) && NguoiDungRepo.checkSoDienThoai(nv.n.getSoDienThoai(), nv.n.getMaNguoiDung())) ){
                 System.out.println("TRUNG UNIQUE");
                 redirect.addFlashAttribute("error","email hoặc số điện thoại đã tồn tại");
                 return "redirect:/admin/nhan-vien";

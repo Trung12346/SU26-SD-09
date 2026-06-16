@@ -95,7 +95,7 @@ public class AdminNguoiDungController {
         PasswordEncoder e = new BCryptPasswordEncoder();
         if (CheckRole(p.getName())){
 
-            if((userService.checkSoDienThoai(nguoiDung.getSoDienThoai()) && nguoiDung.getMaNguoiDung() == null) || (userService.checkEmail(nguoiDung.getEmail()) &&
+            if((userService.checkSoDienThoai(nguoiDung.getSoDienThoai(), nguoiDung.getMaNguoiDung()) && nguoiDung.getMaNguoiDung() == null) || (userService.checkEmail(nguoiDung.getEmail(), nguoiDung.getMaNguoiDung()) &&
                     nguoiDung.getMaNguoiDung() == null) ){
                 redirect.addFlashAttribute("error","số điện thoại hoặc email này đã tốn tại");
                 return "redirect:/admin/nguoi-dung";
@@ -115,8 +115,8 @@ public class AdminNguoiDungController {
             if ( nguoiDung.getMaNguoiDung() != null){
                 nguoiDung.setNgayCapNhat(LocalDateTime.now());
                 for (NguoiDung s : userService.getAll()){
-                    if ((!s.getSoDienThoai().equals(nguoiDung.getSoDienThoai()) && userService.checkSoDienThoai(nguoiDung.getSoDienThoai())) || (!s.getEmail().equals(nguoiDung.getEmail()) &&
-                            userService.checkEmail(nguoiDung.getEmail()))){
+                    if ((!s.getSoDienThoai().equals(nguoiDung.getSoDienThoai()) && userService.checkSoDienThoai(nguoiDung.getSoDienThoai(), nguoiDung.getMaNguoiDung())) || (!s.getEmail().equals(nguoiDung.getEmail()) &&
+                            userService.checkEmail(nguoiDung.getEmail(), nguoiDung.getMaNguoiDung()))){
                         redirect.addFlashAttribute("error","số điện thoại hoặc email này đã tồn tại");
 
                         return "redirect:/admin/nguoi-dung";

@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
@@ -12,6 +14,8 @@ import java.util.List;
 
 @Data
 @Entity
+@Getter
+@Setter
 @Table(name = "nguoi_dung")
 public class  NguoiDung {
     @Id

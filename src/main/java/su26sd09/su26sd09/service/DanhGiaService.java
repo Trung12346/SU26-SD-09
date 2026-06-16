@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import su26sd09.su26sd09.entity.DatPhong;
 import su26sd09.su26sd09.entity.DanhGia;
+import su26sd09.su26sd09.entity.LoaiPhong;
 import su26sd09.su26sd09.entity.NguoiDung;
 import su26sd09.su26sd09.repository.DanhGiaRepo;
 
@@ -105,4 +106,5 @@ public class DanhGiaService {
     private boolean contains(String value, String keyword) {
         return value != null && value.toLowerCase(Locale.ROOT).contains(keyword);
     }
+
 }
