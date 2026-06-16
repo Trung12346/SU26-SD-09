@@ -90,8 +90,8 @@ public class AdminNhanVienController {
 
       }
       else if((nv.getBoPhan() != null && !nv.getBoPhan().isBlank()) &&  maNguoiDung == null){
-          if(NguoiDungRepo.checkEmail(nv.n.getEmail(), nv.n.getMaNguoiDung()) || NguoiDungRepo.checkSoDienThoai(nv.n.getSoDienThoai(), nv.n.getMaNguoiDung())){
-              redirect.addFlashAttribute("error","email hoặc số điện thoại đã tồn tại");
+          if(NguoiDungRepo.checkEmail(nv.n.getEmail(), nv.n.getMaNguoiDung()) ){
+              redirect.addFlashAttribute("error","email đã tồn tại");
               return "redirect:/admin/nhan-vien";
           }
 
@@ -141,9 +141,9 @@ public class AdminNhanVienController {
                     )
             );
             if( (NguoiDungRepo.checkEmail(nv.n.getEmail(), nv.n.getMaNguoiDung()) && !nv.n.getEmail().equals(oldEmail)
-            ) || (!nv.n.getSoDienThoai().equals(oldSdt) && NguoiDungRepo.checkSoDienThoai(nv.n.getSoDienThoai(), nv.n.getMaNguoiDung())) ){
+            )  ){
                 System.out.println("TRUNG UNIQUE");
-                redirect.addFlashAttribute("error","email hoặc số điện thoại đã tồn tại");
+                redirect.addFlashAttribute("error","email đã tồn tại");
                 return "redirect:/admin/nhan-vien";
             }
             if (nv.n.isTrangThai() != true || nv.n.getVaiTro().getTenVaiTro().equals("ROLE_ADMIN") ||nv.n.getVaiTro().getTenVaiTro().equals("ROLE_EMPLOYEE")){
