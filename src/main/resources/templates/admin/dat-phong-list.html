@@ -49,15 +49,15 @@
     <section class="admin-panel">
         <h2>Tìm Kiếm Đơn Đặt Phòng</h2>
 
-        <form th:action="@{/admin/dat-phong}" method="get">
+        <form th:action="@{/admin/dat-phong/search}" method="get">
             <div class="admin-grid">
                 <div class="admin-field">
                     <label>Mã đặt phòng</label>
                     <input type="number" name="maDatPhong" min="1" th:value="${maDatPhong}">
                 </div>
                 <div class="admin-field">
-                    <label>Mã khách</label>
-                    <input type="number" name="maKhach" min="1" th:value="${maKhach}">
+                    <label>Tên khách</label>
+                    <input  name="tenKhach" min="1" th:value="${tenKhach}">
                 </div>
                 <div class="admin-field">
                     <label>Mã nhân viên</label>
