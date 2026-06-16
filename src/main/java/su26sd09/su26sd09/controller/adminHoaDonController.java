@@ -165,7 +165,7 @@ public class adminHoaDonController {
 //        if (maKhuyenMai != null) {
 //            hoaDon.setK(khuyenMaiService.findById(maKhuyenMai));
 //        }
-//  cái này đợi có promocode mới uncomment
+
         if (hoaDon.getId() == 0) {
             hoaDon.setNgayXuat(LocalDateTime.now());
         } else {
@@ -203,7 +203,7 @@ public class adminHoaDonController {
     @GetMapping("/search")
     public String searchDatPhong(
             @RequestParam(required = false) Integer maDatPhong,
-            @RequestParam(required = false) Integer maKhach,
+            @RequestParam(required = false) String tenKhach,
             @RequestParam(required = false) Integer maNhanVien,
             @RequestParam(required = false) String ma_cccd,
             @RequestParam(required = false) String ngayNhanTu,
@@ -221,7 +221,7 @@ public class adminHoaDonController {
             Model model) {
 
         List<DatPhong> datPhongs = datPhongService.search(
-                maDatPhong, maKhach, maNhanVien, ma_cccd,
+                maDatPhong, tenKhach, maNhanVien, ma_cccd,
                 ngayNhanTu, ngayNhanDen, ngayTraTu, ngayTraDen,
                 soNguoiLon, soTreEm, trangThai, yeuCauThem,
                 ngayTaoTu, ngayTaoDen, ngayCapNhatTu, ngayCapNhatDen
@@ -242,7 +242,7 @@ public class adminHoaDonController {
         model.addAttribute("daDatHoaDon", daDatHoaDon);
 
         model.addAttribute("maDatPhong", maDatPhong);
-        model.addAttribute("maKhach", maKhach);
+        model.addAttribute("tenKhach", tenKhach);
         model.addAttribute("maNhanVien", maNhanVien);
         model.addAttribute("ma_cccd", ma_cccd);
         model.addAttribute("ngayNhanTu", ngayNhanTu);
@@ -276,7 +276,6 @@ public class adminHoaDonController {
 
         ITextRenderer renderer = new ITextRenderer();
 
-        // Thêm đoạn này
         renderer.getFontResolver().addFont(
                 "C:/Windows/Fonts/arial.ttf",
                 BaseFont.IDENTITY_H,
