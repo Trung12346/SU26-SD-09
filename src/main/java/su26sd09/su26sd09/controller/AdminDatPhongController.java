@@ -56,7 +56,7 @@ public class AdminDatPhongController {
     @GetMapping("/search")
     public String getSearchDatPhong(
             @RequestParam(required = false) Integer maDatPhong,
-            @RequestParam(required = false) Integer maKhach,
+            @RequestParam(required = false) String tenKhach,
             @RequestParam(required = false) Integer maNhanVien,
             @RequestParam(required = false) String ma_cccd,
             @RequestParam(required = false) String ngayNhanTu,
@@ -83,11 +83,17 @@ public class AdminDatPhongController {
 
 
         List<DatPhong> datPhongs = datPhongService.search(
-                maDatPhong, maKhach, maNhanVien, ma_cccd,
+                maDatPhong, tenKhach, maNhanVien, ma_cccd,
                 ngayNhanTu, ngayNhanDen, ngayTraTu, ngayTraDen,
                 soNguoiLon, soTreEm, trangThai, yeuCauThem,
                 ngayTaoTu, ngayTaoDen, ngayCapNhatTu, ngayCapNhatDen
         );
+
+        if(tenKhach!=null){
+            System.out.println("Found!");
+        }else{
+            System.out.println("NOt Found: "+tenKhach);
+        }
 
         Map<Integer, List<Phong>> phongTheoDon = new HashMap<>();
         for (DatPhong dp : datPhongs) {
@@ -98,7 +104,7 @@ public class AdminDatPhongController {
         model.addAttribute("phongTheoDon", phongTheoDon);
 
         model.addAttribute("maDatPhong", maDatPhong);
-        model.addAttribute("maKhach", maKhach);
+        model.addAttribute("tenKhach", tenKhach);
         model.addAttribute("maNhanVien", maNhanVien);
         model.addAttribute("ma_cccd", ma_cccd);
         model.addAttribute("ngayNhanTu", ngayNhanTu);
