@@ -126,12 +126,14 @@ public class UserService {
     }
 
 
-    public boolean checkSoDienThoai(String sodienthoai){
-           return repo.findAll().stream().anyMatch(x -> x.getSoDienThoai().equals(sodienthoai));
+    public boolean checkSoDienThoai(String sodienthoai, Integer id){
+        id = id == null ? 0 : id;
+           return repo.findOthers(id).stream().anyMatch(x -> x.getSoDienThoai().equals(sodienthoai));
     }
 
-    public boolean checkEmail(String email){
-           return repo.findAll().stream().anyMatch(x -> x.getEmail().equals(email));
+    public boolean checkEmail(String email, Integer id){
+        id = id == null ? 0 : id;
+           return repo.findOthers(id).stream().anyMatch(x -> x.getEmail().equals(email));
     }
 
       public List<NguoiDung> TimKiemTheoTen(String name){

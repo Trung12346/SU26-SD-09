@@ -18,4 +18,10 @@ public interface NguoiDungRepository extends JpaRepository<NguoiDung, Integer> {
 
     @Query("select n from NguoiDung n where n.hoTen like concat('%',:name,'%')")
     public List<NguoiDung> search(@Param("name") String name);
+
+    @Query(value = "SELECT * FROM nguoi_dung WHERE ma_vai_tro = 3", nativeQuery = true)
+    public List<NguoiDung> findAllKhach();
+
+    @Query(value = "SELECT * FROM nguoi_dung WHERE ma_nguoi_dung <> :id", nativeQuery = true)
+    public List<NguoiDung> findOthers(@Param("id") Integer id);
 }
