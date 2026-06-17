@@ -70,4 +70,13 @@ public class NhanVienService {
         }
         return false;
     }
+    
+    public boolean TrungNv(Integer id,int idnv){
+        for (Nhanvien nv : repo.findAll()){
+            if ( (IsNhanVienTonTai(id) == true && nv.getId() != idnv)){
+                return true;
+            }
+        }
+        return false;
+    }
 }
