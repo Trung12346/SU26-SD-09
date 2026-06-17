@@ -111,6 +111,12 @@ public class AdminNhanVienController {
           redirect.addFlashAttribute("error","bộ phận không được để trống");
       }
       if (maNguoiDung != null && nv.id != 0){
+          
+          if (repo.TrungNv(maNguoiDung,nv.id) == true){
+              redirect.addFlashAttribute("error","vui lòng chọn mã nhân viên không trùng với nhân viên khác");
+              return "redirect:/admin/nhan-vien";
+          }
+          
         if (!r.hasErrors() ){
            NguoiDung nguoidung = NguoiDungRepo.Getbyid(maNguoiDung);
 
