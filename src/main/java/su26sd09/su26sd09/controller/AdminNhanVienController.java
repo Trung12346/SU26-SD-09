@@ -76,7 +76,7 @@ public class AdminNhanVienController {
     @PostMapping("/save")
     public String saveNhanVien(@Valid Nhanvien nv, BindingResult r,  Principal p, RedirectAttributes redirect,@RequestParam("matKhaumoi") String matKhaumoi,
                                @RequestParam(value = "maNguoiDung",required = false) Integer maNguoiDung){
-     if(CheckRole(p.getName())){
+    if(CheckRole(p.getName())){
          PasswordEncoder encoder = new BCryptPasswordEncoder();
 
       if (maNguoiDung != null && (nv.getId() == 0 && repo.IsNhanVienTonTai(maNguoiDung) == false)){
@@ -146,8 +146,8 @@ public class AdminNhanVienController {
                 redirect.addFlashAttribute("error","email đã tồn tại");
                 return "redirect:/admin/nhan-vien";
             }
-            if (nv.n.isTrangThai() != true || nv.n.getVaiTro().getTenVaiTro().equals("ROLE_ADMIN") ||nv.n.getVaiTro().getTenVaiTro().equals("ROLE_EMPLOYEE")){
-                redirect.addFlashAttribute("error","tài khoản bị khóa hoặc khác vai trò STAFF(nhân viên) không thể làm nhân viên");
+            if ( nv.n.getVaiTro().getTenVaiTro().equals("ROLE_ADMIN") ||nv.n.getVaiTro().getTenVaiTro().equals("ROLE_EMPLOYEE")){
+                redirect.addFlashAttribute("error","tài khoản khác vai trò STAFF(nhân viên) không thể làm nhân viên");
                 return "redirect:/admin/nhan-vien";
             }
             NguoiDungRepo.save(nv.n);
