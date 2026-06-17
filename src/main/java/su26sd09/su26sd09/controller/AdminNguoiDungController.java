@@ -92,12 +92,12 @@ public class AdminNguoiDungController {
             @Valid NguoiDung nguoiDung, BindingResult r,
             RedirectAttributes redirect
     , Principal p,@RequestParam("matKhaumoi") String matKhaumoi) {
-       PasswordEncoder e = new BCryptPasswordEncoder();
+         PasswordEncoder e = new BCryptPasswordEncoder();
         if (CheckRole(p.getName())){
 
             if (nguoiDung.getMaNguoiDung() == null){
                 for (NguoiDung s : userService.getAll()){
-                        if ((!s.getSoDienThoai().equals( (!s.getEmail().equals(nguoiDung.getEmail() ) && userService.checkEmail(nguoiDung.getEmail()))){
+                        if (!s.getEmail().equals(nguoiDung.getEmail() ) && userService.checkEmail(nguoiDung.getEmail(),nguoiDung.getMaNguoiDung())){
                             redirect.addFlashAttribute("error"," email này đã tồn tại");
                             return "redirect:/admin/nguoi-dung";
                         
@@ -122,7 +122,7 @@ public class AdminNguoiDungController {
                 nguoiDung.setNgayCapNhat(LocalDateTime.now());
                 for (NguoiDung s : userService.getAll()){
                           if (s.getMaNguoiDung().equals(nguoiDung.getMaNguoiDung())){
-                              if ( (!s.getEmail().equals(nguoiDung.getEmail() )|| userService.checkEmail(nguoiDung.getEmail()))){
+                              if ( (!s.getEmail().equals(nguoiDung.getEmail() )|| userService.checkEmail(nguoiDung.getEmail(),nguoiDung.getMaNguoiDung()))){
                                  redirect.addFlashAttribute("error"," email này đã tồn tại");
                                  return "redirect:/admin/nguoi-dung";
                               }
