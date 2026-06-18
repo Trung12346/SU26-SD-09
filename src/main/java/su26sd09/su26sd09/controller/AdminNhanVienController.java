@@ -95,7 +95,7 @@ public class AdminNhanVienController {
               return "redirect:/admin/nhan-vien";
           }
 
-          if (nv.n.isTrangThai() != true || nv.n.getVaiTro().getTenVaiTro().equals("ROLE_ADMIN") ||nv.n.getVaiTro().getTenVaiTro().equals("ROLE_EMPLOYEE")){
+          if (nv.n.isTrangThai() != true || nv.n.getVaiTro().getTenVaiTro().equals("ROLE_ADMIN") ||nv.n.getVaiTro().getTenVaiTro().equals("ROLE_GUEST")){
               redirect.addFlashAttribute("error","tài khoản bị khóa hoặc khác vai trò STAFF(nhân viên) không thể làm nhân viên ");
               return "redirect:/admin/nhan-vien";
           }
@@ -152,7 +152,7 @@ public class AdminNhanVienController {
                 redirect.addFlashAttribute("error","email đã tồn tại");
                 return "redirect:/admin/nhan-vien";
             }
-            if ( nv.n.getVaiTro().getTenVaiTro().equals("ROLE_ADMIN") ||nv.n.getVaiTro().getTenVaiTro().equals("ROLE_EMPLOYEE")){
+            if ( nv.n.getVaiTro().getTenVaiTro().equals("ROLE_ADMIN") ||nv.n.getVaiTro().getTenVaiTro().equals("ROLE_GUEST")){
                 redirect.addFlashAttribute("error","tài khoản khác vai trò STAFF(nhân viên) không thể làm nhân viên");
                 return "redirect:/admin/nhan-vien";
             }
