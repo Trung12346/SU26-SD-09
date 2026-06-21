@@ -31,10 +31,11 @@ public class SecurityConfig {
 //                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/Login", "/api/auth/**","/verify-email","/home/**",
-                                "/loai-phong", "/loai-phong/**",
-                                "/phong", "/phong/**",
+                                "/loai-phong", "/loai-phong/**","/API/payment/vnpay-payment",
+                                "/phong/**", "/phong","/gio-hang/**","/thanh-toan/**",
                                 "/static/**", "/css/**", "/js/**", "/images/**",
-                                "/*.css", "/*.js", "/*.jpg", "/*.png","/Register").permitAll()
+                                "/*.css", "/*.js", "/*.jpg", "/*.png","/Register").permitAll().requestMatchers("/admin/dat-phong-quay/**","/admin/dat-phong/**")
+                                .hasAnyRole("STAFF","ADMIN")
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
 //                                .anyRequest().permitAll()

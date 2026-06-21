@@ -22,6 +22,9 @@ public interface PhongRepository extends JpaRepository<Phong, Integer> {
     """)
     List<Phong> search(@Param("keyword") String keyword);
 
+    List<Phong> findByTrangThai(String trangThai);
+
+
     List<Phong> findByLoaiPhongIdAndHoatDongTrueOrderBySoPhongAsc(int loaiPhongId);
 
     List<Phong> findByHoatDongTrueOrderBySoPhongAsc();

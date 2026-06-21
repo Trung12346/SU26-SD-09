@@ -24,4 +24,6 @@ public interface NguoiDungRepository extends JpaRepository<NguoiDung, Integer> {
 
     @Query(value = "SELECT * FROM nguoi_dung WHERE ma_nguoi_dung <> :id", nativeQuery = true)
     public List<NguoiDung> findOthers(@Param("id") Integer id);
+
+    public NguoiDung findByHoTen(String name);
 }

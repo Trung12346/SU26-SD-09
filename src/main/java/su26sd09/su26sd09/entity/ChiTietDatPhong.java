@@ -20,9 +20,6 @@ public class ChiTietDatPhong {
     @Column(name = "ma_chi_tiet")
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "ma_dat_phong")
-    private DatPhong d;
 
     @ManyToOne
     @JoinColumn(name = "ma_phong")
@@ -33,6 +30,10 @@ public class ChiTietDatPhong {
 
     @Column(name = "gia_khi_dat")
     private BigDecimal giaKhiDat;
+
+    @ManyToOne
+    @JoinColumn(name = "ma_dat_phong",referencedColumnName = "ma_dat_phong")
+    private DatPhong d;
 
 
 }

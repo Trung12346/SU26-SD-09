@@ -32,10 +32,19 @@ public class DatPhongService {
         return repo.findAll(page);
     }
 
+    public List<DatPhong> findByTrangThaiAndNgayTaoBefore(String trangThai, LocalDateTime ngay) {
+        return repo.findByTrangThaiAndNgayTaoBefore(trangThai, ngay);
+    }
+
+    public void delete(DatPhong dp) {
+        repo.delete(dp);
+    }
 
     public void removePhong(DatPhong d){
         repo.delete(d);
     }
+
+
 
     public void updatePhong(DatPhong d){
         repo.save(d);

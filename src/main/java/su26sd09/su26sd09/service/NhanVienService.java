@@ -60,7 +60,9 @@ public class NhanVienService {
         return Listnv;
     }
 
-
+    public Nhanvien findByMaNguoiDung(Integer id){
+        return repo.findByN_MaNguoiDung(id);
+    }
 
     public boolean IsNhanVienTonTai(int id){
         for (Nhanvien nv : repo.findAll()){

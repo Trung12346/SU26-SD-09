@@ -22,8 +22,12 @@ public class Phong {
     private int maPhong;
 
     @ManyToOne
-    @JoinColumn(name = "ma_loai_phong", nullable = false)
+    @JoinColumn(name = "ma_loai_phong", referencedColumnName = "ma_loai_phong")
     private LoaiPhong loaiPhong;
+
+    @ManyToOne
+    @JoinColumn(name = "ma_khuyen_mai",referencedColumnName = "ma_khuyen_mai")
+    private KhuyenMai khuyenMai;
 
     @Column(name = "so_phong", nullable = false, length = 10)
     private String soPhong;
@@ -40,6 +44,9 @@ public class Phong {
     @Column(name = "mo_ta", length = 500)
     private String moTa;
 
+    @Column(name = "suc_chua")
+    private Integer sucChua;
+
     @Column(name = "hoat_dong", nullable = false)
     private boolean hoatDong;
 
@@ -48,4 +55,6 @@ public class Phong {
 
     @Column(name = "ngay_cap_nhat")
     private LocalDateTime ngayCapNhat;
+
+
 }

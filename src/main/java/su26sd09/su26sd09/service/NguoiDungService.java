@@ -22,6 +22,14 @@ public class NguoiDungService {
         return nguoiDungRepository.findById(id).orElse(null);
     }
 
+    public NguoiDung findByName(String name){
+        return nguoiDungRepository.findByHoTen(name);
+    }
+
+    public NguoiDung findByEmail(String email){
+        return nguoiDungRepository.findByEmail(email);
+    }
+
     public Stream<NguoiDung> findWhereRoleNV(){
         return nguoiDungRepository.findAll().stream().filter(nguoiDung -> nguoiDung.getVaiTro().getId() == 2);
     }

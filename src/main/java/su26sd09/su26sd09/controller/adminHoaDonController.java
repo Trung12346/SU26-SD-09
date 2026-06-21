@@ -12,15 +12,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.xhtmlrenderer.pdf.ITextRenderer;
-import su26sd09.su26sd09.entity.ChiTietDatPhong;
-import su26sd09.su26sd09.entity.DatPhong;
-import su26sd09.su26sd09.entity.HoaDon;
-import su26sd09.su26sd09.entity.Phong;
+import su26sd09.su26sd09.entity.*;
 import su26sd09.su26sd09.repository.HoaDonRepo;
-import su26sd09.su26sd09.service.ChiTietDatPhongService;
-import su26sd09.su26sd09.service.DatPhongService;
-import su26sd09.su26sd09.service.HoaDonService;
-import su26sd09.su26sd09.service.NguoiDungService;
+import su26sd09.su26sd09.service.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -39,6 +33,9 @@ public class adminHoaDonController {
     HoaDonService hoaDonService;
 
     @Autowired
+    ChiTietDichVuService chiTietDichVuService;
+
+    @Autowired
     DatPhongService datPhongService;
 
     @Autowired
@@ -49,6 +46,9 @@ public class adminHoaDonController {
 
     @Autowired
     private TemplateEngine templateEngine;
+
+    @Autowired
+    private khuyenMaiService khuyenMaiService;
 
     @GetMapping("")
     public String getHoaDon(
@@ -116,12 +116,17 @@ public class adminHoaDonController {
         DatPhong datPhong = datPhongService.findById(maDatPhong);
 
         HoaDon hoaDonExist = hoaDonService.findByDatPhongId(maDatPhong);
+        List<Chi_tiet_dich_vu> chiTietDichVus = chiTietDichVuService.findByDatPhongId(maDatPhong);
         if (hoaDonExist != null) {
             redirectAttributes.addFlashAttribute("error", "Đơn #" + maDatPhong + " đã có hóa đơn rồi!");
             return "redirect:/admin/dat-phong";
         }
-
-
+        BigDecimal amountDv = BigDecimal.ZERO;
+        if(chiTietDichVus.size() !=0) {
+            for (Chi_tiet_dich_vu ctdv : chiTietDichVus) {
+                amountDv = amountDv.add(ctdv.getDonGia());
+            }
+        }
         BigDecimal tienPhong = chiTietDatPhongService.findByDatPhongId(maDatPhong)
                 .stream()
                 .map(ChiTietDatPhong::getGiaKhiDat)
@@ -131,10 +136,11 @@ public class adminHoaDonController {
         BigDecimal tienVat = tienPhong.multiply(BigDecimal.valueOf(0.1)).
                 setScale(0,RoundingMode.HALF_UP);
         BigDecimal TongTien = tienPhong.add(tienVat).setScale(0,RoundingMode.HALF_UP);
+        TongTien = TongTien.add(amountDv);
         HoaDon hoaDon = new HoaDon();
         hoaDon.setD(datPhong);
         hoaDon.setTienPhong(tienPhong);
-        hoaDon.setTienDichVu(BigDecimal.ZERO);
+        hoaDon.setTienDichVu(amountDv);
         hoaDon.setTienGiam(BigDecimal.ZERO);
         hoaDon.setTienVat(tienVat);
         hoaDon.setTongTien(TongTien);
@@ -162,9 +168,9 @@ public class adminHoaDonController {
             DatPhong datPhong = datPhongService.findById(maDatPhong);
             hoaDon.setD(datPhong);
         }
-//        if (maKhuyenMai != null) {
-//            hoaDon.setK(khuyenMaiService.findById(maKhuyenMai));
-//        }
+        if (maKhuyenMai != null) {
+            hoaDon.setK(khuyenMaiService.findbyId(maKhuyenMai));
+        }
 
         if (hoaDon.getId() == 0) {
             hoaDon.setNgayXuat(LocalDateTime.now());

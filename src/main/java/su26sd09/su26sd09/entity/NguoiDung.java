@@ -54,6 +54,9 @@ public class  NguoiDung {
     @Column(name = "ngay_cap_nhat",insertable = false)
     private LocalDateTime ngayCapNhat;
 
+    @OneToOne(mappedBy = "n",cascade = CascadeType.ALL)
+    private Nhanvien nhanviens;
+
     @ManyToOne
     @JoinColumn(name = "ma_vai_tro",referencedColumnName = "ma_vai_tro")
     @NotNull(message = "vai trò không được để trống")

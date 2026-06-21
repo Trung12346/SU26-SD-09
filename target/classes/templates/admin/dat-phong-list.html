@@ -5,9 +5,140 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản Lý Đơn Đặt Phòng | Hotel</title>
     <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/@tabler/icons-webfont/3.31.0/tabler-icons.min.css">
 </head>
 <body>
+<style>
+    .admin-pagination {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 12px 16px;
+        margin-top: 12px;
+        border-top: 1px solid #e5e5e5;
+    }
 
+    .admin-pagination .pagination-info {
+        font-size: 14px;
+        color: #6b6b6b;
+    }
+
+    .admin-pagination .pagination-info strong {
+        color: #1a1a1a;
+        font-weight: 500;
+    }
+
+    .pagination-links {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .page-btn {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #d9d9d9;
+        border-radius: 6px;
+        background: #fff;
+        font-size: 14px;
+        line-height: 1;
+        color: #333;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background 0.15s, border-color 0.15s;
+    }
+
+    .page-btn:hover {
+        background: #f5f5f5;
+        border-color: #b3b3b3;
+    }
+
+    .page-btn.active {
+        background: #2563eb;
+        color: #fff;
+        border-color: #2563eb;
+        font-weight: 500;
+    }
+
+    .page-btn.disabled {
+        color: #c2c2c2;
+        pointer-events: none;
+        cursor: default;
+        background: #fafafa;
+    }
+
+    .status-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .status-badge {
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 500;
+        padding: 4px 10px;
+        border-radius: 6px;
+        border: 1px solid transparent;
+        white-space: nowrap;
+    }
+
+    .status-badge.warning {
+        background: #FAEEDA;
+        color: #633806;
+        border-color: #BA7517;
+    }
+
+    .status-badge.info {
+        background: #E6F1FB;
+        color: #0C447C;
+        border-color: #378ADD;
+    }
+
+    .status-badge.success {
+        background: #EAF3DE;
+        color: #27500A;
+        border-color: #639922;
+    }
+
+    .status-badge.neutral {
+        background: #F1EFE8;
+        color: #2C2C2A;
+        border-color: #888780;
+    }
+
+    .status-badge.danger {
+        background: #FCEBEB;
+        color: #791F1F;
+        border-color: #E24B4A;
+    }
+
+    .status-action-btn {
+        font-size: 13px;
+        padding: 6px 14px;
+        background: #0C447C;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.15s;
+    }
+
+    .status-action-btn:hover {
+        background: #185FA5;
+    }
+
+    .status-action-btn:disabled {
+        background: #B4B2A9;
+        cursor: not-allowed;
+    }
+</style>
 <div class="topbar">
     <div class="topbar-left">
         <span>+84 123 456 789 &nbsp;|&nbsp; info@hotel.local</span>
@@ -27,6 +158,7 @@
         <a href="/admin/khuyen-mai">Khuyến Mãi</a>
         <a href="/admin/danh-gia">Đánh Giá</a>
         <a href="/admin/nguoi-dung">Người Dùng</a>
+        <a href="/admin/dat-phong-quay">Đặt Phòng tại quầy</a>
     </nav>
     <div class="header-actions">
         <a href="/logout" class="btn btn-outline">Đăng Xuất</a>
@@ -49,15 +181,15 @@
     <section class="admin-panel">
         <h2>Tìm Kiếm Đơn Đặt Phòng</h2>
 
-        <form th:action="@{/admin/dat-phong}" method="get">
+        <form th:action="@{/admin/dat-phong/search}" method="get">
             <div class="admin-grid">
                 <div class="admin-field">
                     <label>Mã đặt phòng</label>
                     <input type="number" name="maDatPhong" min="1" th:value="${maDatPhong}">
                 </div>
                 <div class="admin-field">
-                    <label>Mã khách</label>
-                    <input type="number" name="maKhach" min="1" th:value="${maKhach}">
+                    <label>Tên khách</label>
+                    <input name="tenKhach" min="1" th:value="${tenKhach}">
                 </div>
                 <div class="admin-field">
                     <label>Mã nhân viên</label>
@@ -95,6 +227,7 @@
                     <label>Trạng thái</label>
                     <select name="trangThai">
                         <option value="">-- Tất cả --</option>
+                        <option value="Chua thanh toan" th:selected="${trangThai == 'Chua thanh toan'}">Chưa thanh toán</option>
                         <option value="Cho xac nhan" th:selected="${trangThai == 'Cho xac nhan'}">Chờ xác nhận</option>
                         <option value="Da xac nhan" th:selected="${trangThai == 'Da xac nhan'}">Đã xác nhận</option>
                         <option value="Da nhan phong" th:selected="${trangThai == 'Da nhan phong'}">Đã nhận phòng</option>
@@ -131,6 +264,83 @@
         </form>
     </section>
 
+    <section class="admin-panel" th:if="${dpEdit != null}">
+        <h2>Sửa Đơn Đặt Phòng</h2>
+
+        <form th:action="@{/admin/dat-phong/update}" method="post">
+            <input type="hidden" name="id" th:value="${dpEdit.id}">
+            <input type="hidden" name="page" th:value="${currentPage}">
+            <input type="hidden" name="size" th:value="${pageSize}">
+
+            <div class="admin-grid">
+                <div class="admin-field" th:if="${dpEdit.n == null}">
+                    <label>Họ tên khách (vãng lai)</label>
+                    <input type="text" name="hoten" th:value="${dpEdit.hoten}">
+                </div>
+                <div class="admin-field" th:if="${dpEdit.n == null}">
+                    <label>Email khách (vãng lai)</label>
+                    <input type="email" name="email" th:value="${dpEdit.email}">
+                </div>
+                <div class="admin-field" th:if="${dpEdit.n == null}">
+                    <label>Số điện thoại khách (vãng lai)</label>
+                    <input type="text" name="sdt" th:value="${dpEdit.sdt}">
+                </div>
+
+                <div class="admin-field" th:if="${dpEdit.n != null}">
+                    <label>Khách hàng (đã đăng ký)</label>
+                    <input type="text" th:value="${dpEdit.n.hoTen + ' - ' + dpEdit.n.email}" disabled>
+                </div>
+
+                <div class="admin-field">
+                    <label>CCCD</label>
+                    <input type="text" name="ma_cccd" placeholder="12 so CCCD" th:value="${dpEdit.ma_cccd}">
+                </div>
+
+                <div class="admin-field">
+                    <label>Ngày nhận phòng</label>
+                    <input type="datetime-local" name="ngaydatPhong"
+                           th:value="${dpEdit.ngaydatPhong != null ? #temporals.format(dpEdit.ngaydatPhong, 'yyyy-MM-dd''T''HH:mm') : ''}">
+                </div>
+                <div class="admin-field">
+                    <label>Ngày trả phòng</label>
+                    <input type="datetime-local" name="ngaytraPhong"
+                           th:value="${dpEdit.ngaytraPhong != null ? #temporals.format(dpEdit.ngaytraPhong, 'yyyy-MM-dd''T''HH:mm') : ''}">
+                </div>
+
+                <div class="admin-field">
+                    <label>Số người lớn</label>
+                    <input type="number" name="songuoiLon" min="0" th:value="${dpEdit.songuoiLon}">
+                </div>
+                <div class="admin-field">
+                    <label>Số trẻ em</label>
+                    <input type="number" name="sotreEm" min="0" th:value="${dpEdit.sotreEm}">
+                </div>
+
+                <div class="admin-field">
+                    <label>Yêu cầu thêm</label>
+                    <input type="text" name="yeuCauThem" th:value="${dpEdit.yeuCauThem}">
+                </div>
+
+                <div class="admin-field">
+                    <label>Trạng thái</label>
+                    <select name="trangThai">
+                        <option value="Chua thanh toan" th:selected="${dpEdit.trangThai == 'Chua thanh toan'}">Chưa thanh toán</option>
+                        <option value="Cho xac nhan" th:selected="${dpEdit.trangThai == 'Cho xac nhan'}">Chờ xác nhận</option>
+                        <option value="Da xac nhan" th:selected="${dpEdit.trangThai == 'Da xac nhan'}">Đã xác nhận</option>
+                        <option value="Da nhan phong" th:selected="${dpEdit.trangThai == 'Da nhan phong'}">Đã nhận phòng</option>
+                        <option value="Da tra phong" th:selected="${dpEdit.trangThai == 'Da tra phong'}">Đã trả phòng</option>
+                        <option value="Da huy" th:selected="${dpEdit.trangThai == 'Da huy'}">Đã hủy</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="admin-actions">
+                <button type="submit" class="admin-btn outline">Lưu Thay Đổi</button>
+                <a th:href="@{/admin/dat-phong(page=${currentPage}, size=${pageSize})}" class="admin-btn outline">Hủy</a>
+            </div>
+        </form>
+    </section>
+
     <section class="admin-panel">
         <h2>Danh Sách Đơn Đặt Phòng</h2>
 
@@ -148,14 +358,19 @@
                     <th>CCCD</th>
                     <th>Trạng thái</th>
                     <th>Hóa đơn</th>
+                    <th>Hành động</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="dp : ${datPhongs}">
                     <td th:text="${dp.id}"></td>
                     <td>
-                        <strong th:text="${dp.n != null ? dp.n.hoTen : ''}"></strong>
-                        <div th:text="${dp.n != null ? dp.n.email : ''}"></div>
+                        <strong th:text="${dp.n != null ? dp.n.hoTen :
+                      (dp.hoten != null ? dp.hoten + ' (Vãng lai)' : 'Không có')}">
+                        </strong>
+                        <div th:text="${dp.n != null ? dp.n.email :
+                  (dp.email != null ? dp.email : '')}">
+                        </div>
                     </td>
                     <td>
                         <span th:each="phong : ${phongTheoDon[dp.id]}"
@@ -168,31 +383,56 @@
                     <td th:text="${dp.songuoiLon + ' NL, ' + dp.sotreEm + ' TE'}"></td>
                     <td th:text="${dp.ma_cccd != null ? dp.ma_cccd : ''}"></td>
                     <td>
-                        <form th:action="@{/admin/dat-phong/update-trang-thai}" method="post">
-                            <input type="hidden" name="id" th:value="${dp.id}">
-                            <button th:if="${dp.trangThai == 'Cho xac nhan'}"
-                                    type="submit" name="trangThai" value="Da xac nhan"
-                                    class="status-badge warning"
-                                    th:disabled="${dp.ma_cccd == null or dp.ma_cccd.isEmpty()}">
-                                Chờ xác nhận
-                            </button>
-                            <button th:if="${dp.trangThai == 'Da xac nhan'}"
-                                    type="submit" name="trangThai" value="Da nhan phong"
-                                    class="status-badge active" style="cursor: pointer;">
-                                Đã xác nhận
-                            </button>
-                            <button th:if="${dp.trangThai == 'Da nhan phong'}"
-                                    type="submit" name="trangThai" value="Da tra phong"
-                                    class="status-badge active" style="cursor: pointer;">
-                                Đã nhận phòng
-                            </button>
-                            <span th:if="${dp.trangThai == 'Da tra phong'}" class="status-badge active">
-                Đã trả phòng
-            </span>
-                            <span th:if="${dp.trangThai == 'Da huy'}" class="status-badge inactive">
-                Đã hủy
-            </span>
-                        </form>
+                        <div class="status-row">
+                            <span th:if="${dp.trangThai == 'Chua thanh toan'}" class="status-badge neutral">
+                                Chưa thanh toán
+                            </span>
+
+                            <form th:if="${dp.trangThai != 'Chua thanh toan' and dp.trangThai != 'Da huy' and dp.trangThai != 'Da tra phong'}"
+                                  th:action="@{/admin/dat-phong/update-trang-thai}" method="post" style="margin: 0;">
+                                <input type="hidden" name="id" th:value="${dp.id}">
+                                <input type="hidden" name="page" th:value="${currentPage}">
+                                <input type="hidden" name="size" th:value="${pageSize}">
+                                <button th:if="${dp.trangThai == 'Cho xac nhan'}"
+                                        type="submit" name="trangThai" value="Da xac nhan"
+                                        class="status-badge warning"
+                                        style="cursor: pointer; border: none;"
+                                        th:disabled="${dp.ma_cccd == null or dp.ma_cccd.isEmpty()}">
+                                    Chờ xác nhận
+                                </button>
+                                <button th:if="${dp.trangThai == 'Da xac nhan'}"
+                                        type="submit" name="trangThai" value="Da nhan phong"
+                                        class="status-badge info"
+                                        style="cursor: pointer; border: none;">
+                                    Đã xác nhận
+                                </button>
+                                <button th:if="${dp.trangThai == 'Da nhan phong'}"
+                                        type="submit" name="trangThai" value="Da tra phong"
+                                        class="status-badge success"
+                                        style="cursor: pointer; border: none;">
+                                    Đã nhận phòng
+                                </button>
+                            </form>
+
+                            <span th:if="${dp.trangThai == 'Da tra phong'}" class="status-badge neutral">
+                                Đã trả phòng
+                            </span>
+                            <span th:if="${dp.trangThai == 'Da huy'}" class="status-badge danger">
+                                Đã hủy
+                            </span>
+
+                            <form th:if="${dp.trangThai == 'Chua thanh toan'}"
+                                  th:action="@{/admin/dat-phong/cancel}" method="post" style="margin: 0;">
+                                <input type="hidden" name="id" th:value="${dp.id}">
+                                <input type="hidden" name="page" th:value="${currentPage}">
+                                <input type="hidden" name="size" th:value="${pageSize}">
+                                <button type="submit" class="status-badge danger"
+                                        style="cursor: pointer; border: none;"
+                                        onclick="return confirm('Bạn có chắc muốn hủy đơn đặt phòng này?')">
+                                    Hủy đơn
+                                </button>
+                            </form>
+                        </div>
                     </td>
                     <td>
                         <a th:if="${daDatHoaDon != null and !daDatHoaDon.contains(dp.id)}"
@@ -201,16 +441,62 @@
                             Xuất HĐ
                         </a>
                         <span th:if="${daDatHoaDon != null and daDatHoaDon.contains(dp.id)}"
-                              class="status-badge active">
-            Đã xuất HĐ
-        </span>
+                              class="status-badge success">
+                            Đã xuất HĐ
+                        </span>
+                    </td>
+                    <td>
+                        <a th:href="@{/admin/dat-phong(edit=${dp.id}, page=${currentPage}, size=${pageSize})}"
+                           class="admin-btn small outline">
+                            Sửa
+                        </a>
                     </td>
                 </tr>
                 <tr th:if="${datPhongs.isEmpty()}">
-                    <td colspan="10"><div class="empty-state">Không tìm thấy đơn đặt phòng phù hợp.</div></td>
+                    <td colspan="11"><div class="empty-state">Không tìm thấy đơn đặt phòng phù hợp.</div></td>
                 </tr>
                 </tbody>
             </table>
+        </div>
+
+        <!-- Phân trang -->
+        <div class="admin-pagination" th:if="${totalPages > 0}">
+            <span class="pagination-info">
+                Hiển thị
+                <strong th:text="${currentPage * pageSize + 1}"></strong>–<strong
+                    th:text="${currentPage * pageSize + datPhongs.size()}"></strong>
+                trong tổng số <strong th:text="${totalItems}"></strong> đơn đặt phòng
+            </span>
+
+            <div class="pagination-links">
+                <a th:if="${currentPage > 0}"
+                   th:href="@{/admin/dat-phong(page=0, size=${pageSize})}"
+                   class="page-btn" aria-label="Trang đầu">&laquo;</a>
+                <span th:if="${currentPage == 0}" class="page-btn disabled">&laquo;</span>
+
+                <a th:if="${currentPage > 0}"
+                   th:href="@{/admin/dat-phong(page=${currentPage - 1}, size=${pageSize})}"
+                   class="page-btn" aria-label="Trang trước">&lsaquo;</a>
+                <span th:if="${currentPage == 0}" class="page-btn disabled">&lsaquo;</span>
+
+                <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                    <a th:if="${i != currentPage}"
+                       th:href="@{/admin/dat-phong(page=${i}, size=${pageSize})}"
+                       class="page-btn" th:text="${i + 1}"></a>
+                    <span th:if="${i == currentPage}"
+                          class="page-btn active" th:text="${i + 1}"></span>
+                </span>
+
+                <a th:if="${currentPage < totalPages - 1}"
+                   th:href="@{/admin/dat-phong(page=${currentPage + 1}, size=${pageSize})}"
+                   class="page-btn" aria-label="Trang sau">&rsaquo;</a>
+                <span th:if="${currentPage == totalPages - 1}" class="page-btn disabled">&rsaquo;</span>
+
+                <a th:if="${currentPage < totalPages - 1}"
+                   th:href="@{/admin/dat-phong(page=${totalPages - 1}, size=${pageSize})}"
+                   class="page-btn" aria-label="Trang cuối">&raquo;</a>
+                <span th:if="${currentPage == totalPages - 1}" class="page-btn disabled">&raquo;</span>
+            </div>
         </div>
     </section>
 </main>

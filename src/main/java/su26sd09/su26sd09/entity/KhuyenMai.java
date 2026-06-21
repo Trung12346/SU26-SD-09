@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -28,6 +29,9 @@ public class KhuyenMai {
     @ManyToOne
     @JoinColumn(name = "ma_nguoi_tao")
     public NguoiDung n;
+
+    @OneToMany(mappedBy = "km",cascade = CascadeType.ALL)
+    private List<DatPhong> dp;
 
     @Column(name = "code_khuyen_mai")
     @NotBlank(message = "code khuyến mãi không được để trống")
@@ -59,6 +63,7 @@ public class KhuyenMai {
 
     @Column(name = "ngay_tao",updatable = false,insertable = false)
     public LocalDateTime ngayTao;
+
 
 
 }

@@ -298,10 +298,10 @@
             white-space: nowrap;
         }
 
-        .trang-thai-badge.trong       { background: #EAF7EE; color: #246B35; }
-        .trang-thai-badge.dang-su-dung { background: #EBF5FB; color: #1A6A9A; }
-        .trang-thai-badge.dang-don-dep { background: #FEF9E7; color: #9A7D0A; }
-        .trang-thai-badge.bao-tri      { background: #FDEDEC; color: #9F2F25; }
+        .trang-thai-badge.trong          { background: #EAF3DE; color: #27500A; }
+.trang-thai-badge.dang-su-dung    { background: #FAECE7; color: #712B13; }
+.trang-thai-badge.cho-xac-nhan    { background: #FAEEDA; color: #633806; }
+.trang-thai-badge.bao-tri         { background: #FCEBEB; color: #791F1F; }
 
         /* ===== TIEN NGHI TAGS TRONG BANG ===== */
         .amenity-tags {
@@ -382,6 +382,7 @@
         <a href="/admin/khuyen-mai">Khuyến Mãi</a>
         <a href="/admin/danh-gia">Đánh Giá</a>
         <a href="/admin/nguoi-dung">Người Dùng</a>
+        <a href="/admin/dat-phong-quay">Đặt Phòng quầy</a>
     </nav>
     <div class="header-actions">
         <a href="/logout" class="btn btn-outline">Đăng Xuất</a>
@@ -444,7 +445,7 @@
                     <select th:field="*{trangThai}" required>
                         <option value="Trong">Trong</option>
                         <option value="Dang su dung">Đang sử dụng</option>
-                        <option value="Dang don dep">Đang dọn dẹp</option>
+                        <option value="Cho xac nhan">Chờ xác nhận</option>
                         <option value="Bao tri">Bảo trì</option>
                     </select>
                 </div>
@@ -519,11 +520,11 @@
                     <td th:text="${p.soTang}"></td>
                     <td th:text="${#numbers.formatDecimal(p.giaMoiDem, 0, 'COMMA', 0, 'POINT')} + ' VND'"></td>
                     <td>
-                        <span th:with="tt=${p.trangThai}"
-                              th:classappend="${tt == 'Trong'} ? 'trong' : (${tt == 'Dang su dung'} ? 'dang-su-dung' : (${tt == 'Dang don dep'} ? 'dang-don-dep' : 'bao-tri'))"
-                              class="trang-thai-badge"
-                              th:text="${tt == 'Trong'} ? 'Trong' : (${tt == 'Dang su dung'} ? 'Dang su dung' : (${tt == 'Dang don dep'} ? 'Dang don dep' : 'Bao tri'))">
-                        </span>
+    <span th:with="tt=${p.trangThai}"
+          th:classappend="${tt == 'Trong'} ? 'trong' : (${tt == 'Dang su dung'} ? 'dang-su-dung' : (${tt == 'Cho xac nhan'} ? 'cho-xac-nhan' : 'bao-tri'))"
+          class="trang-thai-badge"
+          th:text="${tt == 'Trong'} ? 'Trống' : (${tt == 'Dang su dung'} ? 'Đang sử dụng' : (${tt == 'Cho xac nhan'} ? 'Chờ xác nhận' : 'Bảo trì'))">
+    </span>
                     </td>
                     <td>
                         <div class="amenity-tags" th:if="${tienNghiTheoPhong[p.maPhong] != null and !tienNghiTheoPhong[p.maPhong].isEmpty()}">
