@@ -1,18 +1,24 @@
 package su26sd09.su26sd09.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import su26sd09.su26sd09.entity.LoaiPhong;
-import su26sd09.su26sd09.entity.Phong;
-import su26sd09.su26sd09.entity.DanhGia;
-import su26sd09.su26sd09.service.DanhGiaService;
-import su26sd09.su26sd09.service.PhongService;
+import su26sd09.su26sd09.entity.*;
+import su26sd09.su26sd09.repository.ChiTietDichvuRepo;
+import su26sd09.su26sd09.service.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +32,24 @@ public class PhongController {
 
     @Autowired
     private DanhGiaService danhGiaService;
+
+    @Autowired
+    private ChiTietDatPhongService chiTietDatPhongService;
+
+    @Autowired
+    private DatPhongService datphongservice;
+
+    @Autowired
+    private DichVuService dichVuService;
+
+    @Autowired
+    private ChiTietDichVuService ctdvService;
+
+    @Autowired
+    private NguoiDungService nguoiDungService;
+
+    @Autowired
+    private NhanVienService nhanVienService;
 
     @GetMapping
     public String index(Model model) {
@@ -91,4 +115,253 @@ public class PhongController {
         
         return "room-detail";
     }
+
+    @GetMapping("/dat-phong/xac-nhan/{id}")
+    public String ConfirmOrder(@PathVariable int id,Model model){
+        DatPhong dp =  datphongservice.findById(id);
+        if (dp.getTrangThai().equals("Da xac nhan")){
+            return "redirect:/home";
+        }
+        BigDecimal resthue = BigDecimal.valueOf(dp.getNgaytraPhong().getDayOfYear() - dp.getNgaydatPhong().getDayOfYear());
+        List<ChiTietDatPhong> listCt = chiTietDatPhongService.findByDatPhongId(id);
+        List<Chi_tiet_dich_vu> listctdv = ctdvService.findByDatPhongId(id);
+        BigDecimal amountDv = BigDecimal.ZERO;
+        BigDecimal amount = BigDecimal.ZERO;
+        BigDecimal amountP = BigDecimal.ZERO;
+        if (listctdv != null) {
+            for (Chi_tiet_dich_vu dv : listctdv) {
+                amountDv = amountDv.add(dv.getDonGia());
+
+            }
+        }
+        for(ChiTietDatPhong ct : listCt){
+            amountP = amountP.add(ct.getGiaKhiDat());
+            System.out.println("Chi tiet phong dang dat: "+ct.getP().getSoPhong());
+            amount = amount.add(ct.getGiaKhiDat());
+
+            System.out.println("Amount: "+amount);
+
+        }
+        System.out.println("AmountDv: "+amountDv);
+        amount = amount.add(amountDv);
+        model.addAttribute("TienDv",amountDv);
+
+        model.addAttribute("TongTien",amount);
+        model.addAttribute("TienPhong",amountP);
+        model.addAttribute("datPhong",dp);
+        model.addAttribute("chiTietDatPhongList",listCt);
+        model.addAttribute("nightCount",resthue);
+        model.addAttribute("dichVuList",dichVuService.findAll());
+
+        return "dat-phong-xac-nhan";
+    }
+
+    @PostMapping("/dat-phong/xac-nhan/{id}")
+    public String ConfirmDV(@PathVariable int id,
+                            @RequestParam(value = "dichVuIds", required = false) List<Integer> dichvuid,
+                            @RequestParam Map<String, String> allParams) {
+
+        DatPhong dp = datphongservice.findById(id);
+
+        if (dichvuid != null) {
+            for (Integer maDichVu : dichvuid) {
+                Dich_vu dv = dichVuService.findById(maDichVu);
+
+                String slStr = allParams.get("soLuong_" + maDichVu);
+                int sl = (slStr != null && !slStr.isBlank()) ? Integer.parseInt(slStr) : 1;
+
+                String ngayStr = allParams.get("ngaySuDung_" + maDichVu);
+                LocalDateTime ngaySuDung = (ngayStr != null && !ngayStr.isBlank())
+                        ? LocalDateTime.parse(ngayStr)
+                        : LocalDateTime.now();
+
+                Chi_tiet_dich_vu ct = new Chi_tiet_dich_vu();
+                ct.setSoluong(sl);
+                ct.setDatPhong(dp);
+                ct.setDv(dv);
+                ct.setDonGia(dv.getGia().multiply(BigDecimal.valueOf(sl)));
+                ct.setNgay_su_dung(ngaySuDung);
+                ctdvService.save(ct);
+                System.out.println("Gia dich vu: "+dv.getGia().multiply(BigDecimal.valueOf(sl)));
+
+            }
+        }
+
+        if (dp.getN() != null && dp.getN().getVaiTro().getTenVaiTro().equals("ROLE_EMPLOYEE")){
+            return "redirect:/thanh-toan/dat-phong/"+dp.getId();
+        }else{
+            return "redirect:/phong/dat-phong/thong-tin-khach/"+dp.getId();
+        }
+    }
+
+    @GetMapping("/dat-phong/thong-tin-khach/{id}")
+    public String ConfirmCustomerInfor(@PathVariable int id, Model model){
+
+        DatPhong dp = datphongservice.findById(id);
+        if (dp.getTrangThai().equals("Da xac nhan")){
+            return "redirect:/home";
+        }
+        List<ChiTietDatPhong> listCt = chiTietDatPhongService.findByDatPhongId(id);
+        List<Chi_tiet_dich_vu> listctdv = ctdvService.findByDatPhongId(id);
+        BigDecimal amountDv = BigDecimal.ZERO;
+       model.addAttribute("datPhong",dp);
+        System.out.println("Debug dat phong Ngay nhan phong: "+dp.getNgaydatPhong());
+       model.addAttribute("nightCount",5);
+       model.addAttribute("chiTietDatPhongList",listCt);
+        BigDecimal amount = BigDecimal.ZERO;
+        BigDecimal ThueVat = new BigDecimal("0.10");
+
+
+        BigDecimal resThue = BigDecimal.valueOf(dp.getNgaytraPhong().getDayOfYear() - dp.getNgaydatPhong().getDayOfYear());
+        for(Chi_tiet_dich_vu dv : listctdv){
+            amountDv = amountDv.add(dv.getDonGia());
+        }
+        model.addAttribute("TienDv",amountDv);
+        for (ChiTietDatPhong chiTietDatPhong : listCt){
+            amount = amount.add(chiTietDatPhong.getGiaKhiDat());
+            System.out.println("So tien: "+chiTietDatPhong.getGiaKhiDat() + "Amount: "+amount );
+
+            System.out.println("In for each loops: "+chiTietDatPhong.getGiaMoiDem());
+
+        }
+        BigDecimal TotalAmount = amount.add(amountDv);
+        BigDecimal TienVat = TotalAmount.multiply(ThueVat).setScale(2, RoundingMode.HALF_UP);
+        TotalAmount = TotalAmount.add(TienVat);
+        System.out.println("Amount: "+ amount);
+        model.addAttribute("TienVat",TienVat);
+        model.addAttribute("TienPhong",amount);
+        model.addAttribute("TongTien",TotalAmount);
+        return "dat-phong-thong-tin-khach";
+    }
+
+    @PostMapping("/dat-phong/thong-tin-khach/{id}")
+    public String SaveXacThucThongTin(Model model,
+                                      @PathVariable int id,
+                                      @RequestParam("hoTen") String hoten,
+                                      @RequestParam("email") String email,
+                                      @RequestParam("sdt")String sodienthoai,
+                                      @RequestParam("cccd") String cccd,
+                                      @RequestParam("yeuCauThem") String yeucauthem,
+                                      Authentication authentication) {
+            BigDecimal amount = BigDecimal.ZERO;
+            BigDecimal amountdv = BigDecimal.ZERO;
+            DatPhong dp = datphongservice.findById(id);
+            if(dp ==null) {
+                return "dat-phong-thong-tin-khach";
+
+            }
+            List<ChiTietDatPhong> listCtdp = chiTietDatPhongService.findByDatPhongId(id);
+            List<Chi_tiet_dich_vu> listCtdv = ctdvService.findByDatPhongId(id);
+            for(ChiTietDatPhong ctdp : listCtdp){
+                amount = amount.add(ctdp.getGiaKhiDat());
+            }
+            for(Chi_tiet_dich_vu ctdv : listCtdv){
+                amountdv = amountdv.add(ctdv.getDonGia());
+            }
+            amount = amount.add(amountdv);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String emailSearch;
+        if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
+            emailSearch = auth.getName();
+        } else {
+            emailSearch = "staff@hotel.vn";
+        }
+        NguoiDung n = nguoiDungService.findByEmail(emailSearch);
+
+        boolean isNvDp = n.getVaiTro() != null && "ROLE_STAFF".equals(n.getVaiTro().toString());
+
+        if (isNvDp) {
+            Nhanvien nv = nhanVienService.findByMaNguoiDung(n.getMaNguoiDung());
+            dp.setNv(nv != null ? nv : nhanVienService.findByMaNguoiDung(nguoiDungService.findByEmail("staff@hotel.vn").getMaNguoiDung()));
+        } else {
+            dp.setNv(nhanVienService.findByMaNguoiDung(nguoiDungService.findByEmail("staff@hotel.vn").getMaNguoiDung()));
+        }
+        System.out.println("Amount Xac nhan thong tin khach hang: "+amount);
+        System.out.println("Amount dich vu xac nhan thong tin khach hang: "+amountdv);
+            dp.setHoten(hoten);
+            dp.setEmail(email);
+            dp.setSdt(sodienthoai);
+            dp.setMa_cccd(cccd);
+            dp.setYeuCauThem(yeucauthem);
+
+
+            datphongservice.save(dp);
+
+            return "redirect:/thanh-toan/dat-phong/"+dp.getId();
+    }
+    @PostMapping("/dat-phong/quick")
+    public String quickBooking(@RequestParam Integer maLoaiPhong,
+                               @RequestParam Integer maPhong,
+                               @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayNhan,
+                               @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayTra,
+                               @RequestParam Integer nguoiLon,
+                               @RequestParam Integer treEm,
+                               @RequestParam(value = "ma_cccd",required = false) String maCccd,
+                               @RequestParam(required = false) String yeuCauThem,
+                               Authentication authentication,
+                               RedirectAttributes redirectAttributes) {
+        System.out.println("vao Controller");
+        Phong phong = phongService.findById(maPhong);
+        if (phong == null || !"Trong".equals(phong.getTrangThai())) {
+            redirectAttributes.addFlashAttribute("bookingError", "Phòng không khả dụng, vui lòng chọn phòng khác.");
+            return "redirect:/loai-phong/" + maLoaiPhong;
+        }
+
+        DatPhong dp = new DatPhong();
+        dp.setNgaydatPhong(ngayNhan.atStartOfDay());
+        dp.setNgaytraPhong(ngayTra.atTime(12, 0));
+        dp.setSonguoiLon(nguoiLon);
+        dp.setSotreEm(treEm);
+        dp.setMa_cccd(maCccd);
+        dp.setYeuCauThem(yeuCauThem);
+        dp.setNgayTao(LocalDateTime.now());
+        boolean isLoggedIn = authentication != null
+                && authentication.isAuthenticated()
+                && !(authentication instanceof AnonymousAuthenticationToken);
+        if (isLoggedIn) {
+
+            NguoiDung nd = nguoiDungService.findByEmail(authentication.getName());
+            if(nd !=null) {
+                dp.setHoten(nd.getHoTen());
+                dp.setEmail(nd.getEmail());
+                dp.setSdt(nd.getSoDienThoai());
+
+                dp.setN(nd);
+            }
+        }
+
+        dp.setTrangThai("Cho xac nhan");
+        DatPhong savedDp = datphongservice.save(dp);
+
+        ChiTietDatPhong ctdp = new ChiTietDatPhong();
+        ctdp.setD(savedDp);
+        ctdp.setP(phong);
+        ctdp.setGiaMoiDem(phong.getGiaMoiDem());
+
+        if (phong.getKhuyenMai() != null) {
+            KhuyenMai km = phong.getKhuyenMai();
+            if ("PERCENT".equals(km.getLoaiGiam())) {
+                BigDecimal phanTramGiam = km.getGiatriGiam().divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP);
+                BigDecimal heSoConLai = BigDecimal.ONE.subtract(phanTramGiam);
+                ctdp.setGiaKhiDat(phong.getGiaMoiDem().multiply(heSoConLai));
+            } else if ("FIXED".equals(km.getLoaiGiam())) {
+                BigDecimal giaSauGiam = phong.getGiaMoiDem().subtract(km.getGiatriGiam());
+                if (giaSauGiam.compareTo(BigDecimal.ZERO) < 0) {
+                    giaSauGiam = BigDecimal.ZERO;
+                }
+                ctdp.setGiaKhiDat(giaSauGiam);
+            }
+        } else {
+            ctdp.setGiaKhiDat(phong.getGiaMoiDem());
+        }
+
+        chiTietDatPhongService.save(ctdp);
+
+        phong.setTrangThai("Trong");
+        phongService.save1(phong);
+
+        return "redirect:/phong/dat-phong/xac-nhan/" + savedDp.getId();
+    }
+
+
 }

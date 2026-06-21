@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import su26sd09.su26sd09.entity.DatPhong;
 import su26sd09.su26sd09.entity.Phong;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -16,6 +17,9 @@ public interface DatPhongRepo extends JpaRepository<DatPhong,Integer> {
 
     @Query("select d from DatPhong d where d.n.maNguoiDung = :id")
     Page<DatPhong> findByNguoiDung(int id, Pageable pageable);
+
+    List<DatPhong> findByTrangThaiAndNgayTaoBefore(String trangThai, LocalDateTime ngay);
+
 
     @Query("select d from DatPhong d where d.n.maNguoiDung = :id")
     List<DatPhong> FindByNguoiDung(int id);

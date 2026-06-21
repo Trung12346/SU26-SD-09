@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -32,6 +33,10 @@ public class DatPhong {
     @ManyToOne
     public Nhanvien nv;
 
+    @ManyToOne
+    @JoinColumn(name = "ma_khuyen_mai",referencedColumnName = "ma_khuyen_mai")
+    private KhuyenMai km;
+
     @Column(name = "ngay_nhan_phong")
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:MM:ss")
     public LocalDateTime ngaydatPhong;
@@ -52,6 +57,17 @@ public class DatPhong {
     @Column(name = "trang_thai")
     public String trangThai;
 
+    @Column(name = "ho_ten")
+    public String hoten;
+
+    @Column(name = "email")
+    public String email;
+
+    @Column(name = "so_dien_thoai")
+    public String sdt;
+
+
+
     @Column(name = "ngay_tao")
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:MM:ss")
     public LocalDateTime ngayTao;
@@ -65,5 +81,8 @@ public class DatPhong {
 
     @OneToMany(mappedBy = "d",fetch = FetchType.EAGER)
     private List<ChiTietDatPhong> chiTietDatPhongs;
+
+    @OneToMany(mappedBy = "datPhong",cascade = CascadeType.ALL)
+    private List<Chi_tiet_dich_vu> ctdv;
 
 }

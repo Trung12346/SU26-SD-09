@@ -27,6 +27,7 @@
         <a href="/admin/khuyen-mai">Khuyến Mãi</a>
         <a href="/admin/danh-gia">Đánh Giá</a>
         <a href="/admin/nguoi-dung">Người Dùng</a>
+        <a href="/admin/dat-phong-quay">Đặt Phòng tại quầy</a>
     </nav>
     <div class="header-actions">
         <a href="/logout" class="btn btn-outline">Đăng Xuất</a>
@@ -211,17 +212,15 @@
                 <tr th:each="hd : ${hoaDons}">
                     <td th:text="${hd.id}"></td>
                     <td th:text="${hd.d != null ? hd.d.id : ''}"></td>
-                    <td th:text="${hd.d != null and hd.d.n != null ? hd.d.n.hoTen : ''}"></td>
+                    <td th:text="${hd.d != null ?(hd.d.n != null ? hd.d.n.hoTen :
+                                (hd.d.hoten != null ? hd.d.hoten + ' (Vãng lai)' : 'Không có')): ''}">
+                    </td>
                     <td th:text="${hd.k != null ? hd.k.promoCode : 'Null'}"></td>
                     <td th:text="${hd.tongTien != null ? #numbers.formatDecimal(hd.tongTien, 0, 'COMMA', 0, 'POINT') + ' VND' : ''}"></td>
                     <td th:text="${hd.daThanhToan != null ? #numbers.formatDecimal(hd.daThanhToan, 0, 'COMMA', 0, 'POINT') + ' VND' : ''}"></td>
                     <td th:text="${hd.ngayXuat != null ? #temporals.format(hd.ngayXuat, 'dd/MM/yyyy HH:mm') : ''}"></td>
                     <td>
                         <div class="row-actions">
-                            <a class="admin-btn small outline"
-                               th:href="@{/admin/hoa-don/edit/{id}(id=${hd.id}, keyword=${keyword})}">
-                                Sửa
-                            </a>
                             <a class="admin-btn small pdf-btn"
                                th:href="@{/admin/hoa-don/xuat-pdf/{id}(id=${hd.id})}"
                                target="_blank">

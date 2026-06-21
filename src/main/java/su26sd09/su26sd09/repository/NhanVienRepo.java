@@ -12,4 +12,7 @@ public interface NhanVienRepo extends JpaRepository<Nhanvien,Integer> {
     @Query("select n from Nhanvien n where n.n.hoTen like concat('%',:name,'%') ")
     public List<Nhanvien> findbyName(@PathVariable("name") String name);
 
+    Nhanvien findByN_MaNguoiDung(Integer maNguoiDung);
+
+
 }

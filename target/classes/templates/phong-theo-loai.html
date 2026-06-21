@@ -582,7 +582,7 @@
                 <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=800&q=80"
                      th:alt="${p.soPhong}">
                 <span class="phong-status-badge"
-                      th:classappend="${p.trangThai == 'Trong'} ? 'status-trong' : (${p.trangThai == 'Da dat'} ? 'status-da-dat' : 'status-bao-tri')"
+                      th:classappend="${p.trangThai == 'Trong'} ? 'status-trong' : (${p.trangThai == 'Cho xac nhan'} ? 'status-da-dat' : 'status-bao-tri')"
                       th:text="${p.trangThai}">Trong</span>
             </div>
             <div class="phong-card-info">
@@ -649,7 +649,9 @@
             <h3>Đặt Phòng Nhanh</h3>
             <p class="sub">Chọn ngày và điền thông tin để đặt phòng ngay</p>
 
-            <form action="/dat-phong/quick" method="post" id="quickBookingForm">
+            <form action="/phong/dat-phong/quick" method="post" id="quickBookingForm">
+                <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
                 <input type="hidden" name="maLoaiPhong" th:value="${loaiPhong != null} ? ${loaiPhong.id} : 1">
                 <input type="hidden" name="maPhong" id="quick-ma-phong">
 
@@ -685,11 +687,11 @@
                         </select>
                     </div>
                 </div>
-                <div class="sidebar-form-group">
+                <div class="sidebar-form-group" sec:authorize="hasAnyRole('STAFF','EMPLOYEE')">
                     <label>CCCD</label>
                     <input type="text" name="ma_cccd" placeholder="12 so CCCD" required pattern="[0-9]{12}">
                 </div>
-                <div class="sidebar-form-group">
+                <div class="sidebar-form-group" >
                     <label>Yêu cầu thêm (tuy chon)</label>
                     <textarea name="yeuCauThem" placeholder="Phòng tầng cao, view đẹp..."></textarea>
                 </div>

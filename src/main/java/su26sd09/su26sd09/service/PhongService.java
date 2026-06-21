@@ -158,6 +158,12 @@ public class PhongService {
                 .map(tnp -> tnp.getTienNghi().getTenTienNghi())
                 .toList();
     }
+    public Phong save1(Phong p){
+        return phongRepository.save(p);
+    }
+    public List<Phong> findByTrangThai(String trangThai) {
+        return phongRepository.findByTrangThai(trangThai);
+    }
 
     @Transactional
     public void save(Phong phong, int loaiPhongId, List<Integer> tienNghiIds) {

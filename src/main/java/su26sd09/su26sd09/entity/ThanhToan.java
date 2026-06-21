@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -29,7 +30,7 @@ public class ThanhToan {
     public String phuongThuc;
 
     @Column(name = "so_tien")
-    public String soTien;
+    public BigDecimal soTien;
 
     @Column(name = "trang_thai")
     public String trangThai;
@@ -38,7 +39,7 @@ public class ThanhToan {
     public String magiaodich;
 
     @ManyToOne
-    @JoinColumn(name = "ma_nhan_vien")
+    @JoinColumn(name = "ma_nhan_vien",referencedColumnName = "ma_nhan_vien")
     public Nhanvien nv;
 
     @Column(name = "Ngay_thanh_toan")

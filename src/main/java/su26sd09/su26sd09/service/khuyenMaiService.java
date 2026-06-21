@@ -6,6 +6,7 @@ import su26sd09.su26sd09.entity.KhuyenMai;
 import su26sd09.su26sd09.repository.khuyenMaiRepo;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class khuyenMaiService {
@@ -31,6 +32,10 @@ public class khuyenMaiService {
     public void save(KhuyenMai m){
         repo.save(m);
 
+    }
+
+    public Stream<KhuyenMai> findAllActive(){
+        return  repo.findAll().stream().filter(km -> km.hoatDong == true);
     }
 
     public List<KhuyenMai> findbyNameVoucher(String name){

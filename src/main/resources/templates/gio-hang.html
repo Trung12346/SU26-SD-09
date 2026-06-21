@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -142,9 +142,21 @@
         <a href="/loai-phong">Loại Phòng</a>
         <a href="/gio-hang" style="color: var(--sky-primary);">Danh Sách Đặt Phòng</a>
     </nav>
+    <div class="header-actions" sec:authorize="isAnonymous()">
+        <a href="/Login" class="btn btn-outline">Đăng Nhập</a>
+        <a href="/Register" class="btn btn-filled">Đăng Ký</a>
+    </div>
+    <div class="header-actions" sec:authorize="isAuthenticated()">
+        <a href="/profiles" class="btn btn-outline">Thông Tin Tài Khoản</a>
+        <a href="/logout" class="btn btn-filled">Đăng Xuất</a>
+    </div>
 </header>
 
 <main class="cart-wrapper">
+    <div th:if="${bookingSuccess}" class="admin-message success" th:text="${bookingSuccess}"></div>
+    <div th:if="${bookingError}" class="admin-message error" th:text="${bookingError}"></div>
+    <div id="bookingSuccessFlag" th:if="${bookingSuccess}" hidden></div>
+
     <div class="cart-layout">
         <section class="cart-panel">
             <h1>Danh Sách Đặt Phòng</h1>
@@ -160,11 +172,11 @@
 
                 <div>
                     <label>Ngày nhận phòng</label>
-                    <input type="date" name="ngayNhan" id="ngayNhan" required>
+                    <input type="datetime-local" name="ngayNhan" id="ngayNhan" required>
                 </div>
                 <div>
                     <label>Ngày trả phòng</label>
-                    <input type="date" name="ngayTra" id="ngayTra" required>
+                    <input type="datetime-local" name="ngayTra" id="ngayTra" required>
                 </div>
                 <div>
                     <label>Người lớn</label>
@@ -183,11 +195,10 @@
                         <option value="2">2</option>
                     </select>
                 </div>
-                <div>
-                    <label>CCCD</label>
-                    <input type="text" name="ma_cccd" placeholder="12 số CCCD" required pattern="[0-9]{12}">
+                <div sec:authorize="hasRole('EMPLOYEE')">
+                    <label>Mã CCCD</label>
+                    <input type="text" name="ma_cccd" required>
                 </div>
-
                 <div>
                     <div class="cart-summary-row">
                         <span>Số phòng</span>
@@ -225,6 +236,10 @@
     const checkoutButton = document.getElementById('checkoutButton');
     const ngayNhanEl = document.getElementById('ngayNhan');
     const ngayTraEl = document.getElementById('ngayTra');
+
+    if (document.getElementById('bookingSuccessFlag')) {
+        localStorage.removeItem(CART_KEY);
+    }
 
     function readCart() {
         try {

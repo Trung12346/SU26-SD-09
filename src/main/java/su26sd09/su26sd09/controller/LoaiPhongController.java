@@ -78,6 +78,7 @@ public class LoaiPhongController {
         List<Phong> phongs = phongService.findPhongTheoLoai(id);
         Map<Integer, List<String>> tienNghiTheoPhong = new HashMap<>();
         for (Phong phong : phongs) {
+
             tienNghiTheoPhong.put(phong.getMaPhong(), phongService.findTenTienNghiByPhong(phong.getMaPhong()));
         }
 
