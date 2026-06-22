@@ -33,4 +33,17 @@ public class LoaiPhongService {
     public List<LoaiPhong> findbyName(String name){
         return repo.findbyName(name);
     }
+
+    public boolean CheckTrungLoai(LoaiPhong l){
+        for (LoaiPhong p : findAll()){
+            if(p.tenLoai.equals(l.tenLoai) && p.id != l.id ){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List timKiem(String keyword){
+        return repo.findbyName(keyword);
+    }
 }
