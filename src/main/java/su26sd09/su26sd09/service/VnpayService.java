@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Stream;
 
 @Service
 public class VnpayService {
@@ -164,11 +165,15 @@ public class VnpayService {
         dp.setTrangThai("Cho xac nhan");
 
         authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email;
+        List<Nhanvien> listNhanVien = nhanVienService.findAll();
+        Stream<Nhanvien> ListNvLeTan = listNhanVien.stream().filter(nv -> nv.getBoPhan().equalsIgnoreCase("lễ tân"));
+        String email = null;
         if (authentication != null && authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken)) {
             email = authentication.getName();
         } else {
-            email = "staff@hotel.vn";
+            for(Nhanvien nv: ListNvLeTan.toList()) {
+                email = nv.getN().getEmail();
+            }
         }
 
         NguoiDung n = nguoiDungService.findByEmail(email);
@@ -185,13 +190,13 @@ public class VnpayService {
         }
         if (nvGan == null) {
 
-            NguoiDung staffDefault = nguoiDungService.findByEmail("staff@hotel.vn");
+            NguoiDung staffDefault = nguoiDungService.findByEmail(email);
             if (staffDefault != null) {
                 nvGan = nhanVienService.findByMaNguoiDung(staffDefault.getMaNguoiDung());
             }
         }
         if (nvGan == null) {
-            System.out.println("Khong tim thay Nhanvien fallback staff@hotel.vn");
+            System.out.println("Khong tim thay Nhanvien fallback nv bo phan le tan");
         }
 
         dp.setNv(nvGan);
