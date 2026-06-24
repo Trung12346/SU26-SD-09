@@ -39,7 +39,6 @@ public class Chi_tiet_dich_vu {
     private DatPhong datPhong;
 
 
-
     @ManyToOne
     @JoinColumn(name = "ma_dich_vu",referencedColumnName = "ma_dich_vu")
     private Dich_vu dv;

@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -55,6 +56,7 @@ public class HoaDon {
 
     @Column(name = "ghi_chu")
     public String ghiChu;
+
 
 
 

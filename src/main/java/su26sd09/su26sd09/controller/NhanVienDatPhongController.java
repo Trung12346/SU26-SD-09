@@ -1,14 +1,15 @@
 package su26sd09.su26sd09.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import su26sd09.su26sd09.entity.*;
 import su26sd09.su26sd09.service.*;
@@ -17,12 +18,15 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/admin/dat-phong-quay")
-public class DatPhongTaiQuayController {
+@RequestMapping("/nhan-vien")
+public class NhanVienDatPhongController {
+
     @Autowired private PhongService phongService;
     @Autowired private DatPhongService datPhongService;
     @Autowired private ChiTietDatPhongService chiTietDatPhongService;
@@ -34,10 +38,141 @@ public class DatPhongTaiQuayController {
     @Autowired private NguoiDungService nguoiDungService;
     @Autowired private NhanVienService nhanVienService;
 
+    @GetMapping("/dat-phong")
+    public String getAllDatPhong(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Model model) {
 
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        Page<DatPhong> datPhongPage = datPhongService.findAll(pageable);
+        List<DatPhong> datPhongs = datPhongPage.getContent();
 
-    @GetMapping("")
-    public String showForm(Model model, Authentication authentication) {
+        Map<Integer, List<ChiTietDatPhong>> mapCtdp = new HashMap<>();
+        Map<Integer, List<Phong>> phongTheoDon = new HashMap<>();
+        for (DatPhong dp : datPhongs) {
+            mapCtdp.put(dp.getId(), chiTietDatPhongService.findByDatPhongId(dp.getId()));
+            phongTheoDon.put(dp.getId(), datPhongService.findPhongByDatPhongId(dp.getId()));
+        }
+
+        List<Integer> daDatHoaDon = hoaDonService.findAll()
+                .stream()
+                .filter(hd -> hd.getD() != null)
+                .map(hd -> hd.getD().getId())
+                .collect(Collectors.toList());
+
+        model.addAttribute("datPhongs", datPhongs);
+        model.addAttribute("MapCtdp", mapCtdp);
+        model.addAttribute("phongTheoDon", phongTheoDon);
+        model.addAttribute("daDatHoaDon", daDatHoaDon);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", datPhongPage.getTotalPages());
+        model.addAttribute("totalItems", datPhongPage.getTotalElements());
+        model.addAttribute("pageSize", size);
+
+        return "nhan-vien/dat-phong-list";
+    }
+
+    @GetMapping("/dat-phong/search")
+    public String searchDatPhong(
+            @RequestParam(required = false) Integer maDatPhong,
+            @RequestParam(required = false) String tenKhach,
+            @RequestParam(required = false) String ma_cccd,
+            @RequestParam(required = false) String ngayNhanTu,
+            @RequestParam(required = false) String ngayNhanDen,
+            @RequestParam(required = false) String ngayTraTu,
+            @RequestParam(required = false) String ngayTraDen,
+            @RequestParam(required = false) Integer soNguoiLon,
+            @RequestParam(required = false) Integer soTreEm,
+            @RequestParam(required = false) String trangThai,
+            @RequestParam(required = false) String yeuCauThem,
+            @RequestParam(required = false) String ngayTaoTu,
+            @RequestParam(required = false) String ngayTaoDen,
+            @RequestParam(required = false) String ngayCapNhatTu,
+            @RequestParam(required = false) String ngayCapNhatDen,
+            Model model) {
+
+        List<DatPhong> datPhongs = datPhongService.search(
+                maDatPhong, tenKhach, null, ma_cccd,
+                ngayNhanTu, ngayNhanDen, ngayTraTu, ngayTraDen,
+                soNguoiLon, soTreEm, trangThai, yeuCauThem,
+                ngayTaoTu, ngayTaoDen, ngayCapNhatTu, ngayCapNhatDen
+        );
+
+        Map<Integer, List<ChiTietDatPhong>> mapCtdp = new HashMap<>();
+        Map<Integer, List<Phong>> phongTheoDon = new HashMap<>();
+        for (DatPhong dp : datPhongs) {
+            mapCtdp.put(dp.getId(), chiTietDatPhongService.findByDatPhongId(dp.getId()));
+            phongTheoDon.put(dp.getId(), datPhongService.findPhongByDatPhongId(dp.getId()));
+        }
+
+        List<Integer> daDatHoaDon = hoaDonService.findAll()
+                .stream()
+                .filter(hd -> hd.getD() != null)
+                .map(hd -> hd.getD().getId())
+                .collect(Collectors.toList());
+
+        model.addAttribute("datPhongs", datPhongs);
+        model.addAttribute("MapCtdp", mapCtdp);
+        model.addAttribute("phongTheoDon", phongTheoDon);
+        model.addAttribute("daDatHoaDon", daDatHoaDon);
+        model.addAttribute("maDatPhong", maDatPhong);
+        model.addAttribute("tenKhach", tenKhach);
+        model.addAttribute("ma_cccd", ma_cccd);
+        model.addAttribute("ngayNhanTu", ngayNhanTu);
+        model.addAttribute("ngayNhanDen", ngayNhanDen);
+        model.addAttribute("ngayTraTu", ngayTraTu);
+        model.addAttribute("ngayTraDen", ngayTraDen);
+        model.addAttribute("soNguoiLon", soNguoiLon);
+        model.addAttribute("soTreEm", soTreEm);
+        model.addAttribute("trangThai", trangThai);
+        model.addAttribute("yeuCauThem", yeuCauThem);
+        model.addAttribute("ngayTaoTu", ngayTaoTu);
+        model.addAttribute("ngayTaoDen", ngayTaoDen);
+        model.addAttribute("ngayCapNhatTu", ngayCapNhatTu);
+        model.addAttribute("ngayCapNhatDen", ngayCapNhatDen);
+
+        return "nhan-vien/dat-phong-list";
+    }
+
+    @PostMapping("/dat-phong/update-trang-thai")
+    public String updateTrangThai(
+            @RequestParam Integer id,
+            @RequestParam String trangThai,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            RedirectAttributes redirectAttributes) {
+
+        DatPhong dp = datPhongService.findById(id);
+        if (dp == null) {
+            redirectAttributes.addFlashAttribute("error", "Không tìm thấy đơn đặt phòng #" + id);
+            return "redirect:/nhan-vien/dat-phong?page=" + page + "&size=" + size;
+        }
+
+        if (dp.getMa_cccd() == null || dp.getMa_cccd().isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "Đơn đặt phòng chưa có CCCD, không thể xác nhận.");
+            return "redirect:/nhan-vien/dat-phong?page=" + page + "&size=" + size;
+        }
+
+        dp.setTrangThai(trangThai);
+        dp.setNgayCapNhat(LocalDateTime.now());
+        datPhongService.save(dp);
+
+        if ("Da tra phong".equals(trangThai)) {
+            List<ChiTietDatPhong> ctdpList = chiTietDatPhongService.findByDatPhongId(id);
+            for (ChiTietDatPhong ct : ctdpList) {
+                Phong p = ct.getP();
+                p.setTrangThai("Trong");
+                phongService.save1(p);
+            }
+        }
+
+        redirectAttributes.addFlashAttribute("success", "Cập nhật trạng thái đơn #" + id + " thành công.");
+        return "redirect:/nhan-vien/dat-phong?page=" + page + "&size=" + size;
+    }
+
+    @GetMapping("/dat-phong-quay")
+    public String NvDatPhongQuay(Model model, Authentication authentication){
         boolean isAdmin = authentication.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
 
@@ -56,10 +191,12 @@ public class DatPhongTaiQuayController {
         model.addAttribute("phongTrongList", phongService.findByTrangThai("Trong"));
         model.addAttribute("dichVuList", dichVuService.findAll());
         model.addAttribute("khuyenMaiList", khuyenMaiService.findAllActive());
-        return "admin/dat-phong-quay";
+
+
+        return "nhan-vien/dat-phong-quay";
     }
 
-    @PostMapping("/submit")
+    @PostMapping("/dat-phong-quay/submit")
     public String submit(@RequestParam(required = false) String hoten,
                          @RequestParam(required = false) String email,
                          @RequestParam(required = false) String sdt,
@@ -138,10 +275,15 @@ public class DatPhongTaiQuayController {
             if (phong == null || !"Trong".equals(phong.getTrangThai())) {
                 continue;
             }
+            Map<Integer , String> cccdPhong = allParams.entrySet()
+                    .stream().filter(cccdP -> cccdP.getKey().startsWith("cccdPhong_")).
+                    collect(Collectors.toMap(e -> Integer.parseInt(e.getKey().substring("cccdPhong_".length())),
+                            Map.Entry::getValue));
 
             ChiTietDatPhong ctdp = new ChiTietDatPhong();
             ctdp.setD(savedDp);
             ctdp.setP(phong);
+            ctdp.setMa_cccd(cccdPhong.get(phong.getMaPhong()));
             ctdp.setGiaMoiDem(phong.getGiaMoiDem());
 
             BigDecimal giaApDung = phong.getGiaMoiDem();
@@ -228,9 +370,8 @@ public class DatPhongTaiQuayController {
         thanhToanService.save(tt);
         redirectAttributes.addFlashAttribute("success",
                 "Tao don thanh cong, ma don: " + savedDp.getId() + ", tong tien da thu: " + tongCong + " VND");
-        return "redirect:/admin/dat-phong";
+        return "redirect:/nhan-vien/dat-phong";
     }
-
     private BigDecimal tinhGiaSauGiam(BigDecimal giaGoc, KhuyenMai km) {
         if ("PERCENT".equals(km.getLoaiGiam())) {
             BigDecimal phanTramGiam = km.getGiatriGiam().divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP);
@@ -243,4 +384,3 @@ public class DatPhongTaiQuayController {
         return giaGoc;
     }
 }
-

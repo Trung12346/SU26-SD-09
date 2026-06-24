@@ -302,7 +302,7 @@ public class PhongController {
                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime ngayTra,
                                @RequestParam Integer nguoiLon,
                                @RequestParam Integer treEm,
-                               @RequestParam(value = "ma_cccd") String maCccd,
+
                                @RequestParam(required = false) String yeuCauThem,
                                Authentication authentication,
                                RedirectAttributes redirectAttributes) {
@@ -318,7 +318,7 @@ public class PhongController {
         dp.setNgaytraPhong(ngayTra);
         dp.setSonguoiLon(nguoiLon);
         dp.setSotreEm(treEm);
-        dp.setMa_cccd(maCccd);
+
         dp.setYeuCauThem(yeuCauThem);
         dp.setNgayTao(LocalDateTime.now());
         boolean isLoggedIn = authentication != null

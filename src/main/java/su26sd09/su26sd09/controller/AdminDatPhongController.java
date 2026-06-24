@@ -54,7 +54,11 @@ public class AdminDatPhongController {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
         Page<DatPhong> datPhongPage = datPhongService.findAll(pageable);
         List<DatPhong> datPhongs = datPhongPage.getContent();
+        Map<Integer,List<ChiTietDatPhong>> Mapctdp = new HashMap<>();
+        for(DatPhong dp : datPhongs){
+                Mapctdp.put(dp.getId(),chiTietDatPhongService.findByDatPhongId(dp.getId()));
 
+        }
 
         List<Integer> daDatHoaDon = hoaDonService.findAll()
                 .stream()
@@ -67,7 +71,7 @@ public class AdminDatPhongController {
         for (DatPhong dp : datPhongs) {
             PhongTheoDon.put(dp.getId(), datPhongService.findPhongByDatPhongId(dp.getId()));
         }
-
+        model.addAttribute("MapCtdp",Mapctdp);
         model.addAttribute("datPhongs", datPhongs);
         model.addAttribute("phongTheoDon", PhongTheoDon);
         model.addAttribute("currentPage", page);

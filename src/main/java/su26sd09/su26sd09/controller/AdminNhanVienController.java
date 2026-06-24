@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import su26sd09.su26sd09.entity.NguoiDung;
 import su26sd09.su26sd09.entity.Nhanvien;
+import su26sd09.su26sd09.repository.NhanVienRepo;
 import su26sd09.su26sd09.repository.VaiTroRepo;
 import su26sd09.su26sd09.service.NhanVienService;
 import su26sd09.su26sd09.service.UserService;
@@ -29,6 +30,10 @@ public class AdminNhanVienController {
     UserService NguoiDungRepo;
     @Autowired
     VaiTroRepo vaiTroRepo;
+    @Autowired
+    NhanVienRepo nvrepo;
+
+
 
     public Boolean CheckRole(String email){
         String role = "";
@@ -64,12 +69,17 @@ public class AdminNhanVienController {
     }
 
 
-    @PostMapping("delete/{id}")
-    public String deleteNhanVien(Principal P, @PathVariable("id") int id){
-        if (CheckRole(P.getName())){
-            repo.delete(repo.findbyid(id));
-        }
+    @PostMapping("/delete/{id}")
+    public String deleteNhanVien(Principal P, @PathVariable("id") int id,RedirectAttributes redirect){
+
+        System.out.println("before = " + repo.findbyid(id));
+
+        repo.delete(repo.findbyid(id));
+
+        System.out.println("after = " + repo.findbyid(id));
+
         return "redirect:/admin/nhan-vien";
+
     }
 
 
@@ -95,8 +105,8 @@ public class AdminNhanVienController {
               return "redirect:/admin/nhan-vien";
           }
 
-          if (nv.n.isTrangThai() != true || nv.n.getVaiTro().getTenVaiTro().equals("ROLE_ADMIN") ||nv.n.getVaiTro().getTenVaiTro().equals("ROLE_GUEST")){
-              redirect.addFlashAttribute("error","tài khoản bị khóa hoặc khác vai trò STAFF(nhân viên) không thể làm nhân viên ");
+          if ( nv.n.getVaiTro().getTenVaiTro().equals("ROLE_ADMIN") ||nv.n.getVaiTro().getTenVaiTro().equals("ROLE_GUEST")){
+              redirect.addFlashAttribute("error","tài khoản  khác vai trò STAFF(nhân viên) không thể làm nhân viên ");
               return "redirect:/admin/nhan-vien";
           }
           nv.n.setMatKhau_hash(encoder.encode(matKhaumoi));
@@ -121,7 +131,6 @@ public class AdminNhanVienController {
            NguoiDung nguoidung = NguoiDungRepo.Getbyid(maNguoiDung);
 
            String oldEmail = nguoidung.getEmail();
-           String oldSdt  = nguoidung.getSoDienThoai();
 
             nguoidung.setNgayCapNhat(LocalDateTime.now());
             nguoidung.setDiaChi(nv.n.getDiaChi());
@@ -138,14 +147,8 @@ public class AdminNhanVienController {
 
             nv.setN(nguoidung);
 
-            System.out.println("new = " + nv.n.getSoDienThoai());
 
-            System.out.println(
-                    NguoiDungRepo.checkSoDienThoai(
-                            nv.n.getSoDienThoai(),
-                            nv.n.getMaNguoiDung()
-                    )
-            );
+
             if( (NguoiDungRepo.checkEmail(nv.n.getEmail(), nv.n.getMaNguoiDung()) && !nv.n.getEmail().equals(oldEmail)
             )  ){
                 System.out.println("TRUNG UNIQUE");

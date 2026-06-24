@@ -38,6 +38,7 @@ public class Nhanvien {
     @NotBlank(message = "bộ phận không được để trống")
     public String boPhan;
 
+
 //    @Column(name = "ca_lam")
 //    public String caLam;
 

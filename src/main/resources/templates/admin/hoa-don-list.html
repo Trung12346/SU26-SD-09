@@ -6,6 +6,87 @@
     <title>Quản Lý Hóa Đơn | Hotel</title>
     <link rel="stylesheet" href="/style.css">
 </head>
+<style>
+    .dv-modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.45);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.dv-modal-overlay.show {
+    display: flex !important;
+}
+
+.dv-modal-box {
+    background: #fff;
+    border-radius: 4px;
+    max-width: 480px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.dv-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.dv-modal-header h3 {
+    font-size: 16px;
+    margin: 0;
+}
+
+.dv-modal-close {
+    font-size: 22px;
+    color: #888;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.dv-modal-close:hover {
+    color: #333;
+}
+
+.dv-modal-body {
+    padding: 14px 20px;
+}
+
+.dv-modal-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    padding: 8px 0;
+    border-bottom: 1px dashed #e5e5e5;
+}
+
+.dv-modal-item:last-child {
+    border-bottom: none;
+}
+
+.dv-modal-price {
+    color: #2563eb;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.dv-modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    border-top: 1px solid #e5e5e5;
+    font-size: 14px;
+    font-weight: 700;
+}
+</style>
 <body>
 
 <div class="topbar">
@@ -202,6 +283,8 @@
                     <th>Mã Đơn Phòng</th>
                     <th>Khách hàng</th>
                     <th>Khuyến mãi</th>
+                    <th>Tiền dịch vụ</th>
+                    <th>Chi tiết DV</th>
                     <th>Tổng tiền</th>
                     <th>Đã thanh toán</th>
                     <th>Ngày xuất</th>
@@ -210,15 +293,64 @@
                 </thead>
                 <tbody>
                 <tr th:each="hd : ${hoaDons}">
+
                     <td th:text="${hd.id}"></td>
+
                     <td th:text="${hd.d != null ? hd.d.id : ''}"></td>
-                    <td th:text="${hd.d != null ?(hd.d.n != null ? hd.d.n.hoTen :
-                                (hd.d.hoten != null ? hd.d.hoten + ' (Vãng lai)' : 'Không có')): ''}">
+
+                    <td th:text="${hd.d != null ?
+            (hd.d.n != null ?
+                hd.d.n.hoTen :
+                (hd.d.hoten != null ?
+                    hd.d.hoten + ' (Vãng lai)' :
+                    'Không có'))
+            : ''}">
                     </td>
-                    <td th:text="${hd.k != null ? hd.k.promoCode : 'Null'}"></td>
-                    <td th:text="${hd.tongTien != null ? #numbers.formatDecimal(hd.tongTien, 0, 'COMMA', 0, 'POINT') + ' VND' : ''}"></td>
-                    <td th:text="${hd.daThanhToan != null ? #numbers.formatDecimal(hd.daThanhToan, 0, 'COMMA', 0, 'POINT') + ' VND' : ''}"></td>
-                    <td th:text="${hd.ngayXuat != null ? #temporals.format(hd.ngayXuat, 'dd/MM/yyyy HH:mm') : ''}"></td>
+
+                    <!-- Khuyến mãi -->
+                    <td th:text="${hd.k != null ? hd.k.promoCode : '-'}"></td>
+
+                    <!-- Tiền dịch vụ -->
+                    <td th:text="${hd.tienDichVu != null ?
+        #numbers.formatDecimal(hd.tienDichVu,0,'COMMA',0,'POINT') + ' VND'
+        : '0 VND'}">
+                    </td>
+
+                    <!-- Chi tiết dịch vụ -->
+                    <td>
+                        <a th:if="${dvMap.get(hd.id) != null and !dvMap.get(hd.id).isEmpty()}"
+                           href="#"
+                           class="admin-btn small outline"
+                           th:onclick="|openDvModal(${hd.id}); return false;|">
+                            Xem (<span th:text="${dvMap.get(hd.id).size()}"></span>)
+                        </a>
+
+                        <span th:if="${dvMap.get(hd.id) == null or dvMap.get(hd.id).isEmpty()}"
+                              style="color:#bbb;font-size:12px;">
+                            -
+                        </span>
+                    </td>
+
+
+                    <!-- Tổng tiền -->
+                    <td th:text="${hd.tongTien != null ?
+        #numbers.formatDecimal(hd.tongTien,0,'COMMA',0,'POINT') + ' VND'
+        : '0 VND'}">
+                    </td>
+
+                    <!-- Đã thanh toán -->
+                    <td th:text="${hd.daThanhToan != null ?
+        #numbers.formatDecimal(hd.daThanhToan,0,'COMMA',0,'POINT') + ' VND'
+        : '0 VND'}">
+                    </td>
+
+                    <!-- Ngày xuất -->
+                    <td th:text="${hd.ngayXuat != null ?
+        #temporals.format(hd.ngayXuat,'dd/MM/yyyy HH:mm')
+        : ''}">
+                    </td>
+
+                    <!-- Thao tác -->
                     <td>
                         <div class="row-actions">
                             <a class="admin-btn small pdf-btn"
@@ -226,18 +358,6 @@
                                target="_blank">
                                 Xuất PDF
                             </a>
-
-                            <form th:action="@{/admin/hoa-don/delete/{id}(id=${hd.id})}"
-                                  method="post"
-                                  onsubmit="return confirm('Bạn có chắc muốn xóa hóa đơn này?')">
-                                <input type="hidden"
-                                       th:if="${_csrf != null}"
-                                       th:name="${_csrf.parameterName}"
-                                       th:value="${_csrf.token}">
-                                <button type="submit" class="admin-btn small danger">
-                                    Xóa
-                                </button>
-                            </form>
                         </div>
                     </td>
 
@@ -249,11 +369,45 @@
             </table>
         </div>
     </section>
+    <div th:each="hd : ${hoaDons}"
+         th:if="${dvMap.get(hd.id) != null and !dvMap.get(hd.id).isEmpty()}"
+         th:id="${'dvModal' + hd.id}" class="dv-modal-overlay" style="display:none;">
+        <div class="dv-modal-box">
+            <div class="dv-modal-header">
+                <span class="dv-modal-close" th:onclick="|closeDvModal(${hd.id})|">&times;</span>
+            </div>
+            <div class="dv-modal-body">
+                <div class="dv-modal-item"
+                     th:each="ct : ${dvMap.get(hd.id)}">
+
+        <span class="dv-modal-name"
+              th:text="${ct.dv.ten_dich_vu + ' × ' + ct.soluong}">
+        </span>
+
+                    <span class="dv-modal-price"
+                          th:text="${'đ ' + #numbers.formatDecimal(ct.donGia,0,'COMMA',0,'POINT')}">
+        </span>
+
+                </div>
+            </div>
+            <div class="dv-modal-footer">
+                <span>Tổng tiền dịch vụ</span>
+                <strong th:text="${'đ ' + #numbers.formatDecimal(hd.tienDichVu, 0, 'COMMA', 0, 'POINT')}"></strong>
+            </div>
+        </div>
+    </div>
 </main>
 
 <footer>
     <p>&copy; 2026 Hotel. All rights reserved.</p>
 </footer>
-
+<script>
+    function openDvModal(id) {
+        document.getElementById('dvModal' + id).classList.add('show');
+    }
+    function closeDvModal(id) {
+        document.getElementById('dvModal' + id).classList.remove('show');
+    }
+</script>
 </body>
 </html>

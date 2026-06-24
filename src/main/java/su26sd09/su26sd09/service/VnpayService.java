@@ -187,6 +187,10 @@ public class VnpayService {
         Nhanvien nvGan = null;
         if (isNvDp) {
             nvGan = nhanVienService.findByMaNguoiDung(n.getMaNguoiDung());
+        }else{
+            for (Nhanvien nv : ListNvLeTan.toList()) {
+                nvGan = nv;
+            }
         }
         if (nvGan == null) {
 

@@ -29,6 +29,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/gio-hang")
@@ -59,6 +61,7 @@ public class GioHangController {
             @RequestParam("nguoiLon") Integer nguoiLon,
             @RequestParam("treEm")    Integer treEm,
             @RequestParam(value = "ma_cccd",required = false) String ma_cccd,
+            @RequestParam Map<String,String> allParamsCCCD,
             RedirectAttributes redirectAttributes,
             Authentication authentication
     ) {
@@ -70,7 +73,12 @@ public class GioHangController {
             email = null;
         }
         NguoiDung n = nguoiDungService.findByEmail(email);
-
+        Map<Integer, String> cccdTheoPhong = allParamsCCCD.entrySet().stream().
+                filter(e -> e.getKey().startsWith("cccdPhong_")).
+                collect(Collectors.toMap(
+                        e-> Integer.parseInt(e.getKey().substring("cccdPhong_".length())),
+                        Map.Entry::getValue
+                ));
         DatPhong datPhong = new DatPhong();
         datPhong.setN(n);
         if(ma_cccd !=null) {
@@ -91,7 +99,7 @@ public class GioHangController {
         List<Phong> ListPhong = new ArrayList<>();
         MathContext mc = new MathContext(4, RoundingMode.HALF_UP);
         for(int p : roomIds){
-           System.out.println("cac phông dat la: "+p);
+           System.out.println("cac phong dat la: "+p);
            ListPhong.add(PhongService.findPhongById(p));
        }
         int resThue  = ngayTra.getDayOfYear() - ngayNhan.getDayOfYear();
@@ -115,6 +123,8 @@ public class GioHangController {
             ChiTietDatPhong chiTietDatPhong = new ChiTietDatPhong();
             chiTietDatPhong.setP(p);
             chiTietDatPhong.setGiaMoiDem(p.getGiaMoiDem());
+            chiTietDatPhong.setMa_cccd(cccdTheoPhong.get(p.getMaPhong()));
+            System.out.println("ma_cccd cua phong: "+p.getMaPhong() + "la: "+cccdTheoPhong.get(p.getMaPhong()));
             chiTietDatPhong.setGiaKhiDat(amount2);
             chiTietDatPhong.setD(datPhong);
             System.out.println("Cac phong: "+p.getSoPhong()+"Gia la: "+amount2);

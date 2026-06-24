@@ -195,10 +195,13 @@
                         <option value="2">2</option>
                     </select>
                 </div>
-                <div sec:authorize="hasRole('EMPLOYEE')">
-                    <label>Mã CCCD</label>
-                    <input type="text" name="ma_cccd" required>
+                <div class="form-field full">
+                    <label>CCCD người đặt (đại diện đơn)</label>
+                    <input type="text" name="ma_cccd" maxlength="12" pattern="[0-9]{12}" required>
                 </div>
+
+                <div id="cccd-tung-phong"></div>
+
                 <div>
                     <div class="cart-summary-row">
                         <span>Số phòng</span>
@@ -311,6 +314,23 @@
             input.name = 'roomIds';
             input.value = item.id;
             roomInputsEl.appendChild(input);
+        });
+
+        const cccdContainer = document.getElementById('cccd-tung-phong');
+        cccdContainer.innerHTML = '';
+        items.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'form-field full';
+            div.style.marginBottom = '10px';
+            div.innerHTML = `
+                <label>CCCD khách ở Phòng ${item.roomNumber || item.id}</label>
+                <input type="text"
+                       name="cccdPhong_${item.id}"
+                       maxlength="12" pattern="[0-9]{12}"
+                       placeholder="12 số CCCD"
+                       required>
+            `;
+            cccdContainer.appendChild(div);
         });
     }
 

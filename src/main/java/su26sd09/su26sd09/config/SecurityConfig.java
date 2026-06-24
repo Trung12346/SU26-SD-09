@@ -34,8 +34,8 @@ public class SecurityConfig {
                                 "/loai-phong", "/loai-phong/**","/API/payment/vnpay-payment",
                                 "/phong/**", "/phong","/gio-hang/**","/thanh-toan/**",
                                 "/static/**", "/css/**", "/js/**", "/images/**",
-                                "/*.css", "/*.js", "/*.jpg", "/*.png","/Register").permitAll().requestMatchers("/admin/dat-phong-quay/**","/admin/dat-phong/**")
-                                .hasAnyRole("STAFF","ADMIN")
+                                "/*.css", "/*.js", "/*.jpg", "/*.png","/Register").permitAll().requestMatchers("/admin/dat-phong-quay/**")
+                                .hasAnyRole("STAFF","ADMIN").requestMatchers("/Nhan-vien/**").hasRole("STAFF")
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
 //                                .anyRequest().permitAll()

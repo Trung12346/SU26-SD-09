@@ -66,38 +66,89 @@ public class adminHoaDonController {
         List<HoaDon> hoaDons = hoaDonService.findAll().stream()
                 .filter(hd -> {
                     if (maHoaDon != null && hd.getId() != maHoaDon) return false;
-                    if (maDatPhong != null && (hd.getD() == null || hd.getD().getId() != maDatPhong)) return false;
+
+                    if (maDatPhong != null &&
+                            (hd.getD() == null || hd.getD().getId() != maDatPhong))
+                        return false;
+
                     if (tenKhach != null && !tenKhach.isEmpty() &&
-                            (hd.getD() == null || hd.getD().getN() == null ||
-                                    !hd.getD().getN().getHoTen().toLowerCase().contains(tenKhach.toLowerCase()))) return false;
+                            (hd.getD() == null ||
+                                    hd.getD().getN() == null ||
+                                    !hd.getD().getN().getHoTen()
+                                            .toLowerCase()
+                                            .contains(tenKhach.toLowerCase())))
+                        return false;
+
                     if (maKhuyenMai != null && !maKhuyenMai.isEmpty() &&
-                            (hd.getK() == null || !hd.getK().getPromoCode().toLowerCase().contains(maKhuyenMai.toLowerCase()))) return false;
-                    if (tongTienTu != null && hd.getTongTien().compareTo(tongTienTu) < 0) return false;
-                    if (tongTienDen != null && hd.getTongTien().compareTo(tongTienDen) > 0) return false;
+                            (hd.getK() == null ||
+                                    !hd.getK().getPromoCode()
+                                            .toLowerCase()
+                                            .contains(maKhuyenMai.toLowerCase())))
+                        return false;
+
+                    if (tongTienTu != null &&
+                            hd.getTongTien().compareTo(tongTienTu) < 0)
+                        return false;
+                    if (tongTienDen != null &&
+                            hd.getTongTien().compareTo(tongTienDen) > 0)
+                        return false;
+
                     if (ngayXuatTu != null && !ngayXuatTu.isEmpty()) {
-                        LocalDateTime tu = LocalDate.parse(ngayXuatTu).atStartOfDay();
-                        if (hd.getNgayXuat().isBefore(tu)) return false;
+                        LocalDateTime tu =
+                                LocalDate.parse(ngayXuatTu).atStartOfDay();
+
+                        if (hd.getNgayXuat().isBefore(tu))
+                            return false;
                     }
+
                     if (ngayXuatDen != null && !ngayXuatDen.isEmpty()) {
-                        LocalDateTime den = LocalDate.parse(ngayXuatDen).atTime(23, 59, 59);
-                        if (hd.getNgayXuat().isAfter(den)) return false;
+                        LocalDateTime den =
+                                LocalDate.parse(ngayXuatDen)
+                                        .atTime(23, 59, 59);
+                        if (hd.getNgayXuat().isAfter(den))
+                            return false;
                     }
-                    if (trangThaiThanhToan != null && !trangThaiThanhToan.isEmpty()) {
-                        BigDecimal conNo = hd.getTongTien().subtract(hd.getDaThanhToan());
-                        if (trangThaiThanhToan.equals("chua") && hd.getDaThanhToan().compareTo(BigDecimal.ZERO) != 0) return false;
-                        if (trangThaiThanhToan.equals("mot_phan") && conNo.compareTo(BigDecimal.ZERO) <= 0) return false;
-                        if (trangThaiThanhToan.equals("du") && conNo.compareTo(BigDecimal.ZERO) != 0) return false;
+                    if (trangThaiThanhToan != null &&
+                            !trangThaiThanhToan.isEmpty()) {
+                        BigDecimal conNo =
+                                hd.getTongTien()
+                                        .subtract(hd.getDaThanhToan());
+                        if (trangThaiThanhToan.equals("chua") &&
+                                hd.getDaThanhToan()
+                                        .compareTo(BigDecimal.ZERO) != 0)
+                            return false;
+                        if (trangThaiThanhToan.equals("mot_phan") &&
+                                conNo.compareTo(BigDecimal.ZERO) <= 0)
+                            return false;
+                        if (trangThaiThanhToan.equals("du") &&
+                                conNo.compareTo(BigDecimal.ZERO) != 0)
+                            return false;
                     }
                     return true;
                 })
                 .collect(Collectors.toList());
 
+        Map<Integer, List<Chi_tiet_dich_vu>> dvMap = new HashMap<>();
+
+        for (HoaDon hd : hoaDons) {
+            if (hd.getD() != null) {
+                dvMap.put(
+                        hd.getId(),
+                        chiTietDichVuService.findByDatPhongId(
+                                hd.getD().getId()
+                        )
+                );
+            }
+        }
+
+        model.addAttribute("dvMap", dvMap);
+
         model.addAttribute("hoaDons", hoaDons);
         model.addAttribute("hoaDon", new HoaDon());
         model.addAttribute("datPhongs", datPhongService.findAll());
-        //model.addAttribute("khuyenMais", khuyenMaiService.findAll());
 
         model.addAttribute("nguoiDungs", nguoiDungService.findAll());
+
         model.addAttribute("maHoaDon", maHoaDon);
         model.addAttribute("maDatPhong", maDatPhong);
         model.addAttribute("tenKhach", tenKhach);
@@ -107,6 +158,7 @@ public class adminHoaDonController {
         model.addAttribute("tongTienTu", tongTienTu);
         model.addAttribute("tongTienDen", tongTienDen);
         model.addAttribute("trangThaiThanhToan", trangThaiThanhToan);
+
         model.addAttribute("title", "Thêm hóa đơn");
 
         return "admin/hoa-don-list";

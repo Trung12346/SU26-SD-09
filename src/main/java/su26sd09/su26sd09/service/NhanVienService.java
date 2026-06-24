@@ -1,5 +1,6 @@
 package su26sd09.su26sd09.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import su26sd09.su26sd09.entity.NguoiDung;
@@ -23,12 +24,19 @@ public class NhanVienService {
     }
 
     public Nhanvien findbyid(int id){
+        System.out.println(id);
         return repo.findById(id).orElse(null);
 
     }
-
     public void delete(Nhanvien n){
         repo.delete(n);
+        System.out.println("sau delete");
+        repo.flush();
+    }
+
+    public void deletebyid(int id){
+
+        repo.deleteById(id);
     }
 
     public void save(Nhanvien n){
@@ -36,11 +44,7 @@ public class NhanVienService {
             NguoiDungRepo.save(n.n);
             return ;
         }
-        if (n.n.isTrangThai() != true){
-            NguoiDungRepo.save(n.n);
-            return;
-        }
-
+        
         repo.save(n);
     }
 
@@ -51,7 +55,7 @@ public class NhanVienService {
     public List<Nhanvien> ListAdd(){
         List<Nhanvien> Listnv = new ArrayList<>();
         for (NguoiDung n : NguoiDungRepo.getAll()){
-            if(n.getVaiTro().getTenVaiTro().equals("ROLE_STAFF") && n.isTrangThai() == true){
+            if(n.getVaiTro().getTenVaiTro().equals("ROLE_STAFF") ){
                 Nhanvien nv = new Nhanvien();
                 nv.setN(n);
                 Listnv.add(nv);
