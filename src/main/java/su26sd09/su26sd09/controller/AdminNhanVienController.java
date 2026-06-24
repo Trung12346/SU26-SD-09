@@ -69,12 +69,12 @@ public class AdminNhanVienController {
     }
 
 
-    @PostMapping("/delete/{id}")
+    @PostMapping("/lock/{id}")
     public String deleteNhanVien(Principal P, @PathVariable("id") int id,RedirectAttributes redirect){
 
 
-        repo.delete(repo.findbyid(id));
-        redirect.addFlashAttribute("success","xóa nhân viên thành công");
+        repo.lock(repo.findbyid(id));
+        redirect.addFlashAttribute("success","khóa nhân viên thành công");
 
 
         return "redirect:/admin/nhan-vien";

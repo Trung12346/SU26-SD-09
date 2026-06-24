@@ -109,7 +109,7 @@
                     <td>
                         <div class="row-actions">
                             <a class="admin-btn small outline"
-                               th:href="@{/admin/loai-phong/edit/{id}(id=${lp.id}, keyword=${keyword})}">Sửa</a>
+                               th:href="@{/admin/loai-phong/edit/{id}(id=${lp.id})}">Sửa</a>
                             <form th:action="@{/admin/loai-phong/delete/{id}(id=${lp.id})}"
                                   method="post"
                                   onsubmit="return confirm('Bạn có chắc muốn xóa loại phòng này?')">

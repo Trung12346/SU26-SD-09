@@ -24,8 +24,8 @@ public class AdminLoaiPhongController {
         return "admin/loai-phong-list";
     }
 
-    @GetMapping("/edit")
-    public String edit(Model model,@RequestParam("id") int id){
+    @GetMapping("/edit/{id}")
+    public String edit(Model model,@PathVariable("id") int id){
         model.addAttribute("loaiPhong",repo.findbyid(id));
         model.addAttribute("loaiPhongs",repo.findAll());
         return "admin/loai-phong-list";
@@ -46,8 +46,8 @@ public class AdminLoaiPhongController {
         return "redirect:/admin/loai-phong";
     }
 
-    @GetMapping("/delete")
-    public String delete(@RequestParam("id") int id){
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") int id){
         repo.delete(repo.findbyid(id));
         return "redirect:/admin/loai-phong";
     }

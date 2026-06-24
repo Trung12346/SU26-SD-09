@@ -175,11 +175,11 @@
                         <div class="row-actions">
                             <a class="admin-btn small outline"
                                th:href="@{/admin/nhan-vien/edit/{id}(id=${nv.id})}">Sửa</a>
-                            <form th:action="@{/admin/nhan-vien/delete/{id}(id=${nv.id})}"
+                            <form th:action="@{/admin/nhan-vien/lock/{id}(id=${nv.id})}"
                                   method="post"
-                                  onsubmit="return confirm('Bạn có chắc muốn xóa nhân viên này?')">
+                                  onsubmit="return confirm('Bạn có chắc muốn khóa nhân viên này?')">
                                 <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                                <button type="submit" class="admin-btn small danger">Xóa</button>
+                                <button type="submit" class="admin-btn small danger">khóa</button>
                             </form>
                         </div>
                     </td>

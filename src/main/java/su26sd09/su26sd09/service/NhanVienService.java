@@ -19,8 +19,9 @@ public class NhanVienService {
 
 
     public List<Nhanvien> findAll(){
-        return repo.findAll();
 
+
+        return repo.findAll();
     }
 
     public Nhanvien findbyid(int id){
@@ -85,5 +86,10 @@ public class NhanVienService {
             }
         }
         return false;
+    }
+
+    public void lock(Nhanvien nv) {
+     nv.n.setTrangThai(false);
+
     }
 }

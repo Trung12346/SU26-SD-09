@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import su26sd09.su26sd09.entity.DatPhong;
 import su26sd09.su26sd09.entity.NguoiDung;
 import su26sd09.su26sd09.repository.NguoiDungRepository;
 import su26sd09.su26sd09.repository.VaiTroRepo;
+import su26sd09.su26sd09.service.DatPhongService;
 import su26sd09.su26sd09.service.UserService;
 
 import java.security.Principal;
@@ -30,6 +32,8 @@ public class AdminNguoiDungController {
     private UserService userService;
     @Autowired
     private VaiTroRepo repo;
+    @Autowired
+    private DatPhongService datPhongrepo;
 
     public Boolean CheckRole(String email){
         String role = "";
@@ -97,6 +101,8 @@ public class AdminNguoiDungController {
 
             if (nguoiDung.getMaNguoiDung() == null){
                 for (NguoiDung s : userService.getAll()){
+
+
                         if (!s.getEmail().equals(nguoiDung.getEmail() ) && userService.checkEmail(nguoiDung.getEmail(),nguoiDung.getMaNguoiDung())){
                             redirect.addFlashAttribute("error"," email này đã tồn tại");
                             return "redirect:/admin/nguoi-dung";
@@ -119,9 +125,19 @@ public class AdminNguoiDungController {
 
 
             if ( nguoiDung.getMaNguoiDung() != null){
+
+
                 nguoiDung.setNgayCapNhat(LocalDateTime.now());
                 for (NguoiDung s : userService.getAll()){
                           if (s.getMaNguoiDung().equals(nguoiDung.getMaNguoiDung())){
+
+                              if (s.getVaiTro().getTenVaiTro().equalsIgnoreCase("ROLE_STAFF") && !nguoiDung.getVaiTro().getTenVaiTro().equalsIgnoreCase("ROLE_STAFF")){
+                                      if (datPhongrepo.FindbyNguoiDung(s.getMaNguoiDung()) != null){
+                                          redirect.addFlashAttribute("error","không thể cập nhật: người dùng có vai trò nhân viên có đơn đặt phòng khả dụng");
+                                          return "redirect:/admin/nguoi-dung";
+                                      }
+
+                              }
                               if ( (!s.getEmail().equals(nguoiDung.getEmail() )|| userService.checkEmail(nguoiDung.getEmail(),nguoiDung.getMaNguoiDung()))){
                                  redirect.addFlashAttribute("error"," email này đã tồn tại");
                                  return "redirect:/admin/nguoi-dung";
@@ -151,14 +167,14 @@ public class AdminNguoiDungController {
     @GetMapping("/search")
     public String search(RedirectAttributes r,@RequestParam("keyword") String keyword,Principal p,Model model){
         if (CheckRole(p.getName())){
-        if(userService.TimKiemTheoTen(keyword).size() > 0){
+        if(userService.TimKiemTheoTen(keyword).size() >= 0){
             model.addAttribute("nguoiDung",new NguoiDung());
-            model.addAttribute("nguoiDungs",userService.TimKiemTheoTen(keyword));
+            model.addAttribute("nguoiDungs",userService.search(keyword));
             model.addAttribute("vaiTros",repo.findAll());
             r.addFlashAttribute("success","tìm thành công");
         }else{
             model.addAttribute("nguoiDung",new NguoiDung());
-            model.addAttribute("nguoiDungs",userService.TimKiemTheoTen(keyword));
+            model.addAttribute("nguoiDungs",userService.getAll());
             model.addAttribute("vaiTros",repo.findAll());
             r.addFlashAttribute("error","không tìm thấy tên trên yêu cầu");
         }

@@ -122,7 +122,7 @@
             <input type="text"
                    name="keyword"
                    placeholder="Tim theo ten"
-                   th:value="${keyword}">
+                   >
             <button type="submit" class="admin-btn outline">Tim Kiem</button>
         </form>
 
@@ -157,7 +157,7 @@
                     <td>
                         <div class="row-actions">
                             <a class="admin-btn small outline"
-                               th:href="@{/admin/nguoi-dung/edit/{id}(id=${nd.maNguoiDung}, keyword=${keyword})}">
+                               th:href="@{/admin/nguoi-dung/edit/{id}(id=${nd.maNguoiDung})}">
                                 Sua
                             </a>
                             <form th:action="@{/admin/nguoi-dung/lock/{id}(id=${nd.maNguoiDung})}"
