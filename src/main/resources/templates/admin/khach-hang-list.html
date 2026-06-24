@@ -54,17 +54,17 @@
             <input type="hidden" th:field="*{maNguoiDung}">
 
             <div class="admin-grid">
-                <div class="admin-field">
-                    <label>Người dùng</label>
-                    <select name="maNguoiDung" >
-                        <option value="">-- Chọn khách hàng --</option>
-                        <option th:each="nguoiDung : ${nguoiDungs}"
-                                th:value="${nguoiDung.maNguoiDung}"
-                                th:text="${nguoiDung.hoTen + ' - ' + nguoiDung.email + ' - ' + nguoiDung.vaiTro.tenVaiTro}"
-                                th:selected="${khachHang != null && khachHang.maNguoiDung == nguoiDung.maNguoiDung}">
-                        </option>
-                    </select >
-                </div>
+<!--                <div class="admin-field">-->
+<!--                    <label>Người dùng</label>-->
+<!--                    <select name="maNguoiDung" >-->
+<!--                        <option value="">&#45;&#45; Chọn khách hàng &#45;&#45;</option>-->
+<!--                        <option th:each="nguoiDung : ${nguoiDungs}"-->
+<!--                                th:value="${nguoiDung.maNguoiDung}"-->
+<!--                                th:text="${nguoiDung.hoTen + ' - ' + nguoiDung.email + ' - ' + nguoiDung.vaiTro.tenVaiTro}"-->
+<!--                                th:selected="${khachHang != null && khachHang.maNguoiDung == nguoiDung.maNguoiDung}">-->
+<!--                        </option>-->
+<!--                    </select >-->
+<!--                </div>-->
 
 
                 <div class="admin-field">
@@ -122,7 +122,7 @@
 
             <div class="admin-actions">
                 <button type="submit" class="admin-btn">Lưu Khách Hàng</button>
-                <a th:href="@{/admin/nhan-vien}" class="admin-btn outline">Hủy</a>
+                <a th:href="@{/admin/khach-hang}" class="admin-btn outline">Hủy</a>
             </div>
         </form>
     </section>
@@ -165,7 +165,7 @@
                                th:href="@{/admin/khach-hang/edit/{id}(id=${kh.maNguoiDung})}">Sửa</a>
                             <form th:action="@{/admin/khach-hang/lock/{id}(id=${kh.maNguoiDung})}"
                                   method="post"
-                                  onsubmit="return confirm('Bạn có chắc muốn xóa nhân viên này?')">
+                                  onsubmit="return confirm('Bạn có chắc muốn khoá khách hàng này này?')">
                                 <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                                 <button type="submit" class="admin-btn small danger">Khoá</button>
                             </form>

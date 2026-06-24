@@ -41,7 +41,7 @@ public class  NguoiDung {
     private String soDienThoai;
 
     @Column(name = "dia_chi", length = 300)
-    @NotBlank(message = "địa chỉ không được trống")
+//    @NotBlank(message = "địa chỉ không được trống")
     private String diaChi;
 
     @Column(name = "trang_thai")
@@ -53,9 +53,6 @@ public class  NguoiDung {
 
     @Column(name = "ngay_cap_nhat",insertable = false)
     private LocalDateTime ngayCapNhat;
-
-    @OneToOne(mappedBy = "n",cascade = CascadeType.ALL)
-    private Nhanvien nhanviens;
 
     @ManyToOne
     @JoinColumn(name = "ma_vai_tro",referencedColumnName = "ma_vai_tro")
