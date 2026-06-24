@@ -77,17 +77,24 @@
                     <input type="email" th:field="*{n.email}" placeholder="example@gmail.com" >
                 </div>
 
-                <div class="admin-field">
+                <div class="admin-field" th:if="${nhanVien.n.maNguoiDung == null}">
+                    <label>Mat khau</label>
+                    <input type="password"
+                           th:field="*{n.matKhau_hash}"
+                           placeholder="Nhap khi them moi" >
+                </div>
+
+
+                <div class="admin-field" th:if="${nhanVien.n.maNguoiDung != null}">
                     <label>Mat khau</label>
                     <input type="password"
                            name="matKhaumoi"
-                           placeholder="Nhap khi them moi hoac muon doi">
+                           placeholder="Nhap khi neu muon doi" >
+                    <input
+                            th:field="*{n.matKhau_hash}"
+                            th:type="hidden" >
                 </div>
 
-                <input
-                       th:field="*{n.matKhau_hash}"
-                       placeholder="Nhap khi them moi hoac muon doi"
-                       th:type="hidden" th:if="${nhanVien.n.maNguoiDung != null}">
 
                 <div class="admin-field">
                     <label>So dien thoai</label>

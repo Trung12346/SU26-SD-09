@@ -25,6 +25,6 @@ public interface LoaiPhongRepository extends JpaRepository<LoaiPhong, Integer> {
     );
 
 
-    @Query("select l from LoaiPhong l where l.tenLoai like :name")
+    @Query("select l from LoaiPhong l where l.tenLoai like concat('%',:name,'%')")
     public List<LoaiPhong> findbyName(@Param("name") String name);
 }

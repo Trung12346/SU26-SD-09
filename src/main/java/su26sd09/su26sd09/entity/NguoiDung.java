@@ -34,6 +34,7 @@ public class  NguoiDung {
     private String email;
 
     @Column(name = "mat_khau_hash", nullable = false, length = 255)
+    @NotBlank(message = "mật khẩu không được để trống")
     private String matKhau_hash;
 
     @Column(name = "so_dien_thoai", length = 20, unique = true)
@@ -41,7 +42,7 @@ public class  NguoiDung {
     private String soDienThoai;
 
     @Column(name = "dia_chi", length = 300)
-//    @NotBlank(message = "địa chỉ không được trống")
+    @NotBlank(message = "địa chỉ không được trống")
     private String diaChi;
 
     @Column(name = "trang_thai")
@@ -53,6 +54,8 @@ public class  NguoiDung {
 
     @Column(name = "ngay_cap_nhat",insertable = false)
     private LocalDateTime ngayCapNhat;
+
+
 
     @ManyToOne
     @JoinColumn(name = "ma_vai_tro",referencedColumnName = "ma_vai_tro")
