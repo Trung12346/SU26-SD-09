@@ -19,8 +19,9 @@ public class NhanVienService {
 
 
     public List<Nhanvien> findAll(){
-      return repo.findAll();
 
+
+        return repo.findAll();
     }
 
     public Nhanvien findbyid(int id){
@@ -44,7 +45,7 @@ public class NhanVienService {
             NguoiDungRepo.save(n.n);
             return ;
         }
-        
+
         repo.save(n);
     }
 
@@ -76,13 +77,19 @@ public class NhanVienService {
         }
         return false;
     }
-    
-     public boolean TrungNv(Integer id,int idnv){
+
+    public boolean TrungNv(Integer id,int idnv){
+        System.out.println(id);
         for (Nhanvien nv : repo.findAll()){
-            if ((nv.n.getMaNguoiDung().equals(id) && nv.getId() == idnv)){
-                return false;
+            if ((nv.n.getMaNguoiDung().equals(id) && nv.getId() != idnv)){
+                return true;
             }
         }
-        return true;
+        return false;
+    }
+
+    public void lock(Nhanvien nv) {
+     nv.n.setTrangThai(false);
+
     }
 }

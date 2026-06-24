@@ -34,6 +34,7 @@ public class  NguoiDung {
     private String email;
 
     @Column(name = "mat_khau_hash", nullable = false, length = 255)
+    @NotBlank(message = "mật khẩu không được để trống")
     private String matKhau_hash;
 
     @Column(name = "so_dien_thoai", length = 20, unique = true)

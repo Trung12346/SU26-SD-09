@@ -82,8 +82,8 @@
     <section class="admin-panel">
         <h2>Danh Sách Loại Phòng</h2>
 
-        <form th:action="@{/admin/loai-phong}" method="get" class="search-row">
-            <input type="text" name="keyword" placeholder="Tìm theo tên, mô tả, giá..." th:value="${keyword}">
+        <form th:action="@{/admin/loai-phong/tim-kiem}" method="get" class="search-row">
+            <input type="text" name="keyword" placeholder="Tìm theo tên.." th:value="${keyword}">
             <button type="submit" class="admin-btn outline">Tìm Kiếm</button>
         </form>
 

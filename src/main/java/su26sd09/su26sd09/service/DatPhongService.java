@@ -56,7 +56,7 @@ public class DatPhongService {
     public Page<DatPhong> FindbyNguoiDung(int id, Pageable pageable){
         return repo.findByNguoiDung(id,pageable);
     }
-    public List<DatPhong> FindbyNguoiDung(int id){
+    public List<DatPhong> FindbyNguoiDung(Integer id){
         return repo.FindByNguoiDung(id);
     }
 

@@ -22,7 +22,7 @@ public interface DatPhongRepo extends JpaRepository<DatPhong,Integer> {
 
 
     @Query("select d from DatPhong d where d.n.maNguoiDung = :id")
-    List<DatPhong> FindByNguoiDung(int id);
+    List<DatPhong> FindByNguoiDung(Integer id);
 
     @Query("select c.p from ChiTietDatPhong c where c.d.id = :maDatPhong")
     List<Phong> findPhongByDatPhongId(@Param("maDatPhong") Integer maDatPhong);

@@ -46,7 +46,7 @@ public class AdminLoaiPhongController {
         return "redirect:/admin/loai-phong";
     }
 
-    @PostMapping("/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id){
         repo.delete(repo.findbyid(id));
         return "redirect:/admin/loai-phong";
