@@ -25,9 +25,6 @@ public class Phong {
     @JoinColumn(name = "ma_loai_phong", referencedColumnName = "ma_loai_phong")
     private LoaiPhong loaiPhong;
 
-    @ManyToOne
-    @JoinColumn(name = "ma_khuyen_mai",referencedColumnName = "ma_khuyen_mai")
-    private KhuyenMai khuyenMai;
 
     @Column(name = "so_phong", nullable = false, length = 10)
     private String soPhong;

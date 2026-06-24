@@ -146,10 +146,7 @@ public class DatPhongTaiQuayController {
 
             BigDecimal giaApDung = phong.getGiaMoiDem();
 
-            if (phong.getKhuyenMai() != null) {
-                KhuyenMai kmPhong = phong.getKhuyenMai();
-                giaApDung = tinhGiaSauGiam(giaApDung, kmPhong);
-            }
+
 
             if (maKhuyenMai != null) {
                 KhuyenMai kmDon = khuyenMaiService.findbyId(maKhuyenMai);

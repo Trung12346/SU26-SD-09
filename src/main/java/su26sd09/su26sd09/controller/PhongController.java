@@ -18,10 +18,12 @@ import java.math.RoundingMode;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/phong")
@@ -240,7 +242,7 @@ public class PhongController {
                                       @RequestParam("hoTen") String hoten,
                                       @RequestParam("email") String email,
                                       @RequestParam("sdt")String sodienthoai,
-                                      @RequestParam("cccd") String cccd,
+
                                       @RequestParam("yeuCauThem") String yeucauthem,
                                       Authentication authentication) {
             BigDecimal amount = BigDecimal.ZERO;
@@ -248,8 +250,10 @@ public class PhongController {
             DatPhong dp = datphongservice.findById(id);
             if(dp ==null) {
                 return "dat-phong-thong-tin-khach";
-
             }
+            List<Nhanvien> listNv = nhanVienService.findAll();
+            Stream<Nhanvien> ListnvLeTan = listNv.stream().filter(nv -> nv.getBoPhan().equalsIgnoreCase("lễ tân"));
+            
             List<ChiTietDatPhong> listCtdp = chiTietDatPhongService.findByDatPhongId(id);
             List<Chi_tiet_dich_vu> listCtdv = ctdvService.findByDatPhongId(id);
             for(ChiTietDatPhong ctdp : listCtdp){
@@ -260,28 +264,30 @@ public class PhongController {
             }
             amount = amount.add(amountdv);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String emailSearch;
+        String emailSearch = null;
         if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
             emailSearch = auth.getName();
         } else {
-            emailSearch = "staff@hotel.vn";
+            for (Nhanvien nv : ListnvLeTan.toList()) {
+                emailSearch = nv.getN().getEmail();
+            }
         }
+
         NguoiDung n = nguoiDungService.findByEmail(emailSearch);
 
         boolean isNvDp = n.getVaiTro() != null && "ROLE_STAFF".equals(n.getVaiTro().toString());
 
         if (isNvDp) {
             Nhanvien nv = nhanVienService.findByMaNguoiDung(n.getMaNguoiDung());
-            dp.setNv(nv != null ? nv : nhanVienService.findByMaNguoiDung(nguoiDungService.findByEmail("staff@hotel.vn").getMaNguoiDung()));
+            dp.setNv(nv != null ? nv : nhanVienService.findByMaNguoiDung(nguoiDungService.findByEmail(emailSearch).getMaNguoiDung()));
         } else {
-            dp.setNv(nhanVienService.findByMaNguoiDung(nguoiDungService.findByEmail("staff@hotel.vn").getMaNguoiDung()));
+            dp.setNv(nhanVienService.findByMaNguoiDung(nguoiDungService.findByEmail(emailSearch).getMaNguoiDung()));
         }
         System.out.println("Amount Xac nhan thong tin khach hang: "+amount);
         System.out.println("Amount dich vu xac nhan thong tin khach hang: "+amountdv);
             dp.setHoten(hoten);
             dp.setEmail(email);
             dp.setSdt(sodienthoai);
-            dp.setMa_cccd(cccd);
             dp.setYeuCauThem(yeucauthem);
 
 
@@ -292,11 +298,11 @@ public class PhongController {
     @PostMapping("/dat-phong/quick")
     public String quickBooking(@RequestParam Integer maLoaiPhong,
                                @RequestParam Integer maPhong,
-                               @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayNhan,
-                               @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ngayTra,
+                               @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime ngayNhan,
+                               @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime ngayTra,
                                @RequestParam Integer nguoiLon,
                                @RequestParam Integer treEm,
-                               @RequestParam(value = "ma_cccd",required = false) String maCccd,
+                               @RequestParam(value = "ma_cccd") String maCccd,
                                @RequestParam(required = false) String yeuCauThem,
                                Authentication authentication,
                                RedirectAttributes redirectAttributes) {
@@ -308,8 +314,8 @@ public class PhongController {
         }
 
         DatPhong dp = new DatPhong();
-        dp.setNgaydatPhong(ngayNhan.atStartOfDay());
-        dp.setNgaytraPhong(ngayTra.atTime(12, 0));
+        dp.setNgaydatPhong(ngayNhan);
+        dp.setNgaytraPhong(ngayTra);
         dp.setSonguoiLon(nguoiLon);
         dp.setSotreEm(treEm);
         dp.setMa_cccd(maCccd);
@@ -330,30 +336,14 @@ public class PhongController {
             }
         }
 
-        dp.setTrangThai("Cho xac nhan");
+        dp.setTrangThai("Chua thanh toan");
         DatPhong savedDp = datphongservice.save(dp);
 
         ChiTietDatPhong ctdp = new ChiTietDatPhong();
         ctdp.setD(savedDp);
         ctdp.setP(phong);
         ctdp.setGiaMoiDem(phong.getGiaMoiDem());
-
-        if (phong.getKhuyenMai() != null) {
-            KhuyenMai km = phong.getKhuyenMai();
-            if ("PERCENT".equals(km.getLoaiGiam())) {
-                BigDecimal phanTramGiam = km.getGiatriGiam().divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP);
-                BigDecimal heSoConLai = BigDecimal.ONE.subtract(phanTramGiam);
-                ctdp.setGiaKhiDat(phong.getGiaMoiDem().multiply(heSoConLai));
-            } else if ("FIXED".equals(km.getLoaiGiam())) {
-                BigDecimal giaSauGiam = phong.getGiaMoiDem().subtract(km.getGiatriGiam());
-                if (giaSauGiam.compareTo(BigDecimal.ZERO) < 0) {
-                    giaSauGiam = BigDecimal.ZERO;
-                }
-                ctdp.setGiaKhiDat(giaSauGiam);
-            }
-        } else {
-            ctdp.setGiaKhiDat(phong.getGiaMoiDem());
-        }
+        ctdp.setGiaKhiDat(phong.getGiaMoiDem().multiply(BigDecimal.valueOf(ChronoUnit.DAYS.between(ngayNhan,ngayTra))));
 
         chiTietDatPhongService.save(ctdp);
 

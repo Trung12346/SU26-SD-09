@@ -662,11 +662,11 @@
 
                 <div class="sidebar-form-group">
                     <label><i class="fa-regular fa-calendar"></i> Ngày nhận phòng</label>
-                    <input type="date" name="ngayNhan" required>
+                    <input type="datetime-local" name="ngayNhan" required>
                 </div>
                 <div class="sidebar-form-group">
                     <label><i class="fa-regular fa-calendar-check"></i> Ngày trả phòng</label>
-                    <input type="date" name="ngayTra" required>
+                    <input type="datetime-local" name="ngayTra" required>
                 </div>
                 <div class="sidebar-guests">
                     <div class="sidebar-form-group">
@@ -687,7 +687,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="sidebar-form-group" sec:authorize="hasAnyRole('STAFF','EMPLOYEE')">
+                <div class="sidebar-form-group">
                     <label>CCCD</label>
                     <input type="text" name="ma_cccd" placeholder="12 so CCCD" required pattern="[0-9]{12}">
                 </div>
