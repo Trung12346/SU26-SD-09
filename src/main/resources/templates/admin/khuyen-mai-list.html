@@ -71,17 +71,6 @@
                     <input type="number" th:field="*{giatriGiam}" min="0" step="any" max="99" required>
                 </div>
                 <div class="admin-field">
-                    <label>Người tạo</label>
-                    <select th:field="*{n}">
-                        <option value="">-- Chọn người tạo --</option>
-                        <option th:each="nd : ${nguoiDungs}"
-                                th:value="${nd.n.maNguoiDung}"
-                                th:text="${nd.n.hoTen + ' - ' + nd.n.email}"
-                                th:selected="${khuyenMai.n != null and khuyenMai.n.maNguoiDung == nd.n.maNguoiDung}">
-                        </option>
-                    </select>
-                </div>
-                <div class="admin-field">
                     <label>Ngày bắt đầu</label>
                     <input type="date" th:field="*{ngayBatDau}">
                 </div>
@@ -142,7 +131,7 @@
                         -
                         <span th:text="${km.ngayKetThuc != null ? #temporals.format(km.ngayKetThuc, 'dd/MM/yyyy') : ''}"></span>
                     </td>
-                    <td th:text="${km.n != null ? km.n.hoTen : ''}"></td>
+                    <td th:text="${km.n != null ? km.n.Email : ''}"></td>
                     <td>
                         <span th:if="${km.hoatDong}" class="status-badge active">HOAT DONG</span>
                         <span th:unless="${km.hoatDong}" class="status-badge inactive">KHONG HOAT DONG</span>

@@ -159,7 +159,7 @@
 
         <div sec:authorize="isAuthenticated()">
             <div class="user-menu">
-                <span class="user-greeting">Xin chào,</span><span sec:authentication="name"></span>
+                <span class="user-greeting">Xin chào,<b sec:authentication="name"></b></span>
                 <a href="/profiles" class="btn btn-outline" style="padding: 8px 15px; font-size: 13px;">Hồ Sơ</a>
                 <button onclick="logout()" class="btn-logout">Đăng Xuất</button>
             </div>
