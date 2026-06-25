@@ -91,6 +91,14 @@ public class AdminkhuyenMaiController {
                     m.setN(ng);
                 }
             }
+            if (m.giatriGiam.compareTo(BigDecimal.valueOf(100.0)) > 0 && m.loaiGiam.equalsIgnoreCase("PERCENT")){
+                redirect.addFlashAttribute("error","voucher giảm theo phần trăm tối đa là 100%");
+                return"redirect:/admin/khuyen-mai";
+            }
+            if (m.giatriGiam.compareTo(BigDecimal.valueOf(1_000_000)) > 0 && m.loaiGiam.equalsIgnoreCase("NUMBER")){
+                redirect.addFlashAttribute("error","voucher giảm theo giá cụ thể tối đa là 1 triệu vnd");
+                return"redirect:/admin/khuyen-mai";
+            }
             if(m.id == 0){
                 redirect.addFlashAttribute("success","Luu khuyen mai thanh cong");
 
