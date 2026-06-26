@@ -39,6 +39,13 @@ public class AdminThongKeDoanhThu {
 
         }
 
+        LocalDate bufferDate;
+        if(tuNgay.isAfter(denNgay)) {
+            bufferDate = tuNgay;
+            tuNgay = denNgay;
+            denNgay = bufferDate;
+        }
+
         Long cycle = denNgay.toEpochDay() - tuNgay.toEpochDay();
         LocalDate pcStart = tuNgay.minusDays(cycle);
         LocalDate pcEnd = denNgay.minusDays(cycle);
@@ -49,8 +56,8 @@ public class AdminThongKeDoanhThu {
         Double rGrowth = 0d;
         Integer iGrowth = 0;
 
-        pcRevenue = pcRevenue == null ? 0 : pcRevenue;
-        revenue = revenue == null ? 0 : revenue;
+        pcRevenue = pcRevenue == null ? 0d : pcRevenue;
+        revenue = revenue == null ? 0d : revenue;
         pcInvoice = pcInvoice == null ? 0 : pcInvoice;
         invoice = invoice == null ? 0 : invoice;
 
@@ -80,7 +87,7 @@ public class AdminThongKeDoanhThu {
         model.addAttribute("soHoaDonChenhLech", iGrowth);
         model.addAttribute("tuNgay", tuNgay);
         model.addAttribute("denNgay", denNgay);
-        model.addAttribute("xemTheo", xemTheo == null ? "thang" : xemTheo);
+        model.addAttribute("xemTheo", xemTheo);
 
         model.addAttribute("tongDoanhThu", revenue);
         model.addAttribute("tongHoaDon", invoice);

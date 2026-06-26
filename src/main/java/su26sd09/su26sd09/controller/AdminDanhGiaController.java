@@ -17,10 +17,11 @@ public class AdminDanhGiaController {
     @GetMapping
     public String get_0(
             Model model,
-            @PathVariable("id") Integer id
+            @PathVariable("id") Integer id,
+            @RequestParam(value = "noi-dung", required = false) String noiDung
     )
     {
-        model.addAttribute("danhGias", dgRepo.findByLoaiPhong(id));
+        model.addAttribute("danhGias", dgRepo.findByLoaiPhong(id, noiDung));
         return "admin/danh-gia-list";
     }
 
