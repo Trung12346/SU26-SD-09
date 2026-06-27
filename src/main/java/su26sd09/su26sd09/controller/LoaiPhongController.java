@@ -75,7 +75,10 @@ public class LoaiPhongController {
             return "redirect:/loai-phong";
         }
 
-        List<Phong> phongs = phongService.findPhongTrongTheoLoai(id);
+        List<Phong> phongs = phongService.findPhongTheoLoai(id)
+                .stream()
+                .filter(phong -> "Trong".equals(phong.getTrangThai()))
+                .toList();
         Map<Integer, List<String>> tienNghiTheoPhong = new HashMap<>();
         for (Phong phong : phongs) {
 

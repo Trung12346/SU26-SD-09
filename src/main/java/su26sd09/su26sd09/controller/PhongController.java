@@ -56,7 +56,10 @@ public class PhongController {
     @GetMapping
     public String index(Model model) {
         // Lấy tất cả phòng
-        List<Phong> phongs = phongService.findAllPhongTrongPublic();
+        List<Phong> phongs = phongService.findAllPhong()
+                .stream()
+                .filter(phong -> "Trong".equals(phong.getTrangThai()))
+                .toList();
         
         // Lấy tiện nghi cho từng phòng
         Map<Integer, List<String>> tienNghiTheoPhong = new HashMap<>();

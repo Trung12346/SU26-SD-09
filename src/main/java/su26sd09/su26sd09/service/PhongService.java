@@ -49,9 +49,6 @@ public class PhongService {
         return phongRepository.findByHoatDongTrueOrderBySoPhongAsc();
     }
 
-    public List<Phong> findAllPhongTrongPublic() {
-        return phongRepository.findByHoatDongTrueAndTrangThaiOrderBySoPhongAsc("Trong");
-    }
 
     public List<Phong> searchPhongTrongPublic(String tenPhong, String tenLoaiPhong, BigDecimal minGia, BigDecimal maxGia) {
         return phongRepository.searchPublicAvailableRooms(tenPhong, tenLoaiPhong, minGia, maxGia);
@@ -112,9 +109,6 @@ public class PhongService {
         return phongRepository.findByLoaiPhongIdAndHoatDongTrueOrderBySoPhongAsc(loaiPhongId);
     }
 
-    public List<Phong> findPhongTrongTheoLoai(int loaiPhongId) {
-        return phongRepository.findByLoaiPhongIdAndHoatDongTrueAndTrangThaiOrderBySoPhongAsc(loaiPhongId, "Trong");
-    }
     public long countPhongTrongTheoLoai(int loaiPhongId) {
         return phongRepository.countByLoaiPhongIdAndHoatDongTrueAndTrangThai(loaiPhongId, "Trong");
     }

@@ -27,11 +27,9 @@ public interface PhongRepository extends JpaRepository<Phong, Integer> {
 
     List<Phong> findByLoaiPhongIdAndHoatDongTrueOrderBySoPhongAsc(int loaiPhongId);
 
-    List<Phong> findByLoaiPhongIdAndHoatDongTrueAndTrangThaiOrderBySoPhongAsc(int loaiPhongId, String trangThai);
 
     List<Phong> findByHoatDongTrueOrderBySoPhongAsc();
 
-    List<Phong> findByHoatDongTrueAndTrangThaiOrderBySoPhongAsc(String trangThai);
 
     @Query("""
         select p from Phong p
