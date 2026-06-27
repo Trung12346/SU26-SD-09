@@ -60,6 +60,20 @@
             border: 1px solid #F5C6CB;
         }
 
+        .room-review-form-alert {
+            margin: 14px 0 18px;
+        }
+
+        .room-review-form-alert strong {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .room-review-form-alert p {
+            margin: 0;
+            line-height: 1.55;
+        }
+
         .room-review-layout {
             display: grid;
             grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
@@ -307,7 +321,7 @@
     </div>
 
     <div class="room-review-alert success" th:if="${roomReviewSuccess}" th:text="${roomReviewSuccess}"></div>
-    <div class="room-review-alert error" th:if="${roomReviewError}" th:text="${roomReviewError}"></div>
+    <div class="room-review-alert error" th:if="${roomReviewError}" th:text="${roomReviewError}" role="alert"></div>
 
     <div class="room-review-layout">
         <div class="room-review-list" data-room-review-list>
@@ -353,15 +367,15 @@
         <aside class="room-review-form-box">
             <div sec:authorize="isAuthenticated()">
                 <h3>Gửi đánh giá</h3>
-                <p class="room-review-muted">Bạn có thể nhập mã đặt phòng để hệ thống gắn đánh giá với đúng lần lưu trú.</p>
+                <p class="room-review-muted">Hệ thống sẽ tự kiểm tra mã đặt phòng liên quan với tài khoản của bạn trước khi nhận đánh giá.</p>
+
+                <div class="room-review-alert error room-review-form-alert" th:if="${roomReviewDenied}" role="alert">
+                    <strong>Không thể gửi đánh giá</strong>
+                    <p th:text="${roomReviewError}">Tài khoản này chưa có mã đặt phòng liên quan với phòng này nên không thể đánh giá.</p>
+                </div>
 
                 <form th:action="@{/phong/reviews/rooms/{maPhong}(maPhong=${roomId})}" method="post">
                     <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-
-                    <div class="room-review-field">
-                        <label for="roomReviewBooking">Mã đặt phòng</label>
-                        <input id="roomReviewBooking" type="number" name="maDatPhong" min="1" placeholder="Có thể để trống nếu hệ thống tự tìm thấy">
-                    </div>
 
                     <div class="room-review-field">
                         <label>Chọn số sao</label>

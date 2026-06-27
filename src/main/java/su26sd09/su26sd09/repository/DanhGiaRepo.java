@@ -27,7 +27,6 @@ public interface DanhGiaRepo extends JpaRepository<DanhGia,Integer> {
              order by d.ngayTao desc
              """)
      List<DanhGia> findDaDuyetByPhong(@Param("maPhong") int maPhong);
-
      @Query(value = "SELECT lp.ma_loai_phong, ten_loai, suc_chua_toi_da, gia_co_ban, mo_ta FROM (SELECT p.ma_loai_phong FROM (SELECT ma_phong FROM chi_tiet_dat_phong WHERE ma_dat_phong = :id) AS mp JOIN phong p ON p.ma_phong = mp.ma_phong) AS mlp JOIN loai_phong lp ON lp.ma_loai_phong = mlp.ma_loai_phong", nativeQuery = true)
      public LoaiPhong findLoaiPhong(Integer id);
 

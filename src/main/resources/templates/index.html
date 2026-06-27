@@ -187,6 +187,17 @@
            text-decoration: none;
            text-transform: uppercase;
        }
+       .home-search-error {
+           background: #fff5f5;
+           border: 1px solid #f3c5c5;
+           color: #b42318;
+           font-size: 14px;
+           font-weight: 600;
+           margin: 14px auto 0;
+           max-width: 1180px;
+           padding: 12px 14px;
+       }
+
        .home-search-empty {
            background: #f8fbff;
            border: 1px dashed var(--border-color);
@@ -235,9 +246,10 @@
             </div>
             <button type="submit" class="btn-book">Tìm phòng</button>
         </form>
+        <div class="home-search-error" th:if="${homeSearchError}" th:text="${homeSearchError}"></div>
     </section>
 
-    <section class="home-search-results" th:if="${dangTimKiem}">
+    <section class="home-search-results" th:if="${dangTimKiem == true and homeSearchError == null}">
         <div class="home-search-heading">
             <h2>Phòng trống phù hợp</h2>
             <a th:href="@{/home}">Xóa tìm kiếm</a>

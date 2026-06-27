@@ -46,10 +46,16 @@ public class Home {
         }
 
         boolean dangTimKiem = hasText(tenPhong) || hasText(tenLoaiPhong) || minGia != null || maxGia != null;
+        boolean khoangGiaKhongHopLe = minGia != null && maxGia != null && minGia.compareTo(maxGia) > 0;
+        model.addAttribute("dangTimKiem", dangTimKiem);
         if (dangTimKiem) {
-            List<Phong> phongsTimKiem = phongService.searchPhongTrongPublic(tenPhong, tenLoaiPhong, minGia, maxGia);
-            model.addAttribute("phongsTimKiem", phongsTimKiem);
-            model.addAttribute("dangTimKiem", true);
+            if (khoangGiaKhongHopLe) {
+                model.addAttribute("homeSearchError", "Gia tu phai thap hon hoac bang Gia den.");
+                model.addAttribute("phongsTimKiem", List.of());
+            } else {
+                List<Phong> phongsTimKiem = phongService.searchPhongTrongPublic(tenPhong, tenLoaiPhong, minGia, maxGia);
+                model.addAttribute("phongsTimKiem", phongsTimKiem);
+            }
         }
 
         model.addAttribute("loaiPhongs", loaiPhongs);

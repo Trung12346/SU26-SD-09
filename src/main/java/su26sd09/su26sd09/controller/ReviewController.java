@@ -67,6 +67,7 @@ public class ReviewController {
             reviewService.createRoomReview(maPhong, authentication.getName(), request);
             redirectAttributes.addFlashAttribute("roomReviewSuccess", "Cảm ơn bạn! Đánh giá đã được gửi thành công.");
         } catch (IllegalArgumentException ex) {
+            redirectAttributes.addFlashAttribute("roomReviewDenied", true);
             redirectAttributes.addFlashAttribute("roomReviewError", ex.getMessage());
         }
 

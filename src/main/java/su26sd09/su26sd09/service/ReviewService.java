@@ -71,13 +71,13 @@ public class ReviewService {
         assertRoomExists(maPhong);
 
         NguoiDung nguoiDung = findUserByEmail(email);
-        Optional<DatPhong> datPhong = resolveBookingForRoom(request.getMaDatPhong(), nguoiDung, maPhong);
+        DatPhong datPhong = resolveBookingForRoom(request.getMaDatPhong(), nguoiDung, maPhong);
 
         DanhGia danhGia = new DanhGia();
         danhGia.setN(nguoiDung);
-        datPhong.ifPresent(danhGia::setD);
+        danhGia.setD(datPhong);
         danhGia.setDiemDanhGia(Math.max(1, Math.min(5, request.getDiemDanhGia())));
-        danhGia.setNoiDung(toStoredContent(maPhong, datPhong.isPresent(), request.getNoiDung()));
+        danhGia.setNoiDung(toStoredContent(maPhong, true, request.getNoiDung()));
         danhGia.setDaDuyet(true);
         danhGia.setNgayTao(LocalDateTime.now());
 
@@ -98,6 +98,10 @@ public class ReviewService {
         DanhGia danhGia = danhGiaRepo.findById(reviewId)
                 .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy đánh giá."));
 
+        return resolveRoomId(danhGia);
+    }
+
+    private Integer resolveRoomId(DanhGia danhGia) {
         if (danhGia.getD() == null || danhGia.getD().getId() == null) {
             return parseRoomMarker(danhGia).orElse(null);
         }
@@ -127,7 +131,7 @@ public class ReviewService {
         return nguoiDung;
     }
 
-    private Optional<DatPhong> resolveBookingForRoom(Integer maDatPhong, NguoiDung nguoiDung, int maPhong) {
+    private DatPhong resolveBookingForRoom(Integer maDatPhong, NguoiDung nguoiDung, int maPhong) {
         if (maDatPhong != null) {
             DatPhong datPhong = datPhongRepo.findById(maDatPhong)
                     .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy mã đặt phòng."));
@@ -138,13 +142,22 @@ public class ReviewService {
             if (!bookingContainsRoom(datPhong, maPhong)) {
                 throw new IllegalArgumentException("Mã đặt phòng không thuộc phòng này.");
             }
-            return Optional.of(datPhong);
+            if (isCanceledBooking(datPhong)) {
+                throw new IllegalArgumentException("Mã đặt phòng đã hủy nên không thể đánh giá phòng này.");
+            }
+            return datPhong;
         }
 
         return datPhongRepo.FindByNguoiDung(nguoiDung.getMaNguoiDung())
                 .stream()
                 .filter(datPhong -> bookingContainsRoom(datPhong, maPhong))
-                .findFirst();
+                .filter(datPhong -> !isCanceledBooking(datPhong))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Tài khoản này chưa có mã đặt phòng liên quan với phòng này nên không thể đánh giá."));
+    }
+
+    private boolean isCanceledBooking(DatPhong datPhong) {
+        return datPhong != null && "Da huy".equals(datPhong.getTrangThai());
     }
 
     private boolean isBookingOwner(DatPhong datPhong, NguoiDung nguoiDung) {
