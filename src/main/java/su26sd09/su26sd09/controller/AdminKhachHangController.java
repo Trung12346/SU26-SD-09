@@ -28,9 +28,11 @@ public class AdminKhachHangController {
     private UserService userService;
 
     @GetMapping
-    public String get_0(Model model)
+    public String get_0(Model model,
+                        @RequestParam(value = "keyword", required = false) String ten)
     {
-        model.addAttribute("khachHangs", ndRepo.findAllKhach());
+        model.addAttribute("keyword", ten);
+        model.addAttribute("khachHangs", ndRepo.findAllKhach(ten));
         model.addAttribute("khachHang", new NguoiDung());
         model.addAttribute("vaiTros", vtRepo.findAll());
 
@@ -40,7 +42,7 @@ public class AdminKhachHangController {
     @GetMapping("/edit/{id}")
     public String get_1(Model model, @PathVariable("id") Integer id)
     {
-        model.addAttribute("khachHangs", ndRepo.findAllKhach());
+        model.addAttribute("khachHangs", ndRepo.findAllKhach(null));
         model.addAttribute("khachHang", ndRepo.findById(id));
         model.addAttribute("vaiTros", vtRepo.findAll());
 

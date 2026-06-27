@@ -188,10 +188,10 @@
                 </div>
                 <div class="admin-field">
                     <label>Xem theo</label>
-                    <select name="loaiThoiGian">
-                        <option value="ngay" th:selected="${loaiThoiGian == 'ngay'}">Theo ngày</option>
-                        <option value="thang" th:selected="${loaiThoiGian == null or loaiThoiGian == 'thang'}">Theo tháng</option>
-                        <option value="nam" th:selected="${loaiThoiGian == 'nam'}">Theo năm</option>
+                    <select name="xemTheo">
+                        <option value="ngay" th:selected="${xemTheo == 'ngay'}">Theo ngày</option>
+                        <option value="thang" th:selected="${xemTheo == null or xemTheo == 'thang'}">Theo tháng</option>
+                        <option value="nam" th:selected="${xemTheo == 'nam'}">Theo năm</option>
                     </select>
                 </div>
 <!--                <div class="admin-field">-->
