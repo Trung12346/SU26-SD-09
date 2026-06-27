@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import su26sd09.su26sd09.entity.Phong;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface PhongRepository extends JpaRepository<Phong, Integer> {
@@ -24,10 +25,37 @@ public interface PhongRepository extends JpaRepository<Phong, Integer> {
 
     List<Phong> findByTrangThai(String trangThai);
 
-
     List<Phong> findByLoaiPhongIdAndHoatDongTrueOrderBySoPhongAsc(int loaiPhongId);
 
+    List<Phong> findByLoaiPhongIdAndHoatDongTrueAndTrangThaiOrderBySoPhongAsc(int loaiPhongId, String trangThai);
+
     List<Phong> findByHoatDongTrueOrderBySoPhongAsc();
+
+    List<Phong> findByHoatDongTrueAndTrangThaiOrderBySoPhongAsc(String trangThai);
+
+    @Query("""
+        select p from Phong p
+        where p.hoatDong = true
+        and p.trangThai = 'Trong'
+        and (:minGia is null or p.giaMoiDem >= :minGia)
+        and (:maxGia is null or p.giaMoiDem <= :maxGia)
+        and (
+            :tenPhong is null or :tenPhong = ''
+            or lower(p.soPhong) like lower(concat('%', :tenPhong, '%'))
+            or lower(p.moTa) like lower(concat('%', :tenPhong, '%'))
+        )
+        and (
+            :tenLoaiPhong is null or :tenLoaiPhong = ''
+            or lower(p.loaiPhong.tenLoai) like lower(concat('%', :tenLoaiPhong, '%'))
+        )
+        order by p.soPhong asc
+    """)
+    List<Phong> searchPublicAvailableRooms(
+            @Param("tenPhong") String tenPhong,
+            @Param("tenLoaiPhong") String tenLoaiPhong,
+            @Param("minGia") BigDecimal minGia,
+            @Param("maxGia") BigDecimal maxGia
+    );
 
     long countByLoaiPhongIdAndHoatDongTrueAndTrangThai(int loaiPhongId, String trangThai);
 }

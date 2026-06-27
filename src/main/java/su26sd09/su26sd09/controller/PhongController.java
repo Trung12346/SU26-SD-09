@@ -56,7 +56,7 @@ public class PhongController {
     @GetMapping
     public String index(Model model) {
         // Lấy tất cả phòng
-        List<Phong> phongs = phongService.findAllPhong();
+        List<Phong> phongs = phongService.findAllPhongTrongPublic();
         
         // Lấy tiện nghi cho từng phòng
         Map<Integer, List<String>> tienNghiTheoPhong = new HashMap<>();
@@ -86,7 +86,7 @@ public class PhongController {
             RedirectAttributes redirectAttributes
     ) {
         Phong phong = phongService.findPhongById(id);
-        if (phong == null) {
+        if (phong == null || !phong.isHoatDong() || !"Trong".equals(phong.getTrangThai())) {
             redirectAttributes.addFlashAttribute("error", "Không tìm thấy phòng");
             return "redirect:/phong";
         }
