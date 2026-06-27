@@ -1,6 +1,5 @@
 package su26sd09.su26sd09.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,7 +19,6 @@ import su26sd09.su26sd09.dto.RoomReviewRequest;
 import su26sd09.su26sd09.dto.RoomReviewViewDTO;
 import su26sd09.su26sd09.service.ReviewService;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Set;
 
@@ -50,11 +48,10 @@ public class ReviewController {
     }
 
     @PostMapping({"/rooms", "/rooms/"})
-    public String submitRoomReviewMissingRoom(HttpServletRequest request,
-                                              RedirectAttributes redirectAttributes) {
+    public String submitRoomReviewMissingRoom(RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("roomReviewDenied", true);
         redirectAttributes.addFlashAttribute("roomReviewError", "Không xác định được phòng cần đánh giá. Vui lòng mở lại trang chi tiết phòng rồi thử lại.");
-        return redirectBackToRoom(request, null);
+        return "redirect:/phong";
     }
 
     @PostMapping("/rooms/{maPhong}")
@@ -62,8 +59,7 @@ public class ReviewController {
                                    @Valid @ModelAttribute RoomReviewRequest request,
                                    BindingResult bindingResult,
                                    Authentication authentication,
-                                   RedirectAttributes redirectAttributes,
-                                   HttpServletRequest httpRequest) {
+                                   RedirectAttributes redirectAttributes) {
         if (!isLoggedIn(authentication)) {
             redirectAttributes.addFlashAttribute("roomReviewError", "Vui lòng đăng nhập để gửi đánh giá.");
             return "redirect:/Login";
@@ -71,7 +67,7 @@ public class ReviewController {
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("roomReviewError", firstValidationMessage(bindingResult));
-            return redirectBackToRoom(httpRequest, maPhong);
+            return redirectToRoom(maPhong);
         }
 
         try {
@@ -82,7 +78,7 @@ public class ReviewController {
             redirectAttributes.addFlashAttribute("roomReviewError", ex.getMessage());
         }
 
-        return redirectBackToRoom(httpRequest, maPhong);
+        return redirectToRoom(maPhong);
     }
 
     @PostMapping("/{reviewId}/reply")
@@ -135,48 +131,6 @@ public class ReviewController {
                 .findFirst()
                 .map(FieldError::getDefaultMessage)
                 .orElse("Dữ liệu chưa hợp lệ.");
-    }
-
-    private String redirectBackToRoom(HttpServletRequest request, Integer maPhong) {
-        String refererPath = sameApplicationRefererPath(request);
-        if (refererPath != null && !refererPath.startsWith("/phong/reviews")) {
-            return "redirect:" + withRoomReviewsAnchor(refererPath);
-        }
-        return maPhong != null ? redirectToRoom(maPhong) : "redirect:/phong#roomReviews";
-    }
-
-    private String sameApplicationRefererPath(HttpServletRequest request) {
-        if (request == null) {
-            return null;
-        }
-
-        String referer = request.getHeader("Referer");
-        if (referer == null || referer.isBlank()) {
-            return null;
-        }
-
-        try {
-            URI uri = URI.create(referer);
-            if (uri.getHost() != null && !uri.getHost().equalsIgnoreCase(request.getServerName())) {
-                return null;
-            }
-
-            String path = uri.getPath();
-            if (path == null || path.isBlank() || !path.startsWith("/")) {
-                return null;
-            }
-
-            String query = uri.getRawQuery();
-            return query == null || query.isBlank() ? path : path + "?" + query;
-        } catch (IllegalArgumentException ex) {
-            return null;
-        }
-    }
-
-    private String withRoomReviewsAnchor(String path) {
-        int hashIndex = path.indexOf('#');
-        String cleanPath = hashIndex >= 0 ? path.substring(0, hashIndex) : path;
-        return cleanPath + "#roomReviews";
     }
 
     private String redirectToRoom(int maPhong) {

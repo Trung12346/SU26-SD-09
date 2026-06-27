@@ -312,6 +312,10 @@
          th:attr="data-name=${_csrf.parameterName},data-token=${_csrf.token}"
          hidden></div>
     <div sec:authorize="hasAnyAuthority('ROLE_STAFF','ROLE_ADMIN','ROLE_EMPLOYEE')" data-room-review-can-reply hidden></div>
+    <div th:if="${roomReviewDenied}"
+         data-room-review-denied
+         th:attr="data-message=${roomReviewError}"
+         hidden></div>
 
     <div class="room-reviews-head">
         <div>
@@ -413,7 +417,16 @@
     <script th:inline="javascript">
         (function () {
             const section = document.getElementById('roomReviews');
-            if (!section || section.dataset.hydrated === 'true') {
+            if (!section) {
+                return;
+            }
+
+            const deniedReview = section.querySelector('[data-room-review-denied]');
+            if (deniedReview && deniedReview.dataset.message) {
+                alert(deniedReview.dataset.message);
+            }
+
+            if (section.dataset.hydrated === 'true') {
                 return;
             }
 
