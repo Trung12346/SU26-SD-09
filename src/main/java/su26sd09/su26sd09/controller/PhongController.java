@@ -107,6 +107,7 @@ public class PhongController {
         }
 
         model.addAttribute("phong", phong);
+        model.addAttribute("maPhong", phong.getMaPhong());
         model.addAttribute("loaiPhong", loaiPhong);
         model.addAttribute("tienNghi", tienNghi);
         model.addAttribute("danhGias", danhGias);
