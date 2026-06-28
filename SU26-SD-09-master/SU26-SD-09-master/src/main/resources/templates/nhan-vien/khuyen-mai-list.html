@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quan ly khuyen mai | Nhan vien</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div class="topbar">
+    <div class="topbar-left">
+        <span>+84 123 456 789 &nbsp;|&nbsp; info@hotel.local</span>
+    </div>
+</div>
+
+<header>
+    <a href="/home" class="logo">
+        <img src="/logo.jpg" alt="Hotel Logo">
+    </a>
+    <nav class="nav-menu admin-nav">
+        <a href="/nhan-vien/dat-phong" class="active">Đơn đặt phòng</a>
+        <a href="/nhan-vien/danh-gia">Đánh giá</a>
+        <a href="/nhan-vien/khach-hang">Khách hàng</a>
+        <a href="/nhan-vien/phong">Phòng</a>
+        <a href="/nhan-vien/khuyen-mai">Khuyến mãi</a>
+        <a href="/nhan-vien/dat-phong/them-dich-vu">Thêm dịch vụ</a>
+        <a href="/nhan-vien/hoa-don">Hóa Đơn</a>
+    </nav>
+    <div class="header-actions">
+        <a href="/logout" class="btn btn-outline">Dang xuat</a>
+    </div>
+</header>
+
+<main class="admin-wrapper">
+    <div class="admin-header">
+        <h1>Quan ly khuyen mai</h1>
+        <a th:href="@{/Nhan-vien/khuyen-mai}" class="admin-btn outline">Lam moi form</a>
+    </div>
+
+    <div th:if="${success}" class="admin-message success">
+        <span th:text="${success}"></span>
+    </div>
+    <div th:if="${error}" class="admin-message error">
+        <span th:text="${error}"></span>
+    </div>
+
+    <section class="admin-panel">
+        <h2 th:text="${title}">Them khuyen mai</h2>
+
+        <form th:action="@{/Nhan-vien/khuyen-mai/save}" th:object="${khuyenMai}" method="post">
+            <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <input type="hidden" th:field="*{id}">
+
+            <div class="admin-grid">
+                <div class="admin-field">
+                    <label>Ma khuyen mai</label>
+                    <input type="text" th:field="*{promoCode}" placeholder="VD: SUMMER2026" required>
+                </div>
+                <div class="admin-field">
+                    <label>Loai giam</label>
+                    <select th:field="*{loaiGiam}">
+                        <option value="PERCENT">Phan tram</option>
+                        <option value="AMOUNT">So tien</option>
+                    </select>
+                </div>
+                <div class="admin-field">
+                    <label>Gia tri giam</label>
+                    <input type="number" th:field="*{giatriGiam}" min="0" required>
+                </div>
+
+                <input type="text"
+                       hidden
+                       th:field="*{n.maNguoiDung}" th:if="${khuyenMai.n != null}">
+
+                <div class="admin-field">
+                    <label>Ngay bat dau</label>
+                    <input type="date" th:field="*{ngayBatDau}">
+                </div>
+                <div class="admin-field">
+                    <label>Ngay ket thuc</label>
+                    <input type="date" th:field="*{ngayKetThuc}">
+                </div>
+                <div class="admin-field">
+                    <label>Hoat dong</label>
+                    <select th:field="*{hoatDong}">
+                        <option th:value="true">Co</option>
+                        <option th:value="false">Khong</option>
+                    </select>
+                </div>
+                <div class="admin-field full">
+                    <label>Mo ta</label>
+                    <textarea th:field="*{moTa}" placeholder="Nhap mo ta khuyen mai..."></textarea>
+                </div>
+            </div>
+
+            <div class="admin-actions">
+                <button type="submit" class="admin-btn">Luu khuyen mai</button>
+                <a th:href="@{/Nhan-vien/khuyen-mai}" class="admin-btn outline">Huy</a>
+            </div>
+        </form>
+    </section>
+
+    <section class="admin-panel">
+        <h2>Danh sach khuyen mai</h2>
+
+        <form th:action="@{/Nhan-vien/khuyen-mai/search}" method="get" class="search-row">
+            <input type="text" name="keyword" placeholder="Tim theo mã khuyến mãi" th:value="${keyword}">
+            <button type="submit" class="admin-btn outline">Tim kiem</button>
+        </form>
+
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th>Ma</th>
+                    <th>Code</th>
+                    <th>Loai</th>
+                    <th>Gia tri</th>
+                    <th>Thoi gian</th>
+                    <th>Nguoi tao</th>
+                    <th>Trang thai</th>
+                    <th>Thao tac</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="km : ${khuyenMais}">
+                    <td th:text="${km.id}"></td>
+                    <td><strong th:text="${km.promoCode}"></strong></td>
+                    <td th:text="${km.loaiGiam}"></td>
+                    <td th:text="${km.giatriGiam != null ? #numbers.formatDecimal(km.giatriGiam, 0, 'COMMA', 0, 'POINT') : ''}"></td>
+                    <td>
+                        <span th:text="${km.ngayBatDau != null ? #temporals.format(km.ngayBatDau, 'dd/MM/yyyy') : ''}"></span>
+                        -
+                        <span th:text="${km.ngayKetThuc != null ? #temporals.format(km.ngayKetThuc, 'dd/MM/yyyy') : ''}"></span>
+                    </td>
+                    <td th:text="${km.n != null ? km.n.hoTen : ''}"></td>
+                    <td>
+                        <span th:if="${km.hoatDong}" class="status-badge active">Co</span>
+                        <span th:unless="${km.hoatDong}" class="status-badge inactive">Khong</span>
+                    </td>
+                    <td>
+                        <div class="row-actions">
+                            <a class="admin-btn small outline"
+                               th:href="@{/Nhan-vien/khuyen-mai/edit/{id}(id=${km.id}, keyword=${keyword})}">Sua</a>
+                            <form th:action="@{/Nhan-vien/khuyen-mai/delete/{id}(id=${km.id})}"
+                                  method="post"
+                                  onsubmit="return confirm('Ban co chac muon xoa khuyen mai nay?')">
+                                <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                <button type="submit" class="admin-btn small danger">Xoa</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                <tr th:if="${khuyenMais.isEmpty()}">
+                    <td colspan="8"><div class="empty-state">Khong tim thay khuyen mai phu hop.</div></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2026 Hotel. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const loaiGiam = document.querySelector("[name='loaiGiam']");
+        const giaTriGiam = document.querySelector("[name='giatriGiam']");
+        const form = document.querySelector("form");
+
+        // Đổi min/max theo loại giảm để trình duyệt cũng hỗ trợ validate
+        function updateLimit() {
+            if (loaiGiam.value === "PERCENT") {
+                giaTriGiam.min = 0;
+                giaTriGiam.max = 50;
+            } else {
+                giaTriGiam.min = 0;
+                giaTriGiam.max = 250000;
+            }
+        }
+
+        loaiGiam.addEventListener("change", updateLimit);
+        updateLimit();
+    });
+</script>
