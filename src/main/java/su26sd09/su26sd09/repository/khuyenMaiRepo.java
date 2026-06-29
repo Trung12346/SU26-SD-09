@@ -16,6 +16,6 @@ import java.util.List;
 public interface khuyenMaiRepo extends JpaRepository<KhuyenMai,Integer> {
 
 
-    @Query("select m from KhuyenMai m where m.promoCode like :name")
+    @Query("select m from KhuyenMai m where m.promoCode like concat('%',:name,'%')")
     public List<KhuyenMai> findbyPromoCode(@PathVariable("name") String name);
 }

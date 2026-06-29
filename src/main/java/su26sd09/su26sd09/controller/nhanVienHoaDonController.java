@@ -44,7 +44,7 @@ public class nhanVienHoaDonController {
         NguoiDung nd = nguoiDungService.findByEmail(authentication.getName());
         if (nd == null) return false;
         Nhanvien nv = nhanVienService.findByMaNguoiDung(nd.getMaNguoiDung());
-        return nv != null && "Lễ Tân".equals(nv.getBoPhan());
+        return nv != null && "Lễ Tân".equalsIgnoreCase(nv.getBoPhan());
     }
 
     @GetMapping("")

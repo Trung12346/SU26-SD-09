@@ -1,12 +1,14 @@
 package su26sd09.su26sd09.controller;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +26,7 @@ import su26sd09.su26sd09.service.UserService;
 import java.security.Principal;
 import java.time.LocalDateTime;
 
+@Slf4j
 @Controller
 @RequestMapping("/admin/nguoi-dung")
 public class AdminNguoiDungController {
@@ -99,10 +102,21 @@ public class AdminNguoiDungController {
          PasswordEncoder e = new BCryptPasswordEncoder();
         if (CheckRole(p.getName())){
 
+           for(FieldError f : r.getFieldErrors()){
+               int loi = 0;
+               if ( matKhaumoi != null && f.getField().equals("matKhau_hash")){
+                   if (!matKhaumoi.isBlank())nguoiDung.setMatKhau_hash(e.encode(matKhaumoi));
+               }else{
+                   loi ++;
+               }
+               if (loi > 0){
+                   redirect.addFlashAttribute("error",r.getFieldError().getDefaultMessage());
+                   return "redirect:/admin/nguoi-dung";
+               }
+           }
+
             if (nguoiDung.getMaNguoiDung() == null){
                 for (NguoiDung s : userService.getAll()){
-
-
                         if (!s.getEmail().equals(nguoiDung.getEmail() ) && userService.checkEmail(nguoiDung.getEmail(),nguoiDung.getMaNguoiDung())){
                             redirect.addFlashAttribute("error"," email này đã tồn tại");
                             return "redirect:/admin/nguoi-dung";
@@ -110,18 +124,13 @@ public class AdminNguoiDungController {
                     }
 
                 }
-            }
-            if (!matKhaumoi.isEmpty()){
-                nguoiDung.setMatKhau_hash(e.encode(matKhaumoi));
-            }
-            if(nguoiDung.getMatKhau_hash() == null || nguoiDung.getMatKhau_hash().isBlank()){
-                redirect.addFlashAttribute("error","mật khẩu không được để trống");
+                System.out.println("theem nguiowf dung");
+                userService.save(nguoiDung);
+                redirect.addFlashAttribute("success","thêm người dùng thành công");
                 return "redirect:/admin/nguoi-dung";
             }
-            if(r.hasErrors()){
-                redirect.addFlashAttribute("error",r.getFieldError().getDefaultMessage());
-                return "redirect:/admin/nguoi-dung";
-            }
+
+
 
 
             if ( nguoiDung.getMaNguoiDung() != null){
@@ -138,7 +147,7 @@ public class AdminNguoiDungController {
                                       }
 
                               }
-                              if ( (!s.getEmail().equals(nguoiDung.getEmail() )|| userService.checkEmail(nguoiDung.getEmail(),nguoiDung.getMaNguoiDung()))){
+                              if (  userService.checkEmail(nguoiDung.getEmail(),nguoiDung.getMaNguoiDung())){
                                  redirect.addFlashAttribute("error"," email này đã tồn tại");
                                  return "redirect:/admin/nguoi-dung";
                               }
@@ -146,10 +155,9 @@ public class AdminNguoiDungController {
                 }
                 userService.save(nguoiDung);
                 redirect.addFlashAttribute("success", "Cap nhat nguoi dung thanh cong");
-            }else{
-                userService.save(nguoiDung);
-                redirect.addFlashAttribute("success", "luu nguoi dung thanh cong");
             }
+
+
         }
 
         return "redirect:/admin/nguoi-dung";
