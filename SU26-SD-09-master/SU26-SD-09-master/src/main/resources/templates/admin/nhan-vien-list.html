@@ -61,6 +61,9 @@
                            placeholder="Nhap khi them moi" >
                 </div>
 
+                <input type="number"
+                       th:field="*{n.vaiTro.id}" hidden >
+
 
                 <div class="admin-field" th:if="${nhanVien.n.maNguoiDung != null}">
                     <label>Mat khau</label>

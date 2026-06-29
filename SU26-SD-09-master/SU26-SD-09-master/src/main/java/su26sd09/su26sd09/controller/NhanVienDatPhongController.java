@@ -171,10 +171,6 @@ public class NhanVienDatPhongController {
         return "redirect:/nhan-vien/dat-phong?page=" + page + "&size=" + size;
     }
 
-    /**
-     * Trang cho nhân viên tìm 1 đơn đặt phòng và thêm dịch vụ bổ sung cho đơn đó.
-     * Không có id -> chỉ hiện ô tìm kiếm. Có id -> hiện thông tin đơn + form thêm dịch vụ.
-     */
     @GetMapping("/dat-phong/them-dich-vu")
     public String formThemDichVuBoSung(@RequestParam(required = false) Integer id,
                                        @RequestParam(defaultValue = "0") int page,
@@ -210,12 +206,6 @@ public class NhanVienDatPhongController {
         return "nhan-vien/them-dich-vu";
     }
 
-    /**
-     * Thêm dịch vụ bổ sung cho 1 đơn đặt phòng đang trong kỳ lưu trú
-     * (trạng thái "Da nhan phong"). KHÔNG xuất hóa đơn riêng cho lần
-     * phát sinh này - chỉ ghi nhận chi tiết dịch vụ, rồi gộp vào hóa đơn
-     * của đơn đó (đồng bộ ngay nếu hóa đơn đã tồn tại).
-     */
     @PostMapping("/dat-phong/them-dich-vu")
     public String themDichVuBoSung(@RequestParam Integer id,
                                    @RequestParam(value = "dichVuIds", required = false) List<Integer> dichVuIds,

@@ -41,10 +41,7 @@ public class NhanVienService {
     }
 
     public void save(Nhanvien n){
-        if (n.n.getVaiTro().getTenVaiTro().equals("ROLE_ADMIN") || n.n.getVaiTro().getTenVaiTro().equals("ROLE_EMPLOYEE")){
-            NguoiDungRepo.save(n.n);
-            return ;
-        }
+
 
         repo.save(n);
     }

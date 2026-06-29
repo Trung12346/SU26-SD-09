@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fd1d651f-bb8a-4001-86e3-fb9a2095819f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SU26-SD-09-master/src/main/java/su26sd09/su26sd09/controller/AdminDanhGiaController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SU26-SD-09-master/src/main/java/su26sd09/su26sd09/controller/AdminKhachHangController.java" beforeDir="false" afterPath="$PROJECT_DIR$/SU26-SD-09-master/src/main/java/su26sd09/su26sd09/controller/AdminKhachHangController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SU26-SD-09-master/src/main/java/su26sd09/su26sd09/controller/AdminNguoiDungController.java" beforeDir="false" afterPath="$PROJECT_DIR$/SU26-SD-09-master/src/main/java/su26sd09/su26sd09/controller/AdminNguoiDungController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SU26-SD-09-master/src/main/java/su26sd09/su26sd09/controller/AdminNhanVienController.java" beforeDir="false" afterPath="$PROJECT_DIR$/SU26-SD-09-master/src/main/java/su26sd09/su26sd09/controller/AdminNhanVienController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SU26-SD-09-master/src/main/java/su26sd09/su26sd09/controller/CustomerReviewController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SU26-SD-09-master/src/main/java/su26sd09/su26sd09/controller/DanhGiaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/SU26-SD-09-master/src/main/java/su26sd09/su26sd09/controller/DanhGiaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SU26-SD-09-master/src/main/java/su26sd09/su26sd09/controller/ReviewController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SU26-SD-09-master/src/main/java/su26sd09/su26sd09/dto/AdminDanhGiaDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/SU26-SD-09-master/src/main/java/su26sd09/su26sd09/entity/NguoiDung.java" beforeDir="false" afterPath="$PROJECT_DIR$/SU26-SD-09-master/src/main/java/su26sd09/su26sd09/entity/NguoiDung.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SU26-SD-09-master/src/main/java/su26sd09/su26sd09/repository/VaiTroRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/SU26-SD-09-master/src/main/java/su26sd09/su26sd09/repository/VaiTroRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SU26-SD-09-master/src/main/java/su26sd09/su26sd09/repository/khuyenMaiRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/SU26-SD-09-master/src/main/java/su26sd09/su26sd09/repository/khuyenMaiRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SU26-SD-09-master/src/main/java/su26sd09/su26sd09/service/NhanVienService.java" beforeDir="false" afterPath="$PROJECT_DIR$/SU26-SD-09-master/src/main/java/su26sd09/su26sd09/service/NhanVienService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SU26-SD-09-master/src/main/resources/templates/admin/nhan-vien-list.html" beforeDir="false" afterPath="$PROJECT_DIR$/SU26-SD-09-master/src/main/resources/templates/admin/nhan-vien-list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SU26-SD-09-master/src/main/resources/templates/fragments/headers/staff-header.html" beforeDir="false" afterPath="$PROJECT_DIR$/SU26-SD-09-master/src/main/resources/templates/fragments/headers/staff-header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SU26-SD-09-master/src/main/resources/templates/nhan-vien/khuyen-mai-list.html" beforeDir="false" afterPath="$PROJECT_DIR$/SU26-SD-09-master/src/main/resources/templates/nhan-vien/khuyen-mai-list.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/SU26-SD-09-master" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="3FnINdbtvz0TdBrONlz5jIuM1Bl" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.Su26sd09Application.executor": "Run",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "feature/Header__&&__DanhGia__Duc",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/ADMIN/Downloads/SU26-SD-09-master"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="Su26sd09Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UnknownPolicyInFreeMode" />
+      <module name="su26sd09" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="su26sd09.su26sd09.Su26sd09Application" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="su26sd09.su26sd09.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.Su26sd09Application" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.25134.95" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.25134.95" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fd1d651f-bb8a-4001-86e3-fb9a2095819f" name="Changes" comment="" />
+      <created>1782704369869</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1782704369869</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
